@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('talents', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
             $table->string('middle_name')->nullable();
@@ -24,9 +24,7 @@ return new class extends Migration
             $table->text('desc_text')->nullable();
             $table->foreignId('experience_level_id')->constrained('experience_levels');
             $table->foreignId('english_level_id')->constrained('english_levels');
-            $table->foreignId('country_id')->constrained('countries');
             $table->decimal('hourly_rate');
-            $table->foreignId('baybal_account_id')->constrained('baybal_accounts');
             $table->timestamp('created_at')->useCurrent();
         });
     }
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('talents');
+        Schema::dropIfExists('users');
     }
 };

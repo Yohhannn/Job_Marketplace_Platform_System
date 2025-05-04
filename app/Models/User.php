@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Talent extends Model
+class User extends Model
 {
     protected $table = 'talents';
 
@@ -17,8 +17,6 @@ class Talent extends Model
         'suffix',
         'email',
         'contact_number',
-        'country_id',
-
         'desc_title',
         'desc_text',
         'experience_level_id',
