@@ -17,7 +17,6 @@ class Job extends Model
         'experience_level_id',
         'type',
         'scope',
-        'score_required',
         'english_level_id',
         'number_of_hires',
         'client_id',
@@ -43,7 +42,7 @@ class Job extends Model
     public function applicants()
     {
         return $this->hasManyThrough(
-            Talent::class,
+            User::class,
             Proposal::class,
             'job_id',
             'id',
@@ -60,7 +59,7 @@ class Job extends Model
     public function hires()
     {
         return $this->hasManyThrough(
-            Talent::class,
+            User::class,
             Contract::class,
             'job_id',
             'id',
