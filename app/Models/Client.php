@@ -12,10 +12,8 @@ class Client extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'suffix',
         'email',
-        'contact_number',
-        'country_id',
+        'contact_number'
     ];
 
     protected $hidden = [
@@ -40,8 +38,7 @@ class Client extends Model
             array_filter([
                 $this->first_name,
                 $this->middle_name,
-                $this->last_name,
-                $this->suffix
+                $this->last_name
             ])
         );
     }
