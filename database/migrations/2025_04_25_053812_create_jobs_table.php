@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignId('experience_level_id')->constrained('experience_levels');
             $table->enum('type', ['hourly', 'fixed-price']);
             $table->enum('scope', ['one-time', 'ongoing', 'complex']);
-            $table->decimal('score_required', 5, 2)->nullable();
             $table->foreignId('english_level_id')->nullable()->constrained('english_levels');
             $table->integer('number_of_hires')->default(1);
             $table->foreignId('client_id')->constrained('clients');
