@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('job_id')->constrained('jobs');
-            $table->foreignId('talent_id')->constrained('talents');
+            $table->foreignId('user_id')->constrained('users');
             $table->decimal('pay_amount');
             $table->timestamp('created_at')->useCurrent();
             $table->integer('hours_taken');

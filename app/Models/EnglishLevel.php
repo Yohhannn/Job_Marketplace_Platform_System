@@ -10,5 +10,6 @@ class EnglishLevel extends Model
 
     protected $fillable = [
         'name',
+        'description'
     ];
 }
