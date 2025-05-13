@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Model
+class User extends Model implements AuthenticatableContract
 {
+    use Authenticatable; // This trait provides auth-related methods
+
     public $timestamps = false;
     protected $table = 'users';
 
@@ -33,7 +37,6 @@ class User extends Model
     {
         return [
             'password' => 'hashed',
-            'created_at' => 'datetime',
         ];
     }
 
