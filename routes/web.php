@@ -1,27 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SignUpController;
-use App\Http\Controllers\SignUp_ClientController;
-use App\Http\Controllers\SignUp_TalentController;
-use App\Http\Controllers\LogInController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Authentication Routes
-Route::get('/login', [LogInController::class, 'show'])->name('login');
-Route::get('/signup', [SignUpController::class, 'show'])->name('signup');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Client Registration Routes
-Route::controller(SignUp_ClientController::class)->group(function () {
-    Route::get('/signup/client', 'show')->name('client.register.show');
-    Route::post('/signup/client', 'store')->name('client.register');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Talent Registration Routes
-Route::controller(SignUp_TalentController::class)->group(function () {
-    Route::get('/register/talent', [SignUp_TalentController::class, 'show'])->name('talent.register.show');
-    Route::post('/register/talent', [SignUp_TalentController::class, 'store'])->name('talent.register');
-});
+require __DIR__.'/auth.php';
