@@ -42,7 +42,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/find-work/my-job-posts/create-job-post', [JobPostController::class, 'createJobPost'])
         ->name('createjobpost.createjobpost');
+
+    Route::get('/find-work/my-proposals', [ProposalController::class, 'myProposals'])
+        ->name('findwork.myproposals');
 });
 
-// Proposal Route (if public or protected depends on your app logic)
-Route::get('/proposal', [ProposalController::class, 'show'])->name('proposal');
