@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
-class ProposalController extends Controller
+class ProposalController
 {
-    public function show()
-    {
-        return view('pages.proposal');
+    public function myProposals(){
+        return view('pages.Find_Work.my_proposals');
     }
 }

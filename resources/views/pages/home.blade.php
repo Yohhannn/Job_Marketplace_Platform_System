@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INHIRE: Connecting Clients and Freelancers</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -60,6 +61,12 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+        .section-username {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #488fd7;
             margin-bottom: 1.5rem;
         }
         .job-card {
@@ -140,346 +147,220 @@
             margin-right: 0.5rem;
             font-size: 0.75rem;
         }
+        .view-more-button {
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
+<!--Testing-->
+<header class="bg-white py-3 border-bottom">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="#">INHIRE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Find Work
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
+                            <li><a class="dropdown-item active" href="/Views/Find_Work/home.html">Find Work</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="deliverWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Deliver Work
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
+                            <li><a class="dropdown-item" href="/Views/Deliver_Work/active_contracts.html">Your Active Contracts</a></li>
+                            <li><a class="dropdown-item" href="/Views/Deliver_Work/contract_history.html">Contract History</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search for jobs" aria-label="Search">
+                            <a href="/Views/Search/searched_result.html"><button class="btn btn-primary" type="button" id="button-addon2">Search</button></a>
+                        </form>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link size" href="/Views/Profile/profile.html">
+                            <div class="user-info">
+                                <img src="{{ asset('icons/icon_profile.png') }}" alt="User Avatar" class="avatar">
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
 
-    <header class="bg-white py-3 border-bottom">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <a class="navbar-brand" href="#">INHIRE</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Find Work
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
-                                <li><a class="dropdown-item active" href="./home.html">Find Work</a></li>
-                                <li><a class="dropdown-item" href="./myproposals.html">My Proposals</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="deliverWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Deliver Work
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
-                                <li><a class="dropdown-item" href="#">Your Active Contracts</a></li>
-                                <li><a class="dropdown-item" href="#">Contract History</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Search for services" aria-label="Search">
-                                <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
-                            </form>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-bell"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <div class="user-info">
-                                    <img src={{ asset('icons/icon_profile.png') }} alt="User Avatar" class="avatar">
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+
+<main class="container py-4">
+    <section class="mb-4">
+        <h2 class="section-title">Welcome to INHIRE!</h2>
+        <h2 class="section-username">{{ $user->name }}</h2>
+        <p class="lead">Connect with talented freelancers and find the perfect job for your skills.</p>
+    </section>
+
+    <section class="mb-4">
+        <h2 class="section-title">Jobs You Might Like</h2>
+        <div class="mb-3">
+            <a href="#" class="tab-link active" data-tab="best-matches">Best Matches</a>
+            <a href="#" class="tab-link" data-tab="most-recent">Most Recent</a>
+            <a href="#" class="tab-link" data-tab="saved-jobs">Saved Jobs</a>
         </div>
-    </header>
-
-    <main class="container py-4">
-        <section class="mb-4">
-            <h2 class="section-title">Welcome to INHIRE!</h2>
-            <p class="lead">Connect with talented freelancers and find the perfect job for your skills.</p>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search for jobs..." aria-label="Search for jobs" aria-describedby="button-addon2">
-                <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
-            </div>
-        </section>
-
-        <section class="mb-4">
-            <h2 class="section-title">Jobs You Might Like</h2>
-            <div class="mb-3">
-                <a href="#" class="tab-link active" data-tab="best-matches">Best Matches</a>
-                <a href="#" class="tab-link" data-tab="most-recent">Most Recent</a>
-                <a href="#" class="tab-link" data-tab="saved-jobs">Saved Jobs</a>
-            </div>
-            <div id="best-matches" class="job-listings">
-            </div>
-            <div id="most-recent" class="job-listings" style="display: none;">
-            </div>
-            <div id="saved-jobs" class="job-listings" style="display: none;">
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-light py-3 border-top">
-        <div class="container text-center">
-            <p>&copy; 2025 INHIRE. All rights reserved.</p>
+        <div id="best-matches" class="job-listings">
         </div>
-    </footer>
+        <div id="most-recent" class="job-listings" style="display: none;">
+        </div>
+        <div id="saved-jobs" class="job-listings" style="display: none;">
+        </div>
+    </section>
+</main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
-    <script>
-        const jobData = {
-            'best-matches': [
-                {
-                    title: 'English into Ewe proofreading job',
-                    summary: [
-                        { icon: 'fas fa-dollar-sign', text: 'Hourly: $15-$30' },
-                        { icon: 'far fa-calendar-alt', text: '1 Month' },
-                        { icon: 'far fa-clock', text: '< 30 hr/wk' },
-                        { text: 'Intermediate' },
-                    ],
-                    proposals: '5 to 10',
-                    clientDetails: [
-                        { icon: 'fas fa-check-circle', text: 'Payment Verified', isVerified: true },
-                        { icon: 'fas fa-star', text: '4.9', isStar: true },
-                        { text: '$200K+ Spent' },
-                        { text: 'United States' },
-                    ],
-                    description: 'I have -1800 words to review from English into Ewe in Word format. TAT for 48 hours would be fine. Payable: 2 (two) hours. Apply with your best hourly rate this job.',
-                    tags: ['English', 'Proofreading', 'Ewe'],
-                    posted: '22 hours ago',
-                },
-                {
-                    title: 'Graphic Designer',
-                    description: 'We need a creative graphic designer to design a new logo and marketing materials.',
-                    details: { posted: '1 week ago', budget: '$500 - $1000' },
-                },
-            ],
-            'most-recent': [
-                {
-                    title: 'Data Analyst',
-                    summary: [
-                        { icon: 'fas fa-dollar-sign', text: 'Fixed: $2000-$3000' },
-                        { icon: 'far fa-calendar-alt', text: '2 Weeks' },
-                        { icon: 'far fa-clock', text: '40 hr/wk' },
-                        { text: 'Expert' },
-                    ],
-                    proposals: '10-15',
-                    clientDetails: [
-                        { icon: 'fas fa-check-circle', text: 'Payment Verified', isVerified: true },
-                        { icon: 'fas fa-star', text: '4.8', isStar: true },
-                        { text: '$100K+ Spent' },
-                        { text: 'Canada' },
-                    ],
-                    description: 'Analyze sales data and create reports to improve business decisions.  Experience with SQL and Python required.',
-                    tags: ['Data Analysis', 'SQL', 'Python'],
-                    posted: '1 day ago',
-                },
-                {
-                    title: 'Full Stack Developer',
-                    description: 'Looking for a full stack developer for a long term project.',
-                    details: { posted: '2 days ago', budget: '$60-$80/hr' },
-                },
-            ],
-            'saved-jobs': [
-                {
-                    title: 'Project Manager',
-                    summary: [
-                        { icon: 'fas fa-dollar-sign', text: 'Monthly: $5000-$7000' },
-                        { icon: 'far fa-calendar-alt', text: '3 Months' },
-                        { icon: 'far fa-clock', text: '40 hr/wk' },
-                        { text: 'Intermediate' },
-                    ],
-                    proposals: '20-30',
-                    clientDetails: [
-                        { icon: 'fas fa-check-circle', text: 'Payment Verified', isVerified: true },
-                        { icon: 'fas fa-star', text: '4.5', isStar: true },
-                        { text: '$50K+ Spent' },
-                        { text: 'United Kingdom' },
-                    ],
-                    description: 'Manage the development and launch of a new mobile application.  Agile experience is a plus.',
-                    tags: ['Project Management', 'Agile', 'Mobile Development'],
-                    posted: '5 days ago',
-                },
-                {
-                    title: 'Technical Writer',
-                    description: 'We are looking for a technical writer to create documentation.',
-                    details: { posted: '1 week ago', budget: '$30-$50/hr' },
-                },
-            ],
-        };
+<footer class="bg-light py-3 border-top">
+    <div class="container text-center">
+        <p>&copy; 2025 INHIRE. All rights reserved.</p>
+    </div>
+</footer>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabLinks = document.querySelectorAll('.tab-link');
-            const jobListings = document.querySelectorAll('.job-listings');
-            const findWorkDropdown = document.getElementById('findWorkDropdown');
-            const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
-            const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+<script>
+    const jobData = {
+        'best-matches': [
+            {
+                title: 'Software Engineer',
+                postedBy: 'Edmark Talingting',
+                tags: ['Hourly', 'Developer'],
+                description: 'Seeking a skilled Software Engineer to build and maintain web applications.',
+                posted: '2 days ago',
+            },
+            {
+                title: 'Graphic Designer',
+                postedBy: 'Jane Smith',
+                tags: ['Fixed Price', 'Creative'],
+                description: 'We need a creative graphic designer to design a new logo and marketing materials.',
+                posted: '1 week ago',
+            },
+        ],
+        'most-recent': [
+            {
+                title: 'Data Analyst',
+                postedBy: 'John Doe',
+                tags: ['Full-time', 'Data Analysis', 'SQL'],
+                description: 'Analyze sales data and create reports to improve business decisions.  Experience with SQL and Python required.',
+                posted: '1 day ago',
+            },
+            {
+                title: 'Full Stack Developer',
+                postedBy: 'Alice Johnson',
+                tags: ['Contract', 'React', 'Node.js'],
+                description: 'Looking for a full stack developer for a long term project.',
+                posted: '2 days ago',
+            },
+        ],
+        'saved-jobs': [
+            {
+                title: 'Project Manager',
+                postedBy: 'Samantha White',
+                tags: ['Full-time', 'Agile', 'Project Management'],
+                description: 'Manage the development and launch of a new mobile application.  Agile experience is a plus.',
+                posted: '5 days ago',
+            },
+            {
+                title: 'Technical Writer',
+                postedBy: 'Robert Brown',
+                tags: ['Hourly', 'Technical Writing'],
+                description: 'We are looking for a technical writer to create documentation.',
+                posted: '1 week ago',
+            },
+        ],
+    };
 
-            if (findWorkDropdown && deliverWorkDropdown) {
-                // Remove the original event listeners for "Find Work" and "Deliver Work"
-                findWorkDropdown.removeAttribute('href');
-                deliverWorkDropdown.removeAttribute('href');
-            }
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const jobListings = document.querySelectorAll('.job-listings');
+        const findWorkDropdown = document.getElementById('findWorkDropdown');
+        const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
+        const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
 
-             // Set "Find Work" as active by default
-            navbarNavItems.forEach(navItem => navItem.classList.remove('active'));
-            const findWorkNavItem = Array.from(navbarNavItems).find(navItem => navItem.querySelector('#findWorkDropdown'));
-            if (findWorkNavItem) {
-                findWorkNavItem.classList.add('active');
-            }
+        if (findWorkDropdown && deliverWorkDropdown) {
+            // Remove the original event listeners for "Find Work" and "Deliver Work"
+            findWorkDropdown.removeAttribute('href');
+            deliverWorkDropdown.removeAttribute('href');
+        }
 
-            const jobCardConfig = {
-                title: { tag: 'h3', className: 'job-title', textKey: 'title' },
-                summary: {
-                    tag: 'div', className: 'job-summary', items: [
-                        { tag: 'span', icon: 'fas fa-dollar-sign', textKey: 'text' },
-                        { tag: 'span', icon: 'far fa-calendar-alt', textKey: 'text' },
-                        { tag: 'span', icon: 'far fa-clock', textKey: 'text' },
-                        { tag: 'span', textKey: 'text' },
-                    ],
-                    dataKey: 'summary'
-                },
-                proposals: {
-                    tag: 'div', className: 'job-summary',
-                    items: [{
-                        tag: 'span', html: (data) => `<i class="fas fa-users"></i> Proposals: ${data}`,
-                        textKey: 'proposals'
-                    }]
-                },
-                clientDetails: {
-                    tag: 'div', className: 'job-summary', items: [
-                        { tag: 'span', icon: 'fas fa-check-circle', textKey: 'text', isVerified: true },
-                        { tag: 'span', icon: 'fas fa-star', textKey: 'text', isStar: true },
-                        { tag: 'span', textKey: 'text' },
-                        { tag: 'span', textKey: 'text' },
-                    ],
-                    dataKey: 'clientDetails'
-                },
-                description: { tag: 'p', className: 'job-description', textKey: 'description' },
-                tags: {
-                    tag: 'div', className: 'tags-container', items: [{
-                        tag: 'span', className: 'tag', textKey: 'tag'
-                    }],
-                    dataKey: 'tags'
-                },
-                details: {
-                    tag: 'div', className: 'job-details',
-                    html: (data) => {
-                        if (data.details) {
-                            return `<span>${data.details.posted}</span><span>${data.details.budget}</span>`;
-                        } else if (data.posted) {
-                            return `<span>Posted ${data.posted}</span>`;
-                        }
-                        return '';
-                    },
-                    dataKey: 'details'
-                }
-            };
+        // Set "Find Work" as active by default
+        navbarNavItems.forEach(navItem => navItem.classList.remove('active'));
+        const findWorkNavItem = Array.from(navbarNavItems).find(navItem => navItem.querySelector('#findWorkDropdown'));
+        if (findWorkNavItem) {
+            findWorkNavItem.classList.add('active');
+        }
 
-            function createJobCard(job) {
-                const card = document.createElement('div');
-                card.className = 'job-card';
+        function createJobCard(job) {
+            const card = document.createElement('div');
+            card.className = 'job-card';
 
-                for (const key in jobCardConfig) {
-                    const config = jobCardConfig[key];
-                    let element;
+            card.innerHTML = `
+                    <h3 class="job-title">${job.title}</h3>
+                    <div class="job-summary">
+                        Posted By: ${job.postedBy}
+                    </div>
+                    <div class="job-summary">
+                        Tags: ${job.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <p class="job-description">${job.description}</p>
+                    <div class="job-details">
+                        Posted: ${job.posted}
+                    </div>
+                    <button class="btn btn-primary view-more-button">View More</button>
+                `;
 
-                    if (config.tag) {
-                        element = document.createElement(config.tag);
-                        if (config.className) {
-                            element.className = config.className;
-                        }
-                    }
+            return card;
+        }
 
-                    if (config.textKey) {
-                        element.textContent = job[config.textKey] || '';
-                    }
-
-                    if (config.html) {
-                        element.innerHTML = config.html(job);
-                    }
-                    if(config.items && config.dataKey){
-                        const data = job[config.dataKey]
-                        if(data){
-                            data.forEach(itemData =>{
-                                const itemElement = document.createElement(itemData.tag || 'span');
-                                if(itemData.className){
-                                    itemElement.className = itemData.className
-                                }
-                                if (itemData.icon) {
-                                    const icon = document.createElement('i');
-                                    icon.className = itemData.icon;
-                                    if(itemData.isVerified){
-                                        icon.classList.add('verified-icon')
-                                    }
-                                    if(itemData.isStar){
-                                        icon.classList.add('star-icon')
-                                    }
-                                    itemElement.appendChild(icon);
-                                }
-                                itemElement.textContent = itemData.text || itemData.tag;
-                                element.appendChild(itemElement)
-                            })
-                        }
-                    }
-                    else if(config.items && !config.dataKey){
-                         config.items.forEach(itemData => {
-                            const itemElement = document.createElement(itemData.tag || 'span');
-                            if (itemData.icon) {
-                                const icon = document.createElement('i');
-                                icon.className = itemData.icon;
-                                 if(itemData.isVerified){
-                                        icon.classList.add('verified-icon')
-                                    }
-                                    if(itemData.isStar){
-                                        icon.classList.add('star-icon')
-                                    }
-                                itemElement.appendChild(icon);
-                            }
-                            itemElement.textContent = job[itemData.textKey] || itemData.tag;
-                            element.appendChild(itemElement);
-                        });
-                    }
-
-                    card.appendChild(element);
-                }
-
-                return card;
-            }
-
-            function loadJobs(tab) {
-                const tabContent = document.getElementById(tab);
-                tabContent.innerHTML = '';
-                const jobs = jobData[tab] || [];
-                jobs.forEach(job => {
-                    const card = createJobCard(job);
-                    tabContent.appendChild(card);
-                });
-            }
-
-            tabLinks.forEach(tabLink => {
-                tabLink.addEventListener('click', (event) => {
-                    event.preventDefault();
-
-                    tabLinks.forEach(link => link.classList.remove('active'));
-                    jobListings.forEach(listing => listing.style.display = 'none');
-
-                    const tab = tabLink.dataset.tab;
-                    tabLink.classList.add('active');
-                    document.getElementById(tab).style.display = 'block';
-                    loadJobs(tab);
-                });
+        function loadJobs(tab) {
+            const tabContent = document.getElementById(tab);
+            tabContent.innerHTML = '';
+            const jobs = jobData[tab] || [];
+            jobs.forEach(job => {
+                const card = createJobCard(job);
+                tabContent.appendChild(card);
             });
+        }
 
-            loadJobs('best-matches');
-            document.querySelector(`[data-tab="best-matches"]`).classList.add('active');
-            document.getElementById('best-matches').style.display = 'block';
+        tabLinks.forEach(tabLink => {
+            tabLink.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                tabLinks.forEach(link => link.classList.remove('active'));
+                jobListings.forEach(listing => listing.style.display = 'none');
+
+                const tab = tabLink.dataset.tab;
+                tabLink.classList.add('active');
+                document.getElementById(tab).style.display = 'block';
+                loadJobs(tab);
+            });
         });
-    </script>
+
+        loadJobs('best-matches');
+        document.querySelector(`[data-tab="best-matches"]`).classList.add('active');
+        document.getElementById('best-matches').style.display = 'block';
+    });
+</script>
 </body>
 </html>

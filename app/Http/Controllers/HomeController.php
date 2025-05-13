@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+class HomeController
 {
     public function show()
     {
-        return view('pages.home'); 
+        // Ensure the user is authenticated before accessing user data
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $user = Auth::user();
+        return view('pages.home', compact('user'));
     }
 }
