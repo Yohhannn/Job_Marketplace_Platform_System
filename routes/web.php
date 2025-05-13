@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 
 use Illuminate\Support\Facades\Route;
 
+
 // Public Routes
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +19,7 @@ Route::get('/', function () {
 // Authentication Routes
 Route::get('/login', [LogInController::class, 'show'])->name('login');
 Route::post('/login', [LogInController::class, 'signIn'])->name('auth');
+
 
 Route::get('/signup', [SignUpController::class, 'show'])->name('signup');
 
