@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('proposals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('job_id')->constrained('jobs');
-            $table->foreignId('talent_id')->constrained('talents');
+            $table->foreignId('user_id')->constrained('users');
             $table->decimal('bid_amount');
             $table->foreignId('duration_id')->constrained('durations');
             $table->text('letter');

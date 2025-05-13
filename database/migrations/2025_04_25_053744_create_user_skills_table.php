@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('user_skills', function (Blueprint $table) {
             $table->id();
-            $table->integer('code')->unique();
-            $table->integer('sender_code');
-            $table->integer('receiver_code');
-            $table->decimal('amount');
-            $table->timestamp('timestamp')->useCurrent();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('skill_id')->constrained('skills');
         });
     }
 
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('talent_skills');
     }
 };

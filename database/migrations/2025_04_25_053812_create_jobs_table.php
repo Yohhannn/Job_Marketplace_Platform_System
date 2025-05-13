@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('scope', ['one-time', 'ongoing', 'complex']);
             $table->foreignId('english_level_id')->nullable()->constrained('english_levels');
             $table->integer('number_of_hires')->default(1);
-            $table->foreignId('client_id')->constrained('clients');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('last_viewed_at')->useCurrent();
             $table->boolean('is_active')->default(true);
