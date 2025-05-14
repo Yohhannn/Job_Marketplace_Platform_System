@@ -139,12 +139,12 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="#" id="deliverWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Deliver Work
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
-                            <li><a class="dropdown-item active" href="/Views/Deliver_Work/active_contracts.html">Your Active Contracts</a></li>
-                            <li><a class="dropdown-item" href="/Views/Deliver_Work/contract_history.html">Contract History</a></li>
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

@@ -168,13 +168,9 @@
                             Find Work
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
-                            <li><a class="dropdown-item active" href="/Views/Find_Work/home.html">Find Work</a></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
-                            </li>
+                            <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -182,8 +178,8 @@
                             Deliver Work
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
-                            <li><a class="dropdown-item" href="/Views/Deliver_Work/active_contracts.html">Your Active Contracts</a></li>
-                            <li><a class="dropdown-item" href="/Views/Deliver_Work/contract_history.html">Contract History</a></li>
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

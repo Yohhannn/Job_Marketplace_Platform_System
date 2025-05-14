@@ -189,31 +189,36 @@
             </div>
             <div class="col-md-6">
                 <label for="jobRole" class="form-label required-label">Job Role</label>
-                <select class="form-select" id="jobRole" required>
+                <select class="form-select job-role-select" id="jobRole" name="role_id" required>
                     <option value="" disabled selected>Select job role</option>
-                    <option value="developer">Developer</option>
-                    <option value="designer">Designer</option>
-                    <option value="projectManager">Project Manager</option>
-                    <option value="other">Other</option>
+                    @foreach ($roleCategories as $category)
+                        <optgroup label="{{ $category->name }}">
+                            @foreach ($category->roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        </optgroup>
+                    @endforeach
                 </select>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="expLevel" class="form-label required-label">Experience Level</label>
-                <select class="form-select" id="expLevel" required>
+                <select class="form-select" id="expLevel" name="experience_level_id" required>
                     <option value="" disabled selected>Select experience level</option>
-                    <option value="entry">Entry Level</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="expert">Expert</option>
+                    @foreach ($experienceLevels as $level)
+                        <option value="{{ $level->id }}">{{ $level->name }}</option>
+                    @endforeach
                 </select>
             </div>
+
             <div class="col-md-6">
-                <label for="engLevel" class="form-label">Engagement Level (Optional)</label>
-                <select class="form-select" id="engLevel">
-                    <option value="" disabled selected>Select engagement level</option>
-                    <option value="part-time">Part-Time</option>
-                    <option value="full-time">Full-Time</option>
+                <label for="engLevel" class="form-label">English Level</label>
+                <select class="form-select" id="engLevel" name="english_level_id">
+                    <option value="" disabled selected>Select English level</option>
+                    @foreach ($englishLevels as $level)
+                        <option value="{{ $level->id }}">{{ $level->name }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -222,7 +227,9 @@
                 <label for="jobScope" class="form-label required-label">Job Scope</label>
                 <select class="form-select" id="jobScope" required>
                     <option value="" disabled selected>Select job scope</option>
-                    <option value="scope">N/A</option>
+                    <option value="scope">One-time</option>
+                    <option value="scope">Ongoing</option>
+                    <option value="scope">Complex</option>
                 </select>
             </div>
             <div class="col-md-6">

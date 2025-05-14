@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.11.8",
-        "bootstrap": "^5.3.5"
+        "bootstrap": "^5.3.5",
+        "select2": "^4.1.0-rc.0"
     }
 }
