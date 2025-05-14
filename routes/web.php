@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DeliverWorkController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\SignUpController;
@@ -39,13 +40,18 @@ Route::controller(SignUp_TalentController::class)->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'show'])->name('home');
 
+    //Find Work
     Route::get('/find-work/my-job-posts', [JobPostController::class, 'myJobPosts'])
         ->name('findwork.myjobposts');
-
     Route::get('/find-work/my-job-posts/create-job-post', [JobPostController::class, 'createJobPost'])
         ->name('createjobpost.createjobpost');
-
     Route::get('/find-work/my-proposals', [ProposalController::class, 'myProposals'])
         ->name('findwork.myproposals');
+
+    //Deliver Work
+    Route::get('/deliver-work/active-contracts', [DeliverWorkController::class, 'activeContracts'])
+        ->name('deliverwork.activecontracts');
+    Route::get('/deliver-work/contact-history', [DeliverWorkController::class, 'historyContracts'])
+        ->name('deliverwork.historycontracts');
 });
 

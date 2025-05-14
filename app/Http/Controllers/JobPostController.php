@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
+use App\Models\EnglishLevel;
+use App\Models\ExperienceLevel;
+use App\Models\RoleCategory;
 
 class JobPostController
 {
@@ -12,7 +14,18 @@ class JobPostController
         return view('pages.Find_Work.my_job_posts');
     }
 
-    public function createJobPost(){
-        return view('pages.Job_Post.post_job');
+    public function createJobPost()
+    {
+        $experienceLevels = ExperienceLevel::all();
+        $englishLevels = EnglishLevel::all();
+
+        // Load categories with their roles
+        $roleCategories = RoleCategory::with('roles')->get();
+
+        return view('pages.Job_Post.post_job', compact(
+            'experienceLevels',
+            'englishLevels',
+            'roleCategories'
+        ));
     }
 }

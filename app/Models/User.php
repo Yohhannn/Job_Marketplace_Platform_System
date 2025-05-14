@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Auth\Authenticatable; // Trait for auth methods
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract; // Interface
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+
+// Do NOT import Illuminate\Foundation\Auth\User as Authenticatable ← REMOVED!
 
 class User extends Model implements AuthenticatableContract
 {
-    use Authenticatable; // This trait provides auth-related methods
-
+    use Authenticatable; // Uses the trait from Illuminate\Auth\Authenticatable
 
     public $timestamps = false;
     protected $table = 'users';
@@ -48,13 +48,11 @@ class User extends Model implements AuthenticatableContract
 
     public function getNameAttribute(): string
     {
-        return implode(' ',
-            array_filter([
-                $this->first_name,
-                $this->middle_name,
-                $this->last_name
-            ])
-        );
+        return implode(' ', array_filter([
+            $this->first_name,
+            $this->middle_name,
+            $this->last_name
+        ]));
     }
 
     public function activeProposals()
