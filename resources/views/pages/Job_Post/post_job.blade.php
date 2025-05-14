@@ -237,7 +237,7 @@
                 </div>
             </div>
         </div>
-        <a href="#" onclick="window.history.back();" class="btn btn-secondary">Return back</a>
+        <a href="{{ route('findwork.myjobposts') }}" class="btn btn-secondary">Return back</a>
         <button type="submit" class="btn btn-primary">Post Job</button>
     </form>
 </main>

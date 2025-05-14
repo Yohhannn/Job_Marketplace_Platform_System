@@ -193,9 +193,9 @@
                             Find Work
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
-                            <li><a class="dropdown-item" href="/Views/Find_Work/home.html">Find Work</a></li>
-                            <li><a class="dropdown-item" href="/Views/Find_Work/my_proposals.html">My Proposals</a></li>
-                            <li><a class="dropdown-item" href="/Views/Find_Work/my_job_posts.html">My Job Posts</a></li>
+                            <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown active">
