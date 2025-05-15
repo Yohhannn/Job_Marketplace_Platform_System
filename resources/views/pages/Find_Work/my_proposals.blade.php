@@ -145,8 +145,8 @@
                             <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="deliverWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Deliver Work
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
@@ -162,15 +162,10 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-bell"></i>
-                        </a>
-                    </li> -->
                     <li class="nav-item">
-                        <a class="nav-link size" href="/Views/Profile/profile.html">
+                        <a class="nav-link size" href="{{ route('myProfile') }}">
                             <div class="user-info">
-                                <img src="/icons/icon_profile.png" alt="User Avatar" class="avatar">
+                                <img src="{{ asset('icons/icon_profile.png') }}" alt="User Avatar" class="avatar">
                             </div>
                         </a>
                     </li>

@@ -7,6 +7,7 @@ use App\Http\Controllers\SignUpController;
 use App\Http\Controllers\SignUp_UserController;
 use App\Http\Controllers\LogInController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -30,6 +31,7 @@ Route::controller(SignUp_UserController::class)->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'show'])->name('home');
     Route::post('/job-post/create', [JobPostController::class, 'createJob'])->name('createJob');
+
     //Find Work
     Route::get('/find-work/my-job-posts', [JobPostController::class, 'myJobPosts'])
         ->name('findwork.myjobposts');
@@ -37,12 +39,19 @@ Route::middleware('auth')->group(function () {
         ->name('createjobpost.createjobpost');
     Route::get('/find-work/my-proposals', [ProposalController::class, 'myProposals'])
         ->name('findwork.myproposals');
-        
 
     //Deliver Work
     Route::get('/deliver-work/active-contracts', [DeliverWorkController::class, 'activeContracts'])
         ->name('deliverwork.activecontracts');
     Route::get('/deliver-work/contact-history', [DeliverWorkController::class, 'historyContracts'])
         ->name('deliverwork.historycontracts');
+
+    //Profile
+    Route::get('/profile', [ProfileController::class, 'myProfile'])
+        ->name('myProfile');
+    Route::get('/profile/profile-settings', [ProfileController::class, 'myProfileSettings'])
+        ->name('myProfileSettings');
+    Route::get('/profile/profile-contact', [ProfileController::class, 'myProfileContact'])
+        ->name('myProfileContact');
 });
 
