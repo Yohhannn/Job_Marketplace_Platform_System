@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Job extends Model
 {
     protected $table = 'jobs';
+    public $timestamps = false;
 
     protected $fillable = [
         'title',
@@ -19,7 +20,7 @@ class Job extends Model
         'scope',
         'english_level_id',
         'number_of_hires',
-        'client_id',
+        'user_id',
     ];
 
     protected $hidden = [
@@ -33,7 +34,12 @@ class Job extends Model
             'last_viewed_at' => 'datetime',
         ];
     }
-
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function role(){
+        return$this->belongsTo(Role::class,'role_id');
+    }
     public function proposals()
     {
         return $this->hasMany(Proposal::class, 'job_id');

@@ -271,22 +271,24 @@
 
     <section class="job-post-section">
         <h3 class="job-main-title">Your Job Posts</h3>
-        <p class="job-post-count">Number of job posts: <span id="job-post-count">1</span></p>
+        <p class="job-post-count">Number of job posts: <span id="job-post-count">{{ count($job_posts) }}</span></p>
         <div id="job-posts-list">
+            @foreach ($job_posts as $job )
             <div class="job-post-card">
-                <h3 class="job-title">Software Engineer</h3>
+                <h3 class="job-title">{{$job->title}}</h3>
                 <div class="job-summary">
-                    Posted By: Edmark Talingting
+                    Posted By: {{ $job->user->first_name }} {{ $job->user->middle_name ? $job->user->middle_name . ' ' : '' }}{{ $job->user->last_name }}
                 </div>
                 <div class="job-summary">
-                    Tags: <span class="tag">Hourly</span><span class="tag">Developer</span>
+                    Tags: <span class="tag">{{$job->type}}</span><span class="tag">{{$job->role->role_category->name}}</span>
                 </div>
-                <p class="job-description">Seeking a skilled Software Engineer to build and maintain web applications.</p>
+                <p class="job-description">{{ $job->description }}</p>
                 <div class="job-details">
-                    Posted: 2 days ago
+                    Posted {{ $job->created_at->diffForHumans() }}
                 </div>
                 <a href="/Views/Job_Post/view_mypost.html" class="btn btn-primary view-more-button">See Job Post</a>
             </div>
+            @endforeach
         </div>
     </section>
 </main>
@@ -304,9 +306,7 @@
         const findWorkDropdown = document.getElementById('findWorkDropdown');
         const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
         const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
-        const jobPostCount = document.getElementById('job-post-count');
-        const postTime = document.getElementById('post-time');
-
+    
 
         if (findWorkDropdown && deliverWorkDropdown) {
             // Remove the original event listeners for "Find Work" and "Deliver Work"
@@ -321,22 +321,8 @@
         }
 
         // Mock job data (Improved for demonstration)
-        const mockJobData = {
-            title: "Software Engineer",
-            description: "Seeking a skilled Software Engineer to build and maintain web applications.",
-            postedDate: new Date(Date.now() - 48 * 60 * 60 * 1000), // Example: 2 days ago
-            jobType: "Hourly",
-            jobRole: "Developer",
-            postedBy: "Edmark Talingting" //Added Posted By
-        };
 
         // Update card with mock data
-        const jobPostCard = document.querySelector('.job-post-card');
-        jobPostCard.querySelector('.job-title').textContent = mockJobData.title;
-        jobPostCard.querySelector('.job-description').textContent = mockJobData.description;
-        jobPostCard.querySelector('.job-summary').textContent = `Posted By: ${mockJobData.postedBy}`; //Added Posted By
-        jobPostCard.querySelectorAll('.tag')[0].textContent = mockJobData.jobType;
-        jobPostCard.querySelectorAll('.tag')[1].textContent = mockJobData.jobRole;
 
         // Calculate and display "posted time ago"
         const timeAgoString = getTimeAgoString(mockJobData.postedDate);

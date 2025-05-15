@@ -17,4 +17,7 @@ class Role extends Model
     {
         return $this->hasMany(Job::class, 'role_id');
     }
+    public function role_category(){
+        return $this->belongsTo(RoleCategory::class, 'role_category_id');
+    }
 }
