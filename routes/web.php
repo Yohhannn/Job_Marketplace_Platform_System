@@ -4,11 +4,10 @@ use App\Http\Controllers\DeliverWorkController;
 use App\Http\Controllers\JobPostController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\SignUpController;
-use App\Http\Controllers\SignUp_ClientController;
-use App\Http\Controllers\SignUp_TalentController;
+use App\Http\Controllers\SignUp_UserController;
 use App\Http\Controllers\LogInController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,25 +19,18 @@ Route::get('/', function () {
 // Authentication Routes
 Route::get('/login', [LogInController::class, 'show'])->name('login');
 Route::post('/login', [LogInController::class, 'signIn'])->name('auth');
-
-
 Route::get('/signup', [SignUpController::class, 'show'])->name('signup');
 
-// Client Registration Routes
-Route::controller(SignUp_ClientController::class)->group(function () {
-    Route::get('/signup/client', 'show')->name('client.register.show');
-    Route::post('/signup/client', 'store')->name('client.register');
-});
-
-// Talent Registration Routes
-Route::controller(SignUp_TalentController::class)->group(function () {
-    Route::get('/register/talent', [SignUp_TalentController::class, 'show'])->name('talent.register.show');
-    Route::post('/register/talent', [SignUp_TalentController::class, 'store'])->name('talent.register');
+// User Registration Routes
+Route::controller(SignUp_UserController::class)->group(function () {
+    Route::get('/registertration', [SignUp_UserController::class, 'show'])->name('user.register.show');
+    Route::post('/register/user', [SignUp_UserController::class, 'store'])->name('user.register');
 });
 
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'show'])->name('home');
+    Route::post('/job-post/create', [JobPostController::class, 'createJob'])->name('createJob');
 
     //Find Work
     Route::get('/find-work/my-job-posts', [JobPostController::class, 'myJobPosts'])
@@ -53,5 +45,13 @@ Route::middleware('auth')->group(function () {
         ->name('deliverwork.activecontracts');
     Route::get('/deliver-work/contact-history', [DeliverWorkController::class, 'historyContracts'])
         ->name('deliverwork.historycontracts');
+
+    //Profile
+    Route::get('/profile', [ProfileController::class, 'myProfile'])
+        ->name('myProfile');
+    Route::get('/profile/profile-settings', [ProfileController::class, 'myProfileSettings'])
+        ->name('myProfileSettings');
+    Route::get('/profile/profile-contact', [ProfileController::class, 'myProfileContact'])
+        ->name('myProfileContact');
 });
 
