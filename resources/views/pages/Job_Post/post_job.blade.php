@@ -169,19 +169,20 @@
         <p class="lead">Fill out the form below to create a job posting.</p>
     </section>
 
-    <form class="job-post-form" id="postJobForm">
+    <form class="job-post-form" id="postJobForm" method="POST" action="{{ route('createJob') }}">
+    @csrf
         <div class="mb-3">
             <label for="title" class="form-label required-label">Title</label>
-            <input type="text" class="form-control" id="title" placeholder="Enter job title" required>
+            <input type="text" name="title" class="form-control" id="title" placeholder="Enter job title" required>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label required-label">Description</label>
-            <textarea class="form-control" id="description" rows="4" placeholder="Enter job description" required></textarea>
+            <textarea class="form-control" name="description" id="description" rows="4" placeholder="Enter job description" required></textarea>
         </div>
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="jobType" class="form-label required-label">Job Type</label>
-                <select class="form-select" id="jobType" required>
+                <select class="form-select" id="jobType" name="jobType" required>
                     <option value="" disabled selected>Select job type</option>
                     <option value="hourly">Hourly</option>
                     <option value="fixed">Fixed Price</option>
@@ -225,22 +226,22 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="jobScope" class="form-label required-label">Job Scope</label>
-                <select class="form-select" id="jobScope" required>
+                <select class="form-select" id="jobScope" name="jobScope" required>
                     <option value="" disabled selected>Select job scope</option>
-                    <option value="scope">One-time</option>
-                    <option value="scope">Ongoing</option>
-                    <option value="scope">Complex</option>
+                    <option value="one-time">One-time</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="complex">Complex</option>
                 </select>
             </div>
             <div class="col-md-6">
                 <label for="noOfHires" class="form-label required-label">Number of Hires</label>
-                <input type="number" class="form-control" id="noOfHires" value="1" min="1" required>
+                <input type="number" class="form-control" name="no_hires" id="noOfHires" value="1" min="1" required>
             </div>
             <div class="col-md-6 mt-3">
                 <label for="salary" class="form-label required-label">Salary</label>
                 <div class="input-group">
                     <span class="input-group-text">₱</span>
-                    <input type="number" class="form-control" id="salary" placeholder="Enter salary amount" min="0" required>
+                    <input type="number" class="form-control" name="salary" id="salary" placeholder="Enter salary amount" min="0" required>
                 </div>
             </div>
         </div>
@@ -262,7 +263,6 @@
         const findWorkDropdown = document.getElementById('findWorkDropdown');
         const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
         const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
-        const postJobForm = document.getElementById('postJobForm');
 
         if (findWorkDropdown && deliverWorkDropdown) {
             // Remove the original event listeners for "Find Work" and "Deliver Work"
@@ -277,22 +277,6 @@
         }
 
         // Handle form submission
-        postJobForm.addEventListener('submit', (event) => {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Get form values (you can add validation here)
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
-            const jobType = document.getElementById('jobType').value;
-            const jobRole = document.getElementById('jobRole').value;
-            const expLevel = document.getElementById('expLevel').value;
-            const engLevel = document.getElementById('engLevel').value;
-            const jobScope = document.getElementById('jobScope').value;
-            const noOfHires = document.getElementById('noOfHires').value;
-
-            // For now, we'll just redirect to the view_post.html
-            window.location.href = '/Views/FInd_Work/my_job_posts.html';
-        });
     });
 </script>
 </body>

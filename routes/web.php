@@ -39,7 +39,7 @@ Route::controller(SignUp_TalentController::class)->group(function () {
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'show'])->name('home');
-
+    Route::post('/job-post/create', [JobPostController::class, 'createJob'])->name('createJob');
     //Find Work
     Route::get('/find-work/my-job-posts', [JobPostController::class, 'myJobPosts'])
         ->name('findwork.myjobposts');
@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
         ->name('createjobpost.createjobpost');
     Route::get('/find-work/my-proposals', [ProposalController::class, 'myProposals'])
         ->name('findwork.myproposals');
+        
 
     //Deliver Work
     Route::get('/deliver-work/active-contracts', [DeliverWorkController::class, 'activeContracts'])
