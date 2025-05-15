@@ -28,7 +28,7 @@
                         <a onclick="window.location.href='{{route('login')}}'" class="nav-link">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a onclick="window.location.href='{{ route('signup') }}'" class="nav-link">Sign Up</a>
+                        <a onclick="window.location.href='{{ route('user.register.show') }}'" class="nav-link">Sign Up</a>
                     </li>
                 </ul>
             </nav>
