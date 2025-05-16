@@ -19,6 +19,7 @@ Route::get('/', function () {
 // Authentication Routes
 Route::get('/login', [LogInController::class, 'show'])->name('login');
 Route::post('/login', [LogInController::class, 'signIn'])->name('auth');
+Route::post('/logout', [LogInController::class, 'logOut'])->name('logout');
 Route::get('/signup', [SignUpController::class, 'show'])->name('signup');
 
 // User Registration Routes
@@ -55,7 +56,7 @@ Route::middleware('auth')->group(function () {
         ->name('updateProfileSettings');
     Route::get('/profile/profile-contact', [ProfileController::class, 'myProfileContact'])
         ->name('myProfileContact');
-    
+
     //Jobs
     Route::get('/my-post-details/{id}', [JobPostController::class, 'myPostDetails'])->name('my-post-details');
     });
