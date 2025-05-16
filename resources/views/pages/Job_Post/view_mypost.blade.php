@@ -205,7 +205,7 @@
             </div>
         </div>
     </section>
-    <a href="/Views/Find_Work/my_job_posts.html" class="btn btn-primary mt-3">Return to My Job Posts</a>
+    <a href="{{ route('findwork.myjobposts') }}" class="btn btn-primary mt-3">Return to My Job Posts</a>
 </main>
 
 <footer class="bg-light py-3 border-top">

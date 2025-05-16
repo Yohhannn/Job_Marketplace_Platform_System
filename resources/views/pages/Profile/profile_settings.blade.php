@@ -467,32 +467,71 @@
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
+<<<<<<< HEAD
         <a class="navbar-brand" href={{ route('home') }}>INHIRE</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+=======
+            <a class="navbar-brand" href="#">INHIRE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+>>>>>>> 3dbca09fef7791d119bfc9a10c2a8cb4c1ef875d
                 <span class="navbar-toggler-icon"></span>
             </button>
-        </nav>
-    </div>
-</header>
-
-<main class="container py-4">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="left-nav">
-                <ul class="left-nav-items">
-                    <li class="left-nav-item">
-                        <a href="{{ route('myProfile') }}" class="left-nav-link">My Profile</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Find Work
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
+                            <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
+                        </ul>
                     </li>
-                    <li class="left-nav-item ">
-                        <a href="{{ route('myProfileSettings') }}" class="left-nav-link">Profile Settings</a>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Deliver Work
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
+                        </ul>
                     </li>
-                    <li class="left-nav-item active">
-                        <a href="{{ route('myProfileContact') }}" class="left-nav-link">Contact Info</a>
+                    <li class="nav-item">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search for jobs" aria-label="Search">
+                            <a href="/Views/Search/searched_result.html"><button class="btn btn-primary" type="button" id="button-addon2">Search</button></a>
+                        </form>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                           id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-info">
+                                <img src="{{ asset('icons/icon_profile.png') }}" alt="User Avatar" class="avatar">
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="{{ route('myProfile') }}">My Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ route('myProfileSettings') }}">Profile Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ route('myProfileContact') }}">Contact Info</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
-        </div>
-
+        </nav>
+    </div>
+</header>
+<main class="container py-4">
+    <div class="row">
         <div class="col-md-9">
             <div class="profile-info-section">
                 <h2 class="section-title">Profile Settings</h2>

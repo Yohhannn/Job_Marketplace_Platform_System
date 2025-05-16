@@ -25,10 +25,10 @@
             <nav>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a onclick="window.location.href='{{route('login')}}'" class="nav-link">Login</a>
+                        <button onclick="window.location.href='{{ route('login') }}'" class="btn btn-link nav-link">Login</button>
                     </li>
                     <li class="nav-item">
-                        <a onclick="window.location.href='{{ route('user.register.show') }}'" class="nav-link">Sign Up</a>
+                        <button onclick="window.location.href='{{ route('user.register.show') }}'" class="btn btn-link nav-link">Sign Up</button>
                     </li>
                 </ul>
             </nav>
@@ -45,7 +45,7 @@
                     <p class="lead text-muted">
                         INHIRE connects clients with talented freelancers and helps freelancers find exciting projects.
                     </p>
-                    <a href={{ route('user.register.show') }} class="btn btn-primary btn-lg">Get Started</a>
+                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg">Get Started</a>
                 </div>
             </div>
         </div>

@@ -19,11 +19,12 @@ Route::get('/', function () {
 // Authentication Routes
 Route::get('/login', [LogInController::class, 'show'])->name('login');
 Route::post('/login', [LogInController::class, 'signIn'])->name('auth');
+Route::post('/logout', [LogInController::class, 'logOut'])->name('logout');
 Route::get('/signup', [SignUpController::class, 'show'])->name('signup');
 
 // User Registration Routes
 Route::controller(SignUp_UserController::class)->group(function () {
-    Route::get('/registertration', [SignUp_UserController::class, 'show'])->name('user.register.show');
+    Route::get('/registration', [SignUp_UserController::class, 'show'])->name('user.register.show');
     Route::post('/register/user', [SignUp_UserController::class, 'store'])->name('user.register');
 });
 
@@ -55,7 +56,7 @@ Route::middleware('auth')->group(function () {
         ->name('updateProfileSettings');
     Route::get('/profile/profile-contact', [ProfileController::class, 'myProfileContact'])
         ->name('myProfileContact');
-    
+
     //Jobs
     Route::get('/my-post-details', [JobPostController::class, 'myPostDetails'])->name('my-post-details');
     Route::get('/other-post-details', [JobPostController::class, 'otherPostDetails'])->name('other-post-details');    

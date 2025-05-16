@@ -47,6 +47,6 @@ class ProfileController
 
     public function myProfileContact(){
         $user = auth()->user();
-        return view('pages.Profile.profile_contact', compact('user'));
+        return view('pages.Profile.profile_contact_info', compact('user'));
     }
 }
