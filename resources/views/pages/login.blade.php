@@ -138,7 +138,7 @@
                 <div class="text-center">
                     <p>
                         Don't have an account?
-                        <a href="{{ route('signup') }}" class="account-link">Sign Up</a>
+                        <a href="{{ route('user.register.show') }}" class="account-link">Sign Up</a>
                     </p>
                 </div>
             </div>

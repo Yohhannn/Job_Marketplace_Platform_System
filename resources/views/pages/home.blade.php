@@ -191,7 +191,7 @@
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link size" href="/Views/Profile/profile.html">
+                        <a class="nav-link size" href="{{ route('myProfile') }}">
                             <div class="user-info">
                                 <img src="{{ asset('icons/icon_profile.png') }}" alt="User Avatar" class="avatar">
                             </div>

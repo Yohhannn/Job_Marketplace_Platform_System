@@ -112,7 +112,7 @@
         .small-description {
             font-size: 0.8rem;
             color: #666;
-            margin-bottom: none;
+            margin-bottom: None;
             line-height: 1.2;
         }
         .text-charge{
@@ -459,13 +459,13 @@
             <div class="left-nav">
                 <ul class="left-nav-items">
                     <li class="left-nav-item">
-                        <a href="./profile.html" class="left-nav-link">My Profile</a>
+                        <a href="{{ route('myProfile') }}" class="left-nav-link">My Profile</a>
                     </li>
                     <li class="left-nav-item ">
-                        <a href="./profile_settings.html" class="left-nav-link">Profile Settings</a>
+                        <a href="{{ route('myProfileSettings') }}" class="left-nav-link">Profile Settings</a>
                     </li>
                     <li class="left-nav-item active">
-                        <a href="./profile_contact_info.html" class="left-nav-link">Contact Info</a>
+                        <a href="{{ route('myProfileContact') }}" class="left-nav-link">Contact Info</a>
                     </li>
                 </ul>
             </div>

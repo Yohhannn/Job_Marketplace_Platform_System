@@ -9,7 +9,7 @@ use App\Models\EnglishLevel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
-class SignUp_TalentController
+class SignUp_UserController
 {
     // Show the talent registration form
     public function show()
@@ -17,7 +17,7 @@ class SignUp_TalentController
         $experienceLevels = ExperienceLevel::all();
         $englishLevels = EnglishLevel::all();
 
-        return view('pages.signup_talent', compact('experienceLevels', 'englishLevels'));
+        return view('pages.signup_user', compact('experienceLevels', 'englishLevels'));
     }
 
     // Handle talent registration form submission
@@ -34,7 +34,7 @@ class SignUp_TalentController
             'english_level_id' => 'required|exists:english_levels,id',
         ]);
 
-        $user = User::create([ // Changed from Talent to User
+        $user = User::create([
             'first_name' => $validated['first_name'],
             'middle_name' => $validated['middle_name'],
             'last_name' => $validated['last_name'],

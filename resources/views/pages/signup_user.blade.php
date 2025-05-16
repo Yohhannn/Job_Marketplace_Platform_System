@@ -90,16 +90,6 @@
             <a href="{{ url('/') }}" class="navbar-brand">
                 <span class="fw-bold text-primary">INHIRE</span>
             </a>
-            <nav>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <span class="nav-link text-dark">Looking for a worker?</span>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('client.register.show') }}" class="nav-link"><u>Join as Client</u></a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
 </header>
@@ -108,10 +98,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Talent Registration') }}</div>
+                <div class="card-header">{{ __('Registration') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('talent.register') }}">
+                    <form method="POST" action="{{ route('user.register') }}">
                         @csrf
 
                         <!-- Personal Information -->
