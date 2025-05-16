@@ -215,12 +215,12 @@
                             <li><a class="dropdown-item" href="{{ route('myProfileSettings') }}">Profile Settings</a></li>
                             <li><a class="dropdown-item" href="{{ route('myProfileContact') }}">Contact Info</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            {{--                            <li>--}}
-                            {{--                                <form action="{{ route('logout') }}" method="POST">--}}
-                            {{--                                    @csrf--}}
-                            {{--                                    <button type="submit" class="dropdown-item">Logout</button>--}}
-                            {{--                                </form>--}}
-                            {{--                            </li>--}}
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 </ul>

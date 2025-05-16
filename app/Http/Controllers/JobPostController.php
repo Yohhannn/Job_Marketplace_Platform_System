@@ -21,6 +21,7 @@ class JobPostController
         $job_post = Job::with('user', 'role','exp','eng', 'role.role_category')->findOrFail($id);
         return view('pages.Job_Post.view_mypost', compact('job_post'));
     }
+
     public function createJobPost()
     {
         $experienceLevels = ExperienceLevel::all();
