@@ -141,6 +141,22 @@
             background-color: #0056b3; /* Darker blue on hover */
         }
 
+        .radio-option {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label {
+            font-weight: 500;
+        }
+        .option-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
@@ -196,8 +212,8 @@
 
 <main class="container py-4">
     <div class="profile-header">
-        <img src="/icons/icon_profile.png" alt="Jodeci P." class="profile-large">
-        <h2>Jodeci Pogi</h2>
+        <img src="/icons/icon_profile.png" alt="Profile Icon" class="profile-large">
+        <h2>{{ $user->name }}</h2>
         <a href="{{ route('myProfileSettings') }}" class="profile-settings-btn">
             Profile Settings
         </a>
@@ -206,58 +222,39 @@
     <div class="row">
         <div class="col-md-8">
             <div class="profile-info-section">
-                <h3 class="section-title">Part-time college student, part-time passionate hobbyist.</h3>
-                <h3 class="text-charge">$10/hr</h3>
-                <p class="about-me-text">
-                    Hi! I'm a college freshman willing to put out my skills and help you! My skills are from my hobbies, i.e., I learned HTML-CSS because I wanted to code a site to showcase my fictional language for feedback, so rest assured there is passion and determination to give you quality work. :D
-                <ul>
-                    <li>Knows a decent amount of HTML, CSS, C/C++</li>
-                    <li>Proficient in Microsoft Office and Google Suite apps, and Canva</li>
-                    <li>Has good eye for graphic design :)</li>
-                </ul>
-                </p>
+                @if($user->desc_title)
+                    <h3 class="section-title">{{ $user->desc_title }}</h3>
+                @endif
+                <h3 class="text-charge">{{ $user->hourly_rate ? '$'.$user->hourly_rate.'/hr' : 'Hourly rate not set' }}</h3>
+                <p class="about-me-text">{{ $user->desc_text ?? 'No profile description. Go to profile settings to add.' }}</p>
             </div>
 
             <div class="profile-info-section">
                 <h3 class="section-title">Skills</h3>
                 <div>
-                    <span class="skill-tag">HTML</span>
-                    <span class="skill-tag">CSS</span>
-                    <span class="skill-tag">C</span>
-                    <span class="skill-tag">Canva</span>
-                    <span class="skill-tag">Adobe Photoshop</span>
-                    <span class="skill-tag">Adobe Illustrator</span>
-                    <span class="skill-tag">Microsoft Word</span>
-                    <span class="skill-tag">Microsoft PowerPoint</span>
-                    <span class="skill-tag">Mathematics</span>
-                    <span class="skill-tag">Copy Editing</span>
-                    <span class="skill-tag">Graphic Design</span>
-                    <span class="skill-tag">College & University</span>
+                    @if($user->skills->isEmpty())
+                        <p class="small-description">No skills added yet.</p>
+                    @else
+                        @foreach($user->skills as $skill)
+                            <span class="skill-tag">{{ $skill->name }}</span>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-
             <div class="profile-info-section">
-                <h3 class="section-title">Availability</h3>
-                <p class="info-item small-description"><span class="info-label small-description">Hours per week:</span> More than 30 hrs/week</p>
-            </div>
-
-            <div class="profile-info-section">
-                <h3 class="section-title">Languages</h3>
-                <p class="info-item small-description"><span class="info-label">English:</span> Fluent</p>
-                <p class="info-item small-description"><span class="info-label">Tagalog:</span> Native or Bilingual</p>
+                <h3 class="section-title">Experience Level</h3>
+                <div class="radio-option">
+                    <label class="option-label">{{ $user->experienceLevel->name }}</label>
+                    <div class="option-description">{{ $user->experienceLevel->description }}</div>
+                </div>
             </div>
             <div class="profile-info-section">
-                <h3 class="section-title">Education</h3>
-                <div class="info-item small-description">
-                    <span class="info-label">University:</span> Cebu Technological University
-                </div>
-                <div class="info-item small-description">
-                    <span class="info-label">Degree:</span> Bachelor of Science in Information Technology
-                </div>
-                <div class="info-item small-description">
-                    <span class="info-label">Years:</span> 2023-2027 (expected)
+                <h3 class="section-title">English Level</h3>
+                <div class="radio-option">
+                    <label class="option-label">{{ $user->englishLevel->name }}</label>
+                    <div class="option-description">{{ $user->englishLevel->description }}</div>
                 </div>
             </div>
         </div>

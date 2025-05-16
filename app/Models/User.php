@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Auth\Authenticatable; // Trait for auth methods
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract; // Interface
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -83,5 +84,15 @@ class User extends Model implements AuthenticatableContract
             'user_id',
             'skill_id'
         );
+    }
+
+    public function experienceLevel(): BelongsTo
+    {
+        return $this->belongsTo(ExperienceLevel::class);
+    }
+
+    public function englishLevel(): BelongsTo
+    {
+        return $this->belongsTo(EnglishLevel::class);
     }
 }

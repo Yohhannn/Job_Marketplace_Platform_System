@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
         ->name('myProfile');
     Route::get('/profile/profile-settings', [ProfileController::class, 'myProfileSettings'])
         ->name('myProfileSettings');
+    Route::put('/profile/profile-settings', [ProfileController::class, 'updateProfileSettings'])
+        ->name('updateProfileSettings');
     Route::get('/profile/profile-contact', [ProfileController::class, 'myProfileContact'])
         ->name('myProfileContact');
 });
