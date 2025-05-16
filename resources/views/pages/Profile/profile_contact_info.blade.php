@@ -112,7 +112,7 @@
         .small-description {
             font-size: 0.8rem;
             color: #666;
-            margin-bottom: None;
+            margin-bottom: 0;
             line-height: 1.2;
         }
         .text-charge{
@@ -509,44 +509,102 @@
             <div class="profile-info-section">
                 <h2 class="section-title">Account</h2>
                 <div class="info-item">
-                    <span class="info-label">User ID:</span> <span>nsh23hs9</span>
+                    <span class="info-label">User ID:</span> <span>{{ $user->id }}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Name:</span> <span>Jodeci Pogi</span>
+                    <span class="info-label">Name:</span> <span>{{ $user->name }}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Email:</span> <span>jodeci.pogi@example.com</span>
+                    <span class="info-label">Email:</span> <span>{{ $user->email }}</span>
                 </div>
             </div>
             <div class="profile-info-section">
                 <h2 class="section-title">Edit Contact Information</h2>
 
-                <form>
+                <form method="POST" action="{{ route('updateProfileContact') }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label">First Name</label>
+                        <input type="text" class="form-control @error('first_name') is-invalid @enderror" id="firstname" name="first_name" value="{{ $user->first_name }}" required>
+                        @error('first_name')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="middlename" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" id="middlename" name="middle_name" value="{{ $user->middle_name }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Last Name</label>
+                        <input type="text" class="form-control @error('last_name') is-invalid @enderror" id="lastname" name="last_name" value="{{ $user->last_name }}" required>
+                        @error('last_name')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
+                    </div>
+
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="email" value="jodeci.pogi@example.com">
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" required>
+                        @error('email')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" value="+639123456789">
+                        <input type="text" class="form-control @error('contact_number') is-invalid @enderror" id="phone" name="contact_number" value="{{ $user->contact_number }}">
+                        @error('contact_number')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
                     </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" value="Tipolo, Mandaue City, Philippines">
-                    </div>
-                    <div class="mb-3">
-                        <label for="city" class="form-label">City</label>
-                        <input type="text" class="form-control" id="city" value="Mandaue City">
-                    </div>
-                    <div class="mb-3">
-                        <label for="country" class="form-label">Country</label>
-                        <input type="text" class="form-control" id="country" value="Philippines">
-                    </div>
-                    <div class="mb-3">
-                        <label for="postal_code" class="form-label">Postal Code</label>
-                        <input type="text" class="form-control" id="postal_code" value="6014">
-                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+            <div class="profile-info-section">
+                <h2 class="section-title">Change Password</h2>
 
+                <form method="POST" action="{{ route('changePassword') }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label">Current Password</label>
+                        <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name="current_password">
+                        @error('current_password')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="middlename" class="form-label">New Password</label>
+                        <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new_password" name="new_password">
+                        @error('new_password')
+                            @if (!str_contains($message, 'confirmation'))
+                            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                            @endif
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new_password_confirmation" name="new_password_confirmation">
+                        @error('new_password')
+                            @if (str_contains($message, 'confirmation'))
+                            <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                            @endif
+                        @enderror
+                    </div>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
             </div>
@@ -571,29 +629,6 @@
         if (contactInfoNavItem) {
             contactInfoNavItem.classList.add('active');
         }
-
-        const saveButton = document.querySelector('.btn-primary');
-        saveButton.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent form submission
-
-            // Get form values
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const city = document.getElementById('city').value;
-            const country = document.getElementById('country').value;
-            const postalCode = document.getElementById('postal_code').value;
-
-            // Log the values (for demonstration)
-            console.log('Email:', email);
-            console.log('Phone:', phone);
-            console.log('Address:', address);
-            console.log('City:', city);
-            console.log('Country:', country);
-            console.log('Postal Code:', postalCode);
-
-            alert('Contact information updated! (Check console for submitted data)');
-        });
     });
 </script>
 </body>

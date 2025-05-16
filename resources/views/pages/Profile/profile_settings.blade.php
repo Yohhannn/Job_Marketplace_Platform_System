@@ -541,8 +541,13 @@
                     </div>
 
                     <div class="row mb-4">
-                        <label for="last_name" class="info-label">Description</label>
-                        <input id="last_name" type="text" class="form-control mb-2" name="hourly_rate" value="{{ $user->hourly_rate }}" placeholder="Set hourly rate">
+                        <label for="hourly_rate" class="info-label">Hourly Rate</label>
+                        <input id="hourly_rate" type="text" class="form-control mb-2 @error('hourly_rate') is-invalid @enderror" name="hourly_rate" value="{{ $user->hourly_rate }}" placeholder="Set hourly rate">
+                        @error('hourly_rate')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
                     </div>
 
                     <label class="info-label">Experience Level</label>

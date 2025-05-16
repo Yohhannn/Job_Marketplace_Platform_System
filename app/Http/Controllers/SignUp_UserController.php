@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\ExperienceLevel;
 use App\Models\EnglishLevel;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 
 class SignUp_UserController
@@ -35,9 +36,9 @@ class SignUp_UserController
         ]);
 
         $user = User::create([
-            'first_name' => $validated['first_name'],
-            'middle_name' => $validated['middle_name'],
-            'last_name' => $validated['last_name'],
+            'first_name' => Str::title($validated['first_name']),
+            'middle_name' => Str::title($validated['middle_name']),
+            'last_name' => Str::title($validated['last_name']),
             'email' => $validated['email'],
             'contact_number' => $validated['contact_number'],
             'password' => Hash::make($validated['password']),
