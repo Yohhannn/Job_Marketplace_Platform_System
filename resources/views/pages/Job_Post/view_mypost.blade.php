@@ -158,7 +158,7 @@
                         <p><strong>Job Type:</strong> {{$job->type}}</p>
                         <p><strong>Job Role:</strong> {{$job->role->role_category->name}}</p>
                         <p><strong>Experience Level:</strong> {{$job->exp->name}}</p>
-                        <p><strong>Engagement Level:</strong> {{$job->type}}</p>
+                        <p><strong>English Level:</strong> {{$job->eng->name}}</p>
                         <p><strong>Job Scope:</strong> {{$job->scope}}</p>
                         <p><strong>Number of Hires:</strong> {{ $job->number_of_hires }}</p>
                         <p><strong>Date Posted:</strong> {{$job->created_at->format('Y-m-d')}}</p>
