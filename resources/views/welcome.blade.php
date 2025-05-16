@@ -45,7 +45,7 @@
                     <p class="lead text-muted">
                         INHIRE connects clients with talented freelancers and helps freelancers find exciting projects.
                     </p>
-                    <a href="/signup_selection.html" class="btn btn-primary btn-lg">Get Started</a>
+                    <a href={{ route('user.register.show') }} class="btn btn-primary btn-lg">Get Started</a>
                 </div>
             </div>
         </div>

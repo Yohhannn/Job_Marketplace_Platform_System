@@ -40,6 +40,9 @@ class Job extends Model
     public function role(){
         return$this->belongsTo(Role::class,'role_id');
     }
+    public function exp(){
+        return$this->belongsTo(ExperienceLevel::class,'experience_level_id');
+    }
     public function proposals()
     {
         return $this->hasMany(Proposal::class, 'job_id');

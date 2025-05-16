@@ -138,6 +138,19 @@
             /* Style for a star icon */
             color: #f9a825;  /* Example: a shade of yellow */
         }
+        .job-post-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .job-post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
         .tag {
             background-color: #e0e0e0;
@@ -216,13 +229,42 @@
         <div class="mb-3">
             <a href="#" class="tab-link active" data-tab="best-matches">Best Matches</a>
             <a href="#" class="tab-link" data-tab="most-recent">Most Recent</a>
-            <a href="#" class="tab-link" data-tab="saved-jobs">Saved Jobs</a>
         </div>
         <div id="best-matches" class="job-listings">
+        @foreach ($best_match as $best)
+        <div class="job-post-card"> 
+        <h3 class="job-title">{{ $best->title }}</h3>
+            <div class="job-summary">
+                Posted By: {{ $best->user->first_name}}{{$best->user->middle_name ? ' '.$best->user->middle_name : ''}}{{ $best->user->last_name }}
+            </div>
+            <div class="job-summary">
+                    Tags: <span class="tag">{{ $best->type }}</span> <span class="tag">{{$best->role->role_category->name}}</span>
+            </div>
+            <p class="job-description">{{ $best->description }}</p>
+            <div class="job-details">
+                Posted: {{ $best->created_at->diffForHumans() }}
+            </div>
+        <button class="btn btn-primary view-more-button">View More</button>
+        </div>
+        @endforeach
         </div>
         <div id="most-recent" class="job-listings" style="display: none;">
+        @foreach ($recent_post as $recent)
+        <div class="job-post-card">
+        <h3 class="job-title">{{ $recent->title }}</h3>
+        <div class="job-summary">
+                Posted By: {{ $recent->user->first_name}}{{$recent->user->middle_name ? ' '.$recent->user->middle_name : ''}}{{ $recent->user->last_name }}
+            </div>
+            <div class="job-summary">
+                Tags: <span class="tag">{{ $recent->type }}</span> <span class="tag">{{$recent->role->role_category->name}}</span>
+            </div>
+            <p class="job-description">{{ $recent->description }}</p>
+            <div class="job-details">
+                Posted: {{ $recent->created_at->diffForHumans() }}
+            </div>
+            <button class="btn btn-primary view-more-button">View More</button>
         </div>
-        <div id="saved-jobs" class="job-listings" style="display: none;">
+            @endforeach
         </div>
     </section>
 </main>
@@ -236,56 +278,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 <script>
-    const jobData = {
-        'best-matches': [
-            {
-                title: 'Software Engineer',
-                postedBy: 'Edmark Talingting',
-                tags: ['Hourly', 'Developer'],
-                description: 'Seeking a skilled Software Engineer to build and maintain web applications.',
-                posted: '2 days ago',
-            },
-            {
-                title: 'Graphic Designer',
-                postedBy: 'Jane Smith',
-                tags: ['Fixed Price', 'Creative'],
-                description: 'We need a creative graphic designer to design a new logo and marketing materials.',
-                posted: '1 week ago',
-            },
-        ],
-        'most-recent': [
-            {
-                title: 'Data Analyst',
-                postedBy: 'John Doe',
-                tags: ['Full-time', 'Data Analysis', 'SQL'],
-                description: 'Analyze sales data and create reports to improve business decisions.  Experience with SQL and Python required.',
-                posted: '1 day ago',
-            },
-            {
-                title: 'Full Stack Developer',
-                postedBy: 'Alice Johnson',
-                tags: ['Contract', 'React', 'Node.js'],
-                description: 'Looking for a full stack developer for a long term project.',
-                posted: '2 days ago',
-            },
-        ],
-        'saved-jobs': [
-            {
-                title: 'Project Manager',
-                postedBy: 'Samantha White',
-                tags: ['Full-time', 'Agile', 'Project Management'],
-                description: 'Manage the development and launch of a new mobile application.  Agile experience is a plus.',
-                posted: '5 days ago',
-            },
-            {
-                title: 'Technical Writer',
-                postedBy: 'Robert Brown',
-                tags: ['Hourly', 'Technical Writing'],
-                description: 'We are looking for a technical writer to create documentation.',
-                posted: '1 week ago',
-            },
-        ],
-    };
+    
 
     document.addEventListener('DOMContentLoaded', () => {
         const tabLinks = document.querySelectorAll('.tab-link');
@@ -307,38 +300,6 @@
             findWorkNavItem.classList.add('active');
         }
 
-        function createJobCard(job) {
-            const card = document.createElement('div');
-            card.className = 'job-card';
-
-            card.innerHTML = `
-                    <h3 class="job-title">${job.title}</h3>
-                    <div class="job-summary">
-                        Posted By: ${job.postedBy}
-                    </div>
-                    <div class="job-summary">
-                        Tags: ${job.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                    </div>
-                    <p class="job-description">${job.description}</p>
-                    <div class="job-details">
-                        Posted: ${job.posted}
-                    </div>
-                    <button class="btn btn-primary view-more-button">View More</button>
-                `;
-
-            return card;
-        }
-
-        function loadJobs(tab) {
-            const tabContent = document.getElementById(tab);
-            tabContent.innerHTML = '';
-            const jobs = jobData[tab] || [];
-            jobs.forEach(job => {
-                const card = createJobCard(job);
-                tabContent.appendChild(card);
-            });
-        }
-
         tabLinks.forEach(tabLink => {
             tabLink.addEventListener('click', (event) => {
                 event.preventDefault();
@@ -349,11 +310,9 @@
                 const tab = tabLink.dataset.tab;
                 tabLink.classList.add('active');
                 document.getElementById(tab).style.display = 'block';
-                loadJobs(tab);
             });
         });
 
-        loadJobs('best-matches');
         document.querySelector(`[data-tab="best-matches"]`).classList.add('active');
         document.getElementById('best-matches').style.display = 'block';
     });

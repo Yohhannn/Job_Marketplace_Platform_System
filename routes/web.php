@@ -55,5 +55,8 @@ Route::middleware('auth')->group(function () {
         ->name('updateProfileSettings');
     Route::get('/profile/profile-contact', [ProfileController::class, 'myProfileContact'])
         ->name('myProfileContact');
-});
+    
+    //Jobs
+    Route::get('/my-post-details/{id}', [JobPostController::class, 'myPostDetails'])->name('my-post-details');
+    });
 
