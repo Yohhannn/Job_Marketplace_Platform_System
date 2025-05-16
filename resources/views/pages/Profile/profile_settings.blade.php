@@ -436,7 +436,30 @@
             color: #0056b3;
         }
 
-
+        .radio-option {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .radio-option:hover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+        .radio-option.selected {
+            border-color: #007bff;
+            background-color: #e7f1ff;
+        }
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .option-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-left: 25px;
+        }
     </style>
 </head>
 <body>
@@ -474,51 +497,29 @@
             <div class="profile-info-section">
                 <h2 class="section-title">Profile Settings</h2>
 
-                <div class="mb-4">
-                    <label for="visibility" class="info-label">Visibility</label>
-                    <div class="visibility-dropdown">
-                        <select id="visibility" class="visibility-select">
-                            <option value="private">Private</option>
-                            <option value="public">Public</option>
-                        </select>
+                <form action="{{ route('updateProfileSettings') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <label class="info-label">Experience Level</label>
+                    <div class="row md-4 radio-option-group">
+                        @foreach($experienceLevels as $level)
+                            <div class="col-md-4 radio-option" onclick="selectOption(this)">
+                                <input type="radio" id="experience_{{ $level->id }}" name="experience_level_id" value="{{ $level->id }}" {{ $user->experience_level_id == $level->id ? 'checked' : '' }} required>
+                                <label for="experience_{{ $level->id }}">{{ $level->name }}</label>
+                                <div class="option-description">{{ $level->description }}</div>
+                            </div>
+                        @endforeach
                     </div>
-                    <p class="small-description">Choose who can see your profile.</p>
-                </div>
 
-
-                <div class="row mb-4">
-                    <div class="col-md-4">
-                        <div class="experience-level-card" data-level="entry">
-                            Entry Level <p class="small-description">I am relatively new to this field</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="experience-level-card" data-level="intermediate">
-                            Intermediate <p class="small-description">I have substantial experience in this field</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="experience-level-card" data-level="expert">
-                            Expert <p class="small-description">I have comprehensive and deep expertise in this field</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="profile-info-section">
-                    <h2 class="section-title">Categories</h2>
-                    <div class="mb-4">
-                        <label for="category" class="info-label">Primary Category</label>
-                        <div class="category-select-wrapper">
-                            <select id="category" class="category-select">
-                                <option value="">Select a category</option>
-                                <option value="web">Web Development</option>
-                                <option value="mobile">Mobile Development</option>
-                                <option value="design">Design</option>
-                                <option value="writing">Writing</option>
-                                <option value="marketing">Marketing</option>
-                                <option value="admin">Admin Support</option>
-                            </select>
-                        </div>
+                    <label class="info-label">English Level</label>
+                    <div class="row md-4 radio-option-group">
+                        @foreach($englishLevels as $level)
+                            <div class="col-md-3 radio-option" onclick="selectOption(this)">
+                                <input type="radio" id="english_{{ $level->id }}" name="english_level_id" value="{{ $level->id }}" {{ $user->english_level_id == $level->id ? 'checked' : '' }} required>
+                                <label for="english_{{ $level->id }}">{{ $level->name }}</label>
+                                <div class="option-description">{{ $level->description }}</div>
+                            </div>
+                        @endforeach
                     </div>
 
                     <div class="mb-4">
@@ -527,104 +528,80 @@
                         </div>
                         <div class="category-select-wrapper" id="category-dropdown-wrapper">
                             <select id="category-dropdown" class="category-select">
-                                <option value="">Add a category</option>
-                                <optgroup label="Web Development">
-                                    <option value="javascript">JavaScript</option>
-                                    <option value="php">PHP</option>
-                                    <option value="python">Python</option>
-                                    <option value="html">HTML</option>
-                                    <option value="css">CSS</option>
-                                    <option value="react">React</option>
-                                    <option value="angular">Angular</option>
-                                </optgroup>
-                                <optgroup label="Mobile Development">
-                                    <option value="java">Java</option>
-                                    <option value="kotlin">Kotlin</option>
-                                    <option value="swift">Swift</option>
-                                    <option value="react-native">React Native</option>
-                                    <option value="flutter">Flutter</option>
-                                </optgroup>
-                                <optgroup label="Design">
-                                    <option value="ui-ux">UI/UX Design</option>
-                                    <option value="graphic-design">Graphic Design</option>
-                                    <option value="web-design">Web Design</option>
-                                    <option value="logo-design">Logo Design</option>
-                                </optgroup>
-                                <optgroup label="Writing">
-                                    <option value="content-writing">Content Writing</option>
-                                    <option value="copywriting">Copywriting</option>
-                                    <option value="technical-writing">Technical Writing</option>
-                                    <option value="blog-writing">Blog Writing</option>
-                                </optgroup>
-                                <optgroup label="Marketing">
-                                    <option value="digital-marketing">Digital Marketing</option>
-                                    <option value="seo">SEO</option>
-                                    <option value="social-media">Social Media Marketing</option>
-                                    <option value="email-marketing">Email Marketing</option>
-                                </optgroup>
-                                <optgroup label="Admin Support">
-                                    <option value="virtual-assistant">Virtual Assistant</option>
-                                    <option value="data-entry">Data Entry</option>
-                                    <option value="customer-service">Customer Service</option>
-                                    <option value="project-management">Project Management</option>
-                                </optgroup>
+                                <option value="">Add a skill</option>
+                                @foreach($skills as $skill)
+                                    <option value="{{ $skill->id }}">{{ $skill->name }}</option>
+                                @endforeach
                             </select>
                         </div>
-                        <p class="small-description">Add categories to help others find your profile.</p>
+                        @if(empty($userSkills))
+                            <p class="small-description">Add categories to help others find your profile.</p>
+                        @else
+                            @foreach($user_skills as $skill)
+                                <span class="skill-tag">{{ $skill->name }}</span>
+                            @endforeach
+                        @endif
                     </div>
-                </div>
-                <script>
-                    document.addEventListener('DOMContentLoaded', () => {
-                        const categoryDropdown = document.getElementById('category-dropdown');
-                        const selectedCategoriesContainer = document.getElementById('selected-categories');
-                        let selectedCategories = new Set();
 
-                        function updateSelectedCategoriesDisplay() {
-                            selectedCategoriesContainer.innerHTML = ''; // Clear previous display
-                            selectedCategories.forEach(category => {
-                                const categoryBlock = document.createElement('div');
-                                categoryBlock.className = 'selected-category-block';
-                                categoryBlock.innerHTML = `
-                                    <span>${category}</span>
-                                    <button data-category="${category}">x</button>
-                                `;
-                                selectedCategoriesContainer.appendChild(categoryBlock);
-                            });
+                    <input
+                        type="hidden"
+                        name="user_skills"
+                        id="skills-input"
+                    />
 
-                            // Update the display of the dropdown based on selected categories
-                            const dropdownOptions = categoryDropdown.options;
-                            for (let i = 0; i < dropdownOptions.length; i++) {
-                                const optionValue = dropdownOptions[i].value;
-                                if (selectedCategories.has(optionValue) && optionValue !== "") {
-                                    dropdownOptions[i].disabled = true;
-                                } else {
-                                    dropdownOptions[i].disabled = false;
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const categoryDropdown = document.getElementById('category-dropdown');
+                            const selectedCategoriesContainer = document.getElementById('selected-categories');
+                            let selectedCategories = new Set();
+
+                            function updateSelectedCategoriesDisplay() {
+                                selectedCategoriesContainer.innerHTML = ''; // Clear previous display
+                                selectedCategories.forEach(category => {
+                                    const categoryBlock = document.createElement('div');
+                                    categoryBlock.className = 'selected-category-block';
+                                    categoryBlock.innerHTML = `
+                                        <span>${category}</span>
+                                        <button data-category="${category}">x</button>
+                                    `;
+                                    selectedCategoriesContainer.appendChild(categoryBlock);
+                                });
+
+                                // Update the display of the dropdown based on selected categories
+                                const dropdownOptions = categoryDropdown.options;
+                                for (let i = 0; i < dropdownOptions.length; i++) {
+                                    const optionValue = dropdownOptions[i].value;
+                                    if (selectedCategories.has(optionValue) && optionValue !== "") {
+                                        dropdownOptions[i].disabled = true;
+                                    } else {
+                                        dropdownOptions[i].disabled = false;
+                                    }
                                 }
                             }
-                        }
 
-                        categoryDropdown.addEventListener('change', (event) => {
-                            const selectedCategory = event.target.value;
-                            if (selectedCategory && !selectedCategories.has(selectedCategory)) {
-                                selectedCategories.add(selectedCategory);
-                                updateSelectedCategoriesDisplay();
-                            }
-                            // Reset the dropdown to the default option
-                            categoryDropdown.value = "";
+                            categoryDropdown.addEventListener('change', (event) => {
+                                const selectedCategory = event.target.value;
+                                if (selectedCategory && !selectedCategories.has(selectedCategory)) {
+                                    selectedCategories.add(selectedCategory);
+                                    updateSelectedCategoriesDisplay();
+                                }
+                                // Reset the dropdown to the default option
+                                categoryDropdown.value = "";
+                            });
+
+                            selectedCategoriesContainer.addEventListener('click', (event) => {
+                                if (event.target.tagName === 'BUTTON') {
+                                    const categoryToRemove = event.target.dataset.category;
+                                    selectedCategories.delete(categoryToRemove);
+                                    updateSelectedCategoriesDisplay();
+                                }
+                            });
                         });
-
-                        selectedCategoriesContainer.addEventListener('click', (event) => {
-                            if (event.target.tagName === 'BUTTON') {
-                                const categoryToRemove = event.target.dataset.category;
-                                selectedCategories.delete(categoryToRemove);
-                                updateSelectedCategoriesDisplay();
-                            }
-                        });
-                    });
-                </script>
+                    </script>
 
 
-                <button class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
             </div>
         </div>
     </div>
