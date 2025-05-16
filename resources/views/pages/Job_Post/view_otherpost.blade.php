@@ -137,7 +137,13 @@
             font-size: 2rem;
             color: #ddd;
         }
-
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
         .star-rating label:hover,
         .star-rating label:hover ~ label,
         .star-rating input:checked ~ label {
@@ -234,9 +240,6 @@
         <div class="col-lg-4">
             <div class="d-flex flex-column">
                 <button type="button" class="btn btn-success mb-2">Apply Now</button>
-                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#reviewModal">
-                    + Add Review
-                </button>
             </div>
             <div class="client-info">
                 <h2 class="client-info-title">About the client</h2>

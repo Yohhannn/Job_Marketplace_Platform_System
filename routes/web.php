@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
         ->name('myProfileContact');
 
     //Jobs
-    Route::get('/my-post-details', [JobPostController::class, 'myPostDetails'])->name('my-post-details');
-    Route::get('/other-post-details', [JobPostController::class, 'otherPostDetails'])->name('other-post-details');    
+    Route::post('/my-post-details', [JobPostController::class, 'myPostDetails'])->name('my-post-details');
+    Route::post('/other-post-details', [JobPostController::class, 'otherPostDetails'])->name('other-post-details');    
 });
 

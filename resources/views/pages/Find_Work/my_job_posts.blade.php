@@ -299,7 +299,11 @@
                 <div class="job-details">
                     Posted {{ $job->created_at->diffForHumans() }}
                 </div>
-                <a href={{route('my-post-details')}}?id={{ $job->id }} class="btn btn-primary view-more-button">See Job Post</a>
+                <form method="POST" action={{route('my-post-details')}}>
+                @csrf
+                <input type="hidden" name="id" value="{{ $job->id }}">
+                <button type="submit" class="btn btn-primary view-more-button">See Job Post</button>
+                </form>
             </div>
             @endforeach
         </div>
