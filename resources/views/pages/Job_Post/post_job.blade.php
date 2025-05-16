@@ -237,12 +237,41 @@
                 <label for="noOfHires" class="form-label required-label">Number of Hires</label>
                 <input type="number" class="form-control" name="no_hires" id="noOfHires" value="1" min="1" required>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-3" hidden id="slry">
                 <label for="salary" class="form-label required-label">Salary</label>
                 <div class="input-group">
                     <span class="input-group-text">₱</span>
-                    <input type="number" class="form-control" name="salary" id="salary" placeholder="Enter salary amount" min="0" required>
+                    <input type="number" class="form-control" name="salary" id="sal" placeholder="Enter salary amount" min="0">
                 </div>
+            </div>
+            <div class="col-md-6 mt-3" hidden id="min">
+                <label for="salary" class="form-label required-label">Hourly rate minimum</label>
+                <div class="input-group">
+                    <span class="input-group-text">₱</span>
+                    <input type="number" class="form-control" name="rate_min" id="rate_min" placeholder="Enter hourly rate minimum" min="0">
+                </div>
+            </div>
+            <div class="col-md-6 mt-3" hidden id="max">
+                <label for="salary" class="form-label required-label">Hourly rate maximum</label>
+                <div class="input-group">
+                    <span class="input-group-text">₱</span>
+                    <input type="number" class="form-control" name="rate_max" id="rate_max" placeholder="Enter hourly rate maximum" min="0">
+                </div>
+            </div>
+            <div class="col-md-6 mt-3" hidden id="limit">
+                <label for="salary" class="form-label required-label">Weekly hours limit</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" name="weekly_hours_limit" id="hours_limit" placeholder="Enter weekly hours limit" min="0">
+                </div>
+            </div>
+            <div class="col-md-6" hidden id="duration">
+                <label for="duration" class="form-label">Work duration</label>
+                <select class="form-select"  name="duration_id">
+                    <option value="" disabled selected>Select work Duration</option>
+                    @foreach ($duration as $dur)
+                        <option value="{{ $dur->id }}">{{ $dur->name }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         <a href="{{ route('findwork.myjobposts') }}" class="btn btn-secondary">Return back</a>
@@ -262,6 +291,12 @@
     document.addEventListener('DOMContentLoaded', () => {
         const findWorkDropdown = document.getElementById('findWorkDropdown');
         const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
+        const max = document.getElementById('max');
+        const jobType = document.getElementById('jobType');
+        const min = document.getElementById('min');
+        const duration = document.getElementById('duration');
+        const salary = document.getElementById('slry');
+        const limit = document.getElementById('limit');
         const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
 
         if (findWorkDropdown && deliverWorkDropdown) {
@@ -269,6 +304,24 @@
             findWorkDropdown.removeAttribute('href');
             deliverWorkDropdown.removeAttribute('href');
         }
+        jobType.addEventListener('change', () => {
+            if (jobType.value === 'hourly') {
+                duration.hidden = false;
+                max.hidden = false;
+                min.hidden = false;
+                limit.hidden = false;
+                salary.hidden = true;
+            } else if (jobType.value === 'fixed-price') {
+                salary.hidden = false;
+                duration.hidden = true;
+                limit.hidden = true;
+                max.hidden = true;
+                min.hidden = true;
+            }
+        });
+
+        
+
         // Set "Find Work" as active by default
         navbarNavItems.forEach(navItem => navItem.classList.remove('active'));
         const findWorkNavItem = Array.from(navbarNavItems).find(navItem => navItem.querySelector('#findWorkDropdown'));

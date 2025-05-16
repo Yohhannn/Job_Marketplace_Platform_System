@@ -244,7 +244,7 @@
             <div class="job-details">
                 Posted: {{ $best->created_at->diffForHumans() }}
             </div>
-        <button class="btn btn-primary view-more-button">View More</button>
+        <a class="btn btn-primary view-more-button" href={{ route('other-post-details') }}?id={{ $best->id }}>View More</a>
         </div>
         @endforeach
         </div>
@@ -262,7 +262,7 @@
             <div class="job-details">
                 Posted: {{ $recent->created_at->diffForHumans() }}
             </div>
-            <button class="btn btn-primary view-more-button">View More</button>
+            <button class="btn btn-primary view-more-button" onclick={{ route('other-post-details') }}?id={{ $recent->id }}>View More</button>
         </div>
             @endforeach
         </div>

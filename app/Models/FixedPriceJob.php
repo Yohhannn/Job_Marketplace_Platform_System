@@ -10,8 +10,10 @@ class FixedPriceJob extends Model
     protected $table = 'fixed_price_jobs';
 
     protected $fillable = [
+        'id',
         'price',
     ];
+    public $timestamps = false;
 
     public function job(): BelongsTo
     {

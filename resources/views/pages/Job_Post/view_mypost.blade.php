@@ -128,7 +128,7 @@
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="#">INHIRE</a>
+            <a class="navbar-brand" href={{ route('home') }}>INHIRE</a>
         </nav>
     </div>
 </header>
