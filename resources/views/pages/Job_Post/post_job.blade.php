@@ -185,7 +185,7 @@
                 <select class="form-select" id="jobType" name="jobType" required>
                     <option value="" disabled selected>Select job type</option>
                     <option value="hourly">Hourly</option>
-                    <option value="fixed">Fixed Price</option>
+                    <option value="fixed-price">Fixed Price</option>
                 </select>
             </div>
             <div class="col-md-6">

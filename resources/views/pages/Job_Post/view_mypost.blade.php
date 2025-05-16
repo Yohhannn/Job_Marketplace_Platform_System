@@ -151,16 +151,17 @@
                 <div class="job-details-section">
                     <h3 class="job-details-title">Job Posting Details</h3>
                     <div class="job-details-info">
-                        <p><strong>Title:</strong> Software Engineer</p>
-                        <p><strong>Description:</strong> I am looking for a Software Engineer to develop and maintain web applications. This role involves working with a team of highly skilled engineers to deliver high-quality, scalable, and maintainable software solutions.</p>
-                        <p><strong>By:</strong> Edmark C. Talingting (You)</p>
-                        <p><strong>Job Type:</strong> Full-Time</p>
-                        <p><strong>Job Role:</strong> Developer</p>
-                        <p><strong>Experience Level:</strong> Mid-Level</p>
-                        <p><strong>Engagement Level:</strong> Full-Time</p>
-                        <p><strong>Job Scope:</strong> Medium</p>
-                        <p><strong>Number of Hires:</strong> 2</p>
-                        <p><strong>Date Posted:</strong> Jan 13, 2025</p>
+                        @php $job = $job_post @endphp
+                        <p><strong>Title:</strong>{{ $job->title }}</p>
+                        <p><strong>Description:</strong> {{ $job->description }}</p>
+                        <p><strong>By:</strong> {{ $job->user->first_name }} {{ $job->user->middle_name ? $job->user->middle_name . ' ' : '' }}{{ $job->user->last_name }} (You)</p>
+                        <p><strong>Job Type:</strong> {{$job->type}}</p>
+                        <p><strong>Job Role:</strong> {{$job->role->role_category->name}}</p>
+                        <p><strong>Experience Level:</strong> {{$job->exp->name}}</p>
+                        <p><strong>English Level:</strong> {{$job->eng->name}}</p>
+                        <p><strong>Job Scope:</strong> {{$job->scope}}</p>
+                        <p><strong>Number of Hires:</strong> {{ $job->number_of_hires }}</p>
+                        <p><strong>Date Posted:</strong> {{$job->created_at->format('Y-m-d')}}</p>
                     </div>
                 </div>
             </div>
