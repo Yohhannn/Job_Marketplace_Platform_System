@@ -19,6 +19,7 @@ Route::get('/', function () {
 // Authentication Routes
 Route::get('/login', [LogInController::class, 'show'])->name('login');
 Route::post('/login', [LogInController::class, 'signIn'])->name('auth');
+Route::post('/logout', [LogInController::class, 'logOut'])->name('logout');
 Route::get('/signup', [SignUpController::class, 'show'])->name('signup');
 
 // User Registration Routes
