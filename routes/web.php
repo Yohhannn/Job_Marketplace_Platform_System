@@ -56,16 +56,13 @@ Route::middleware('auth')->group(function () {
         ->name('updateProfileSettings');
     Route::get('/profile/profile-contact', [ProfileController::class, 'myProfileContact'])
         ->name('myProfileContact');
-<<<<<<< HEAD
 
     //Jobs
     Route::post('/my-post-details', [JobPostController::class, 'myPostDetails'])->name('my-post-details');
     Route::post('/other-post-details', [JobPostController::class, 'otherPostDetails'])->name('other-post-details');    
-=======
     Route::put('/profile/profile-contact', [ProfileController::class, 'updateProfileContact'])
         ->name('updateProfileContact');
     Route::put('/profile/profile-contact/change-password', [ProfileController::class, 'changePassword'])
         ->name('changePassword');
->>>>>>> daafdf050fff6a9070fbc7ad09d46daa1a4aa735
 });
 
