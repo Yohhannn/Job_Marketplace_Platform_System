@@ -114,7 +114,7 @@
         .small-description {
             font-size: 0.8rem;
             color: #666;
-            margin-bottom: none;
+            margin-bottom: 0;
             line-height: 1.2;
         }
         .text-charge{
@@ -500,8 +500,24 @@
                 <form action="{{ route('updateProfileSettings') }}" method="POST">
                     @csrf
                     @method('PUT')
+                    <div class="row mb-4">
+                        <label for="last_name" class="info-label">Description</label>
+                        <input id="last_name" type="text" class="form-control mb-2" name="desc_title" value="{{ old('desc_title', $user->desc_title) }}" placeholder="Enter description title">
+                        <textarea id="last_name" class="form-control" name="desc_text" placeholder="Enter description text">{{ old('desc_text', $user->desc_text) }}</textarea>
+                    </div>
+
+                    <div class="row mb-4">
+                        <label for="hourly_rate" class="info-label">Hourly Rate</label>
+                        <input id="hourly_rate" type="text" class="form-control mb-2 @error('hourly_rate') is-invalid @enderror" name="hourly_rate" value="{{ $user->hourly_rate }}" placeholder="Set hourly rate">
+                        @error('hourly_rate')
+                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                        @enderror
+                    </div>
+
                     <label class="info-label">Experience Level</label>
-                    <div class="row md-4 radio-option-group">
+                    <div class="row mb-4 radio-option-group">
                         @foreach($experienceLevels as $level)
                             <div class="col-md-4 radio-option" onclick="selectOption(this)">
                                 <input type="radio" id="experience_{{ $level->id }}" name="experience_level_id" value="{{ $level->id }}" {{ $user->experience_level_id == $level->id ? 'checked' : '' }} required>
@@ -536,24 +552,19 @@
                         </div>
                         @if(empty($userSkills))
                             <p class="small-description">Add categories to help others find your profile.</p>
-                        @else
-                            @foreach($user_skills as $skill)
-                                <span class="skill-tag">{{ $skill->name }}</span>
-                            @endforeach
                         @endif
                     </div>
 
-                    <input
-                        type="hidden"
-                        name="user_skills"
-                        id="skills-input"
-                    />
+                    <div id="skills-inputs"></div>
 
                     <script>
                         document.addEventListener('DOMContentLoaded', () => {
+                            const skillMap = @json($skills->pluck('name', 'id'));
+                            const initialUserSkills = @json($userSkills);
+
                             const categoryDropdown = document.getElementById('category-dropdown');
                             const selectedCategoriesContainer = document.getElementById('selected-categories');
-                            let selectedCategories = new Set();
+                            let selectedCategories = new Set(initialUserSkills.map(id => String(id)));
 
                             function updateSelectedCategoriesDisplay() {
                                 selectedCategoriesContainer.innerHTML = ''; // Clear previous display
@@ -561,7 +572,7 @@
                                     const categoryBlock = document.createElement('div');
                                     categoryBlock.className = 'selected-category-block';
                                     categoryBlock.innerHTML = `
-                                        <span>${category}</span>
+                                        <span>${skillMap[category]}</span>
                                         <button data-category="${category}">x</button>
                                     `;
                                     selectedCategoriesContainer.appendChild(categoryBlock);
@@ -577,6 +588,16 @@
                                         dropdownOptions[i].disabled = false;
                                     }
                                 }
+
+                                const hiddenContainer = document.getElementById('skills-inputs');
+                                hiddenContainer.innerHTML = '';       // clear old inputs
+                                selectedCategories.forEach(categoryId => {
+                                    const input = document.createElement('input');
+                                    input.type  = 'hidden';
+                                    input.name  = 'user_skills[]';      // snake_case! Laravel will see this as an array
+                                    input.value = categoryId;
+                                    hiddenContainer.appendChild(input);
+                                });
                             }
 
                             categoryDropdown.addEventListener('change', (event) => {
@@ -596,6 +617,8 @@
                                     updateSelectedCategoriesDisplay();
                                 }
                             });
+
+                            updateSelectedCategoriesDisplay();
                         });
                     </script>
 
@@ -634,23 +657,22 @@
                 this.classList.add('active');
             });
         });
-
-
-
-        //  Save button
-        const saveButton = document.querySelector('.btn-primary');
-        saveButton.addEventListener('click', () => {
-            const activeLevel = document.querySelector('.experience-level-card.active');
-            const visibility = document.getElementById('visibility').value;
-
-
-            console.log('Selected Visibility:', visibility);
-            console.log('Selected Experience Level:', activeLevel ? activeLevel.dataset.level : 'None');
-
-
-            alert('Settings Saved! (Check console for data)');
-        });
     });
+
+    function selectOption(element) {
+        // Remove selected class from all options in this group
+        const group = element.closest('.radio-option-group');
+        group.querySelectorAll('.radio-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+
+        // Add selected class to clicked option
+        element.classList.add('selected');
+
+        // Check the radio input
+        const radioInput = element.querySelector('input[type="radio"]');
+        radioInput.checked = true;
+    }
 </script>
 </body>
 </html>
