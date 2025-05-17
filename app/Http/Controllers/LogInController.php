@@ -25,4 +25,9 @@ class LogInController
             'email' => 'The provided credentials do not match our records.'
         ]);
     }
+
+    public function logOut(Request $request){
+        Auth::logout();
+        return redirect()->intended('/');
+    }
 }

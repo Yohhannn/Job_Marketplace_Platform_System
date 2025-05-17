@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viewing My Job Post - INHIRE</title>
+    <title>Job Post Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -14,38 +12,146 @@
             font-family: 'Inter', sans-serif;
             background-color: #f4f7f9;
         }
-        .navbar-brand {
+        .job-title {
+            font-size: 24px;
             font-weight: bold;
-            color: #007bff;
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
-        .nav-link {
+        .post-date {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .rate {
+            font-size: 18px;
+            color: #3498db;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .tags {
+            margin-bottom: 20px;
+        }
+        .tag {
+            background-color: #e0f7fa;
+            color: #00897b;
+            padding: 8px 12px;
+            border-radius: 16px;
+            margin-right: 10px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        .description {
+            font-size: 16px;
             color: #555;
-            margin-right: 1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
         }
-        .nav-link:hover {
-            color: #007bff;
+        .client-info {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
         }
-        .nav-item.active .nav-link {
-            color: #007bff;
+        .client-info-title {
+            font-size: 20px;
             font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
         }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            color: #fff;
+        .client-name {
+            font-size: 18px;
+            color: #34495e;
+            margin-bottom: 10px;
         }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+        .ratings {
+            font-size: 14px;
+            color: #f39c12;
+            margin-bottom: 10px;
         }
-        .form-control {
-            border-radius: 0.5rem;
-            border: 1px solid #e0e0e0;
+        .reviews-count {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
         }
-        .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        .posts-count, .hires-count {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
         }
+        .history-section {
+            margin-bottom: 30px;
+        }
+        .history-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .history-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .history-card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+        .history-card-date {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+        .history-card-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+        }
+        .history-card-fixed-price{
+            font-size: 12px;
+            color: #95a5a6;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+
+        .star-rating {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            gap: 0.5rem;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #ddd;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #ffd700;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .review-submit-button {
+            margin-top: 1rem;
+        }
+
         .avatar {
             width: 40px;
             height: 40px;
@@ -53,345 +159,209 @@
             margin-right: 1rem;
             object-fit: cover;
         }
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-        }
-        .job-details-section {
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        .job-details-title {
-            font-size: 1.1rem;
-            color: #34495e;
-            margin-bottom: 0.5rem;
-        }
-        .job-details-info {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 1rem;
-        }
-        .nav-tabs .nav-link {
-            border: none;
-            border-bottom: 2px solid transparent;
-            color: #555;
-            margin-right: 1rem;
-            cursor: pointer;
-            transition: color 0.3s ease, border-bottom-color 0.3s ease;
-        }
-
-        .nav-tabs .nav-link:hover {
-            color: #007bff;
-            border-bottom-color: #007bff;
-        }
-
-        .nav-tabs .nav-link.active {
-            color: #007bff;
-            font-weight: bold;
-            border-bottom-color: #007bff;
-        }
-
-        .tab-content {
-            margin-top: 1.5rem;
-        }
-
-        .proposal-card {
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-
-        .proposal-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .proposal-section p{
-            margin-bottom: 0;
-        }
     </style>
 </head>
 <body>
-
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <a class="navbar-brand" href="#">INHIRE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Find Work
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
+                            <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Deliver Work
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search for jobs" aria-label="Search">
+                            <a href="/Views/Search/searched_result.html"><button class="btn btn-primary" type="button" id="button-addon2">Search</button></a>
+                        </form>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                           id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-info">
+                                <img src="{{ asset('icons/icon_profile.png') }}" alt="User Avatar" class="avatar">
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="{{ route('myProfile') }}">My Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ route('myProfileSettings') }}">Profile Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ route('myProfileContact') }}">Contact Info</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </div>
 </header>
-
-<main class="container py-4">
-    <section class="mb-4">
-        <h2 class="section-title">Viewing Others Post</h2>
-        <p class="lead">View post details and proposals.</p>
-    </section>
-
-    <section class="mb-4">
-        <nav class="nav nav-tabs">
-            <a class="nav-link active" href="#view-job-post" data-bs-toggle="tab">View Job Post</a>
-        </nav>
-
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="view-job-post">
-                <div class="job-details-section">
-                    <h3 class="job-details-title">Job Posting Details</h3>
-                    <div class="job-details-info">
-                        <p><strong>Title:</strong> Software Engineer</p>
-                        <p><strong>Description:</strong> I am looking for a Software Engineer to develop and maintain web applications. This role involves working with a team of highly skilled engineers to deliver high-quality, scalable, and maintainable software solutions.</p>
-                        <p><strong>By:</strong> Edmark C. Talingting (You)</p>
-                        <p><strong>Job Type:</strong> Full-Time</p>
-                        <p><strong>Job Role:</strong> Developer</p>
-                        <p><strong>Experience Level:</strong> Mid-Level</p>
-                        <p><strong>Engagement Level:</strong> Full-Time</p>
-                        <p><strong>Job Scope:</strong> Medium</p>
-                        <p><strong>Number of Hires:</strong> 2</p>
-                        <p><strong>Date Posted:</strong> Jan 13, 2025</p>
-                    </div>
-                </div>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="job-title">Job Title: Retype and Redact Application Form</h1>
+            <p class="post-date">Date Uploaded: Jan 12, 2025</p>
+            <p class="rate">Rate: $20 - $35 / hr</p>
+            <div class="tags">
+                <span class="tag">Data Entry</span>
+                <span class="tag">Typing</span>
+                <span class="tag">Redaction</span>
+                <span class="tag">Administrative</span>
             </div>
-            <div class="tab-pane fade" id="review-proposals">
-                <div class="proposal-section">
-                    <h3 class="proposal-title">Proposals to Review</h3>
-                    <p class="proposal-count">Title: "Software Engineer"</p>
-                    <p class="proposal-count">Number of proposals: 2</p>
-                    <div id="review-proposals-list">
-                        <div class="proposal-card" data-title="Proposal from John Doe" data-description="Hello! I'm John, I have 5 years of experience in web development.  I am proficient in React, Angular, and Node.js.  I am available for an interview next week." data-proposed-date="2025-02-01" data-name="John Doe">
-                            <p><b>Proposal from John Doe</b></p>
-                            <p>Proposed Date: 2025-02-01</p>
-                            <button class="btn btn-primary me-2 set-interview-btn">Set Interview</button>
-                            <button class="btn btn-success me-2 hire-btn">Hire</button>
-                            <button class="btn btn-secondary view-details-btn">View</button>
-                        </div>
-                        <div class="proposal-card" data-title="Proposal from Jane Smith" data-description="I'm Jane, a full-stack developer with 3 years of experience.  I specialize in e-commerce websites and have a strong portfolio.  I am flexible with my schedule." data-proposed-date="2025-02-03" data-name="Jane Smith">
-                            <p><b>Proposal from Jane Smith</b></p>
-                            <p>Proposed Date: 2025-02-03</p>
-                            <button class="btn btn-primary me-2 set-interview-btn">Set Interview</button>
-                            <button class="btn btn-success me-2 hire-btn">Hire</button>
-                            <button class="btn btn-secondary view-details-btn">View</button>
-                        </div>
-                    </div>
-                </div>
+            <p class="description">
+                Job Description: I need someone to retype an application form from a scanned document.  The highest accuracy is required.  Also, some personal data will need to be redacted.
+            </p>
+        </div>
+        <div class="col-lg-4">
+            <div class="d-flex flex-column">
+                <button type="button" class="btn btn-success mb-2">Apply Now</button>
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#reviewModal">
+                    + Add Review
+                </button>
             </div>
-            <div class="tab-pane fade" id="hired">
-                <div class="proposal-section">
-                    <h3 class="proposal-title">Hired Candidates</h3>
-                    <p class="proposal-count">Number of hired candidates: 1</p>
-                    <div id="hired-list">
-                        <div class="proposal-card" data-title="Hired: Joehanes Lauglaug" data-description="Hello! I am Joehanes a highly skilled sigma developer." data-proposed-date="2025-02-01" data-contract-date="2025-02-07" data-name="Joehanes Lauglaug">
-                            <p><b>Hired: Joehanes Lauglaug</b></p>
-                            <p>Proposed Date: 2025-02-01</p>
-                            <p>Contract Start Date: 2025-02-07</p>
-                            <button class="btn btn-danger me-2 end-contract-btn">End Contract</button>
-                            <button class="btn btn-secondary view-details-btn">View</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="client-info">
+                <h2 class="client-info-title">About the client</h2>
+                <p class="client-name">Client Name: John Doe</p>
+                <p class="ratings">Ratings: <span class="text-warning">★★★★☆</span> (4.5)</p>
+                <p class="reviews-count">Number of Reviews: 25</p>
+                <p class="posts-count">Number of Posts: 10</p>
+                <p class="hires-count">Number of Hires: 5</p>
             </div>
         </div>
-    </section>
-    <a href="/Views/Search/searched_result.html" class="btn btn-secondary mt-3">Return to My Job Posts</a>
-    <a href="/Views/Find_Work/my_job_posts.html" class="btn btn-primary mt-3">Apply Now!</a>
-</main>
-
-<footer class="bg-light py-3 border-top">
-    <div class="container text-center">
-        <p>&copy; 2025 INHIRE. All rights reserved.</p>
     </div>
-</footer>
 
-<div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"> <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewDetailsModalLabel"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p id="modal-description"></p>
-                <p id="modal-proposed-date"></p>
-                <p id="modal-contract-date"></p>
-            </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="history-section">
+                <h2 class="history-title">Client's Recent History (25 Reviews)</h2>
+                <div class="history-card">
+                    <p class="history-card-date">Date Reviewed: 2024-01-15</p>
+                    <p class="history-card-fixed-price">Fixed Price: $50</p>
+                    <h3 class="history-card-title">Feedback for Data Entry Project</h3>
+                    <span class="text-warning">
+                            <label for="star5">★★★★★</label><span> 5.0</span>
+                        </span>
+                    <p class="history-card-description">
+                        "Excellent work, very fast and accurate.  Will definitely hire again."
+                    </p>
+                </div>
+                <div class="history-card">
+                    <p class="history-card-date">Date Reviewed: 2023-12-01</p>
+                    <p class="history-card-fixed-price">Fixed Price: $100</p>
+                    <h3 class="history-card-title">Feedback for Virtual Assistant</h3>
+                    <span class="text-warning">
+                            <label for="star5">★★★★☆</label><span> 4.0</span>
+                        </span>
+                    <p class="history-card-description">
+                        "Great communication and delivered on time.  Thank you!"
+                    </p>
+                </div>
+                <div class="history-card">
+                    <p class="history-card-date">Date Reviewed: 2023-11-01</p>
+                    <p class="history-card-fixed-price">Fixed Price: $75</p>
+                    <h3 class="history-card-title">Feedback for Data Cleaning</h3>
+                    <span class="text-warning">
+                            <label for="star5">★★★☆☆</label><span> 3.0</span>
+                        </span>
+                    <p class="history-card-description">
+                        "Good attention to detail. Provided a very clean dataset."
+                    </p>
+                </div>
+            </section>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="reviewModalLabel">Add a Review</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <p id="confirmation-text"></p>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="rating">Rating:</label>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5" required/>
+                            <label for="star5">★</label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4">★</label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3">★</label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2">★</label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1">★</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewDescription">Description:</label>
+                        <textarea class="form-control" id="reviewDescription" rows="3" required></textarea>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirm-hire">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary review-submit-button" id="submitReview">Submit Review</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="interviewModal" tabindex="-1" aria-labelledby="interviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="interviewModalLabel">Schedule Interview</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p id="interview-text"></p>
-                <input type="date" id="interview-date" class="form-control">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="set-interview-date">Set</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="endContractConfirmationModal" tabindex="-1" aria-labelledby="endContractConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="endContractConfirmationModalLabel">Confirmation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p id="end-contract-confirmation-text"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirm-end-contract">Yes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const findWorkDropdown = document.getElementById('findWorkDropdown');
-        const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
-        const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
-        const viewDetailsModal = document.getElementById('viewDetailsModal');
-        const modalTitle = viewDetailsModal.querySelector('.modal-title');
-        const modalDescription = viewDetailsModal.querySelector('#modal-description');
-        const modalProposedDate = viewDetailsModal.querySelector('#modal-proposed-date');
-        const modalContractDate = viewDetailsModal.querySelector('#modal-contract-date');
-        const viewButtons = document.querySelectorAll('.view-details-btn');
-        const hireButtons = document.querySelectorAll('.hire-btn');
-        const setInterviewButtons = document.querySelectorAll('.set-interview-btn');
-        const endContractButtons = document.querySelectorAll('.end-contract-btn');
+    $(document).ready(function () {
+        $('#submitReview').click(function () {
+            const rating = $('input[name="rating"]:checked').val();
+            const reviewText = $('#reviewDescription').val();
 
-        const confirmationModal = document.getElementById('confirmationModal');
-        const confirmationText = document.getElementById('confirmation-text');
-        const confirmHireButton = document.getElementById('confirm-hire');
-        let personNameToHire = "";
+            if (rating && reviewText) {
+                console.log("Rating:", rating);
+                console.log("Review Text:", reviewText);
+                $('#reviewModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                alert("Thank you for your review! (This is a mock action)");
 
-        const interviewModal = document.getElementById('interviewModal');
-        const interviewText = document.getElementById('interview-text');
-        const setInterviewDateButton = document.getElementById('set-interview-date');
-        let personNameToInterview = "";
+                $('input[name="rating"]').prop('checked', false);
+                $('#reviewDescription').val('');
 
-        const endContractConfirmationModal = document.getElementById('endContractConfirmationModal');
-        const endContractConfirmationText = document.getElementById('end-contract-confirmation-text');
-        let personNameToEndContract = "";
-
-        if (findWorkDropdown && deliverWorkDropdown) {
-            // Remove the original event listeners for "Find Work" and "Deliver Work"
-            findWorkDropdown.removeAttribute('href');
-            deliverWorkDropdown.removeAttribute('href');
-        }
-        // Set "Find Work" as active by default
-        navbarNavItems.forEach(navItem => navItem.classList.remove('active'));
-        const findWorkNavItem = Array.from(navbarNavItems).find(navItem => navItem.querySelector('#findWorkDropdown'));
-        if (findWorkNavItem) {
-            findWorkNavItem.classList.add('active');
-        }
-
-        viewButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const card = event.target.closest('.proposal-card');
-                if (card) {
-                    const title = card.dataset.title;
-                    const description = card.dataset.description;
-                    const proposedDate = card.dataset.proposedDate;
-                    const contractDate = card.dataset.contractDate;
-
-                    modalTitle.textContent = title;
-                    modalDescription.textContent = description;
-                    modalProposedDate.textContent = "Proposed Date: " + proposedDate;
-                    modalContractDate.textContent = contractDate ? "Contract Start Date: " + contractDate : ""; //check if contractDate exists before adding it.
-
-                    new bootstrap.Modal(viewDetailsModal).show();
-                }
-            });
-        });
-
-        hireButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const card = event.target.closest('.proposal-card');
-                if (card) {
-                    personNameToHire = card.dataset.name;
-                    confirmationText.textContent = `Are you sure you want to hire ${personNameToHire}?`;
-                    new bootstrap.Modal(confirmationModal).show();
-                }
-            });
-        });
-
-        confirmHireButton.addEventListener('click', () => {
-            // In a real application, you would send a request to your server here.
-            console.log(`Hiring ${personNameToHire}`);
-            new bootstrap.Modal(confirmationModal).hide();
-            alert(`You have hired ${personNameToHire}! (This is a mock action)`); // Replace with a proper message to user
-        });
-
-        setInterviewButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const card = event.target.closest('.proposal-card');
-                if (card) {
-                    personNameToInterview = card.dataset.name;
-                    interviewText.textContent = `Pick a Date to interview ${personNameToInterview}`;
-                    new bootstrap.Modal(interviewModal).show();
-                }
-            });
-        });
-
-        setInterviewDateButton.addEventListener('click', () => {
-            new bootstrap.Modal(interviewModal).hide();
-        });
-
-        endContractButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const card = event.target.closest('.proposal-card');
-                if (card) {
-                    personNameToEndContract = card.dataset.name;
-                    endContractConfirmationText.textContent = `Are you sure you want to end the contract with ${personNameToEndContract}?`;
-                    new bootstrap.Modal(endContractConfirmationModal).show();
-                }
-            });
-        });
-
-        document.getElementById('confirm-end-contract').addEventListener('click', () => {
-            console.log(`Ending contract with ${personNameToEndContract}`);
-            new bootstrap.Modal(endContractConfirmationModal).hide();
-            alert(`You have ended the contract with ${personNameToEndContract}!`); // Replace with actual logic
+            } else {
+                alert("Please select a rating and provide a review.");
+            }
         });
     });
 </script>

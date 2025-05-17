@@ -10,8 +10,9 @@ class Job extends Model
 {
     protected $table = 'jobs';
     public $timestamps = false;
-
+    public $primaryKey = 'id';
     protected $fillable = [
+        'id',
         'title',
         'description',
         'role_id',
@@ -39,6 +40,12 @@ class Job extends Model
     }
     public function role(){
         return$this->belongsTo(Role::class,'role_id');
+    }
+    public function exp(){
+        return$this->belongsTo(ExperienceLevel::class,'experience_level_id');
+    }
+    public function eng(){
+        return$this->belongsTo(ExperienceLevel::class,'english_level_id');
     }
     public function proposals()
     {

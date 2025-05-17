@@ -213,8 +213,8 @@
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="#">INHIRE</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href={{ route('home') }}>INHIRE</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -246,12 +246,25 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link size" href="{{ route('myProfile') }}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                           id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="user-info">
                                 <img src="{{ asset('icons/icon_profile.png') }}" alt="User Avatar" class="avatar">
                             </div>
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="{{ route('myProfile') }}">My Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ route('myProfileSettings') }}">Profile Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ route('myProfileContact') }}">Contact Info</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -286,7 +299,7 @@
                 <div class="job-details">
                     Posted {{ $job->created_at->diffForHumans() }}
                 </div>
-                <a href="/Views/Job_Post/view_mypost.html" class="btn btn-primary view-more-button">See Job Post</a>
+                <a href={{route('my-post-details')}}?id={{ $job->id }} class="btn btn-primary view-more-button">See Job Post</a>
             </div>
             @endforeach
         </div>
@@ -319,12 +332,6 @@
         if (findWorkNavItem) {
             findWorkNavItem.classList.add('active');
         }
-
-        // Mock job data (Improved for demonstration)
-
-        // Update card with mock data
-
-        // Calculate and display "posted time ago"
         const timeAgoString = getTimeAgoString(mockJobData.postedDate);
         jobPostCard.querySelector('.job-details').textContent = `Posted: ${timeAgoString}`;
 
