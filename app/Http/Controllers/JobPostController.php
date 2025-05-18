@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Duration;
 use App\Models\FixedPriceJob;
 use App\Models\HourlyJob;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\EnglishLevel;
@@ -112,5 +113,17 @@ class JobPostController
         } catch(Exception $e) {
             print($e->getMessage());
         }
+    }
+
+    public function showProposerInfo($user_id, $job_id)
+    {
+        // Get the user (the proposer)
+        $user = User::with(['skills', 'experienceLevel', 'englishLevel'])->findOrFail($user_id);
+
+        // Get the job post (for return link or context)
+        $job = Job::with('user')->findOrFail($job_id);
+
+        // Return the user info view
+        return view('pages.Profile.users_info', compact('user', 'job'));
     }
 }

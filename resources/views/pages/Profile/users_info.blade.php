@@ -228,9 +228,6 @@
     <div class="profile-header">
         <img src="/icons/icon_profile.png" alt="Profile Icon" class="profile-large">
         <h2>{{ $user->name }}</h2>
-        <a href="{{ route('myProfileSettings') }}" class="profile-settings-btn">
-            Profile Settings
-        </a>
     </div>
 
     <div class="row">
@@ -273,6 +270,7 @@
             </div>
         </div>
     </div>
+    <a href="{{ route('my-post-details') }}?id={{ $job->id }}" class="btn btn-primary mt-3">Return to My Job Posts</a>
 </main>
 
 <footer class="bg-light py-3 border-top">

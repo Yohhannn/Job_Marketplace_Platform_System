@@ -53,6 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/proposal/interview/{proposal}', [ProposalController::class, 'scheduleInterview'])
         ->name('proposal.interview');
 
+    // Show proposer's full info
+    Route::get('/user/proposer/{user_id}/job/{job_id}', [JobPostController::class, 'showProposerInfo'])
+        ->name('user.proposer-info');
+
     // Reject a proposal
     Route::patch('/proposal/{proposal}/reject', [ProposalController::class, 'reject'])
         ->name('proposal.reject');

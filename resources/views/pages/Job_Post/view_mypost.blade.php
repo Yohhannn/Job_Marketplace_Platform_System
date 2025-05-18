@@ -242,54 +242,56 @@
 
                     <div id="review-proposals-list">
                         @forelse($job_post->proposals->whereIn('status', ['pending', 'interviewed']) as $proposal)
-                            <div class="proposal-card mb-3 border p-3 rounded">
-                                <p><b>Proposal From {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
-                                <p>Status:
-                                    <span class="badge bg-{{ $proposal->status === 'pending' ? 'warning text-dark' : ($proposal->status === 'accepted' ? 'success' : 'secondary') }}">
-                            {{ ucfirst($proposal->status) }}
-                        </span>
-                                </p>
-                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                            <a style="color: black" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}" class="text-decoration-none">
+                                    <div class="proposal-card mb-3 border p-3 rounded">
+                                    <p><b>Proposal From {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
+                                    <p>Status:
+                                        <span class="badge bg-{{ $proposal->status === 'pending' ? 'warning text-dark' : ($proposal->status === 'accepted' ? 'success' : 'secondary') }}">
+                                {{ ucfirst($proposal->status) }}
+                            </span>
+                                    </p>
+                                    <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
 
-                                <div class="d-flex justify-content-between">
-                                    <a href="{{ route('proposaldetails', [
-                                'job_id' => $proposal->job_id,
-                                'user_id' => $proposal->user_id,
-                                'duration_id' => optional($proposal->duration)->id
-                            ]) }}" class="btn btn-primary btn-sm view-details-btn">
-                                        View Details
-                                    </a>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ route('proposaldetails', [
+                                    'job_id' => $proposal->job_id,
+                                    'user_id' => $proposal->user_id,
+                                    'duration_id' => optional($proposal->duration)->id
+                                ]) }}" class="btn btn-primary btn-sm view-details-btn">
+                                            View Details
+                                        </a>
 
-                                    @if(in_array($proposal->status, ['pending', 'interviewed']))
-                                        <button
-                                            class="btn btn-info btn-sm interview-btn"
-                                            data-proposal-id="{{ $proposal->id }}"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#interviewModal"
-                                        >
-                                            Interview
-                                        </button>
-                                    @endif
+                                        @if(in_array($proposal->status, ['pending', 'interviewed']))
+                                            <button
+                                                class="btn btn-info btn-sm interview-btn"
+                                                data-proposal-id="{{ $proposal->id }}"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#interviewModal"
+                                            >
+                                                Interview
+                                            </button>
+                                        @endif
 
-                                    @if($proposal->status === 'interviewed')
-                                        <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
-                                        <p>Interview Time: {{ $proposal->interview_time }}</p>
-                                    @endif
+                                        @if($proposal->status === 'interviewed')
+                                            <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
+                                            <p>Interview Time: {{ $proposal->interview_time }}</p>
+                                        @endif
 
-                                    @if($proposal->status === 'pending')
-                                        <form action="{{ route('proposal.reject', ['proposal' => $proposal->id]) }}" method="POST" class="reject-form">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="btn btn-danger btn-sm reject-btn">Reject</button>
-                                        </form>
+                                        @if($proposal->status === 'pending')
+                                            <form action="{{ route('proposal.reject', ['proposal' => $proposal->id]) }}" method="POST" class="reject-form">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-danger btn-sm reject-btn">Reject</button>
+                                            </form>
 
-                                        <!-- Hire Form -->
-                                        <form action="{{ route('proposal.hire', ['proposal' => $proposal->id]) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="btn btn-success btn-sm hire-btn">Hire</button>
-                                        </form>
-                                    @endif
+                                            <!-- Hire Form -->
+                                            <form action="{{ route('proposal.hire', ['proposal' => $proposal->id]) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-success btn-sm hire-btn">Hire</button>
+                                            </form>
+                                        @endif
+                            </a>
                                 </div>
                             </div>
                         @empty
