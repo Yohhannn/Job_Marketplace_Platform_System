@@ -122,6 +122,7 @@
         .proposal-section p{
             margin-bottom: 0;
         }
+
     </style>
 </head>
 <body>
@@ -222,10 +223,17 @@
                                 <p><b>Proposal To {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}</b></p>
                                 <p>Status: <span class="badge bg-warning text-dark">{{ ucfirst($proposal->status) }}</span></p>
                                 <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+
+                                <div class="d-flex justify-content-between">
                                 <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
                                    class="btn btn-primary view-details-btn">
                                     View Details
                                 </a>
+                                @if($proposal->status === 'interviewed')
+                                    <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
+                                    <p>Interview Time: {{ $proposal->interview_time }}</p>
+                                @endif
+                                </div>
                             </div>
                         @empty
                             <p>No active proposals yet.</p>
