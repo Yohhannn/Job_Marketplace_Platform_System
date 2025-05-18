@@ -166,7 +166,6 @@
     </style>
 </head>
 <body>
-<!--Testing-->
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -183,7 +182,7 @@
                         <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
                             <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
                             <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
-                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
+                            <li></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown active">
@@ -194,6 +193,9 @@
                             <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
                             <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle"href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
                     </li>
                     <li class="nav-item">
                         <form class="d-flex">
@@ -228,15 +230,12 @@
         </nav>
     </div>
 </header>
-
-
 <main class="container py-4">
     <section class="mb-4">
         <h2 class="section-title">Welcome to INHIRE!</h2>
         <h2 class="section-username">{{ $user->name }}</h2>
         <p class="lead">Connect with talented freelancers and find the perfect job for your skills.</p>
     </section>
-
     <section class="mb-4">
         <h2 class="section-title">Jobs You Might Like</h2>
         <div class="mb-3">
@@ -257,7 +256,7 @@
             <div class="job-details">
                 Posted: {{ $best->created_at->diffForHumans() }}
             </div>
-        <a class="btn btn-primary view-more-button" href={{ route('other-post-details') }}?id={{ $best->id }}>View More</a>
+            <a class="btn btn-primary view-more-button" href="{{ route('other-post-details', ['id' => $best->id]) }}">View More</a>
         </div>
         @endforeach
         </div>
@@ -275,7 +274,7 @@
             <div class="job-details">
                 Posted: {{ $recent->created_at->diffForHumans() }}
             </div>
-            <button class="btn btn-primary view-more-button" onclick={{ route('other-post-details') }}?id={{ $recent->id }}>View More</button>
+            <a class="btn btn-primary view-more-button" href="{{ route('other-post-details', ['id' => $recent->id]) }}">View More</a>
         </div>
             @endforeach
         </div>

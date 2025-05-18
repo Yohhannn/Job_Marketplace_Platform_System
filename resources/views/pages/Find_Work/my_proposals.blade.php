@@ -125,7 +125,6 @@
     </style>
 </head>
 <body>
-
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -142,7 +141,7 @@
                         <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
                             <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
                             <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
-                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
+                            <li></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown active">
@@ -153,6 +152,9 @@
                             <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
                             <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle"href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
                     </li>
                     <li class="nav-item">
                         <form class="d-flex">
@@ -201,43 +203,64 @@
         </nav>
 
         <div class="tab-content">
+            <!-- Active Proposals -->
             <div class="tab-pane fade show active" id="active-proposals">
                 <div class="proposal-section">
                     <h3 class="proposal-title">Active Proposals</h3>
-                    <p class="proposal-count">Number of active proposals: 0</p>
+                    <p class="proposal-count">
+                        Number of active proposals: {{ $activeProposals->count() }}
+                    </p>
+
                     <div id="active-proposals-list">
-                        <div class="proposal-card">
-                            <p>This section will list your active proposals.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="proposal-section">
-                    <h3 class="proposal-title">Submitted Proposals</h3>
-                    <p class="proposal-count">Number of submitted proposals: 0</p>
-                    <div id="submitted-proposals-list">
-                        <div class="proposal-card">
-                            <p>This section will list your submitted proposals.</p>
-                        </div>
+                        @forelse($activeProposals as $proposal)
+                            <div class="proposal-card"
+                                 data-title="Proposal from {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}"
+                                 data-description="{{ Str::limit($proposal->letter, 100) }}"
+                                 data-proposed-date="{{ $proposal->created_at->format('M d, Y') }}"
+                                 data-name="{{ optional($proposal->job->user)->first_name ?? 'Unknown' }}">
+
+                                <p><b>Proposal To {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}</b></p>
+                                <p>Status: <span class="badge bg-warning text-dark">{{ ucfirst($proposal->status) }}</span></p>
+                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                                <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
+                                   class="btn btn-primary view-details-btn">
+                                    View Details
+                                </a>
+                            </div>
+                        @empty
+                            <p>No active proposals yet.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
+
+            <!-- Archived Proposals -->
             <div class="tab-pane fade" id="archived-proposals">
                 <div class="proposal-section">
                     <h3 class="proposal-title">Archived Proposals</h3>
-                    <p class="proposal-count">Number of archived proposals: 0</p>
+                    <p class="proposal-count">
+                        Number of archived proposals: {{ $archivedProposals->count() }}
+                    </p>
                     <div id="archived-proposals-list">
-                        <div class="proposal-card">
-                            <p>This section will list your archived proposals.</p>
-                        </div>
+                        @forelse($archivedProposals as $proposal)
+                            <div class="proposal-card">
+                                <p><b>Proposal To {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}</b></p>
+                                <p>Status: <span class="badge bg-secondary">{{ ucfirst($proposal->status) }}</span></p>
+                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                                <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
+                                   class="btn btn-primary view-details-btn">
+                                    View Details
+                                </a>
+                            </div>
+                        @empty
+                            <p>No archived proposals yet.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </main>
-
-
-
 <footer class="bg-light py-3 border-top">
     <div class="container text-center">
         <p>&copy; 2025 INHIRE. All rights reserved.</p>

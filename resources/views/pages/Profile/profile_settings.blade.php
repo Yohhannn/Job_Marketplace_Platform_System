@@ -463,17 +463,11 @@
     </style>
 </head>
 <body>
-
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-<<<<<<< HEAD
-        <a class="navbar-brand" href={{ route('home') }}>INHIRE</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-=======
             <a class="navbar-brand" href="#">INHIRE</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
->>>>>>> 3dbca09fef7791d119bfc9a10c2a8cb4c1ef875d
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -485,7 +479,7 @@
                         <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
                             <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
                             <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
-                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
+                            <li></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown active">
@@ -496,6 +490,9 @@
                             <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
                             <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle"href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
                     </li>
                     <li class="nav-item">
                         <form class="d-flex">

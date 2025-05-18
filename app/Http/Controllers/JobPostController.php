@@ -24,12 +24,23 @@ class JobPostController
     public function myPostDetails(Request $request){
         $id = $request->query('id');
         $job_post = Job::with('user', 'role','exp','eng', 'role.role_category')->findOrFail($id);
-        return view('pages.Job_Post.view_otherpost', compact('job_post'));
-    }
-    public function otherPostDetails(Request $request){
-        $id = $request->query('id');
-        $job_post = Job::with('user', 'role','exp','eng', 'role.role_category')->findOrFail($id);
         return view('pages.Job_Post.view_mypost', compact('job_post'));
+    }
+    public function otherPostDetails(Request $request)
+    {
+        $id = $request->query('id');
+
+        $job_post = Job::with([
+            'user.jobs',
+            'role',
+            'exp',
+            'eng',
+            'role.role_category',
+            'hourly.duration',
+            'fixedPrice'
+        ])->findOrFail($id);
+
+        return view('pages.Job_Post.view_otherpost', compact('job_post'));
     }
 
     public function createJobPost()
@@ -51,7 +62,7 @@ class JobPostController
     {
         try {
             $user = Auth::user();
-    
+
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
@@ -67,7 +78,7 @@ class JobPostController
                 'weekly_hours_limit' => 'nullable|numeric|min:0',
                 'duration_id' => 'nullable|numeric|min:0|exists:durations,id',
             ]);
-            
+
             $job = Job::create([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
@@ -96,12 +107,10 @@ class JobPostController
                     'price' => $validated['salary']
                 ]);
             }
-    
+
             return redirect()->route('findwork.myjobposts')->with('success', 'Job posted successfully!');
         } catch(Exception $e) {
             print($e->getMessage());
         }
     }
-    
-
 }
