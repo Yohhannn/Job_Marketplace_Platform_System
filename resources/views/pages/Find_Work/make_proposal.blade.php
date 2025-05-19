@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Job Posts - INHIRE</title>
+    <title>Apply Now</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -193,13 +190,7 @@
             font-size: 2rem;
             color: #ddd;
         }
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 1rem;
-            object-fit: cover;
-        }
+
         .star-rating label:hover,
         .star-rating label:hover ~ label,
         .star-rating input:checked ~ label {
@@ -233,6 +224,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
+                    <!-- Find Work Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Find Work
@@ -240,11 +232,12 @@
                         <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
                             <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
                             <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
-                            <li></li>
                         </ul>
                     </li>
+
+                    <!-- Deliver Work Dropdown -->
                     <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="deliverWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Deliver Work
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
@@ -252,14 +245,10 @@
                             <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle"href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
-                    </li>
-                    <li class="nav-item">
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Search for jobs" aria-label="Search">
-                            <a href="/Views/Search/searched_result.html"><button class="btn btn-primary" type="button" id="button-addon2">Search</button></a>
-                        </form>
+
+                    <!-- My Job Posts (Static Link) -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -288,148 +277,90 @@
         </nav>
     </div>
 </header>
-
-
 <main class="container py-4">
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-8">
-                <h1 class="job-title">Job Title: {{ $job_post->title }}</h1>
-                <p class="post-date">Date Uploaded: {{ $job_post->created_at->format('M d, Y') }}</p>
-                @if($job_post->type === 'hourly')
-                    @if($job_post->hourly)
-                        <p class="rate">Rate: ${{ number_format($job_post->hourly->rate_min, 2) }} - ${{ number_format($job_post->hourly->rate_max, 2) }} / hr</p>
-                        <p>Duration: {{ optional($job_post->hourly->duration)->name ?? 'Not specified' }}</p>
+                <h1 class="job-title">Job Title: {{ $job->title }}</h1>
+                <p class="post-date">Date Uploaded: {{ $job->created_at->format('M d, Y') }}</p>
+
+                @if($job->type === 'hourly')
+                    @if($job->hourly)
+                        <p class="rate">Rate: ${{ number_format($job->hourly->rate_min, 2) }} - ${{ number_format($job->hourly->rate_max, 2) }} / hr</p>
                     @else
                         <p class="rate">Rate: Not specified</p>
                     @endif
-                @elseif($job_post->type === 'fixed-price')
-                    @if($job_post->fixedPrice)
-                        <p class="rate">Fixed Price: ${{ number_format($job_post->fixedPrice->price, 2) }}</p>
+                @elseif($job->type === 'fixed-price')
+                    @if($job->fixedPrice)
+                        <p class="rate">Fixed Price: ${{ number_format($job->fixedPrice->price, 2) }}</p>
                     @else
                         <p class="rate">Fixed Price: Not specified</p>
                     @endif
                 @endif
+
                 <div class="tags">
-                    <span class="tag">{{ $job_post->type }}</span>
-                    <span class="tag">{{$job_post->role->role_category->name}}</span>
+                    <span class="tag">{{ $job->type }}</span>
+                    <span class="tag">{{ $job->role->role_category->name }}</span>
                 </div>
+
                 <p class="description">
-                    Job Description: {{ $job_post->description }}
+                    Job Description: {{ $job->description }}
                 </p>
             </div>
             <div class="col-lg-4">
-                <div class="d-flex flex-column">
-                    <a href="{{ route('makeproposal', [
-                            'job_id' => $job_post->id,
-                            'duration_id' => optional($job_post->hourly)->duration_id
-                        ]) }}" class="btn btn-success mb-2">Apply Now
-                    </a>
-                    <br>
-                </div>
-                <div class="client-info">
-                    <h2 class="client-info-title">About the client</h2>
-                    <p class="client-name">
-                        Client Name:
-                        {{ $job_post->user?->first_name . ' ' . ($job_post->user?->middle_name ? $job_post->user->middle_name . ' ' : '') . $job_post->user?->last_name ?? 'Unknown' }}
+                <div class="left-section">
+                    <h2 class="left-section-title">Job Details</h2>
+
+                    {{-- Show Duration based on job type --}}
+                    @if($job->type === 'hourly')
+                        <p>Duration: {{ optional($job->hourly->duration)->name ?? 'Not specified' }}</p>
+                    @elseif($job->type === 'fixed-price')
+                        <p>Project Length: {{ optional($job->fixedPrice->duration)->name ?? 'Not specified' }}</p>
+                    @else
+                        <p>Duration: Not specified</p>
+                    @endif
+
+                    <p class="posted-by">
+                        Posted By:
+                        {{ $job->user?->first_name . ' ' . ($job->user?->middle_name ? $job->user->middle_name . ' ' : '') . $job->user?->last_name ?? 'Unknown' }}
                     </p>
-                    <p class="ratings">Ratings: <span class="text-warning">★★★★☆</span> (4.5)</p>
-                    <p class="reviews-count">Number of Reviews: 25</p>
-                    <p class="posts-count">Number of Posts: {{ optional($job_post->user)->jobs->count() ?? 0 }}</p>
-                    <p class="hires-count">Number of Hires: 5</p>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-12">
-                <section class="history-section">
-                    <h2 class="history-title">Client's Recent History (25 Reviews)</h2>
-                    <div class="history-card">
-                        <p class="history-card-date">Date Reviewed: 2024-01-15</p>
-                        <p class="history-card-fixed-price">Fixed Price: $50</p>
-                        <h3 class="history-card-title">Feedback for Data Entry Project</h3>
-                        <span class="text-warning">
-                                <label for="star5">★★★★★</label><span> 5.0</span>
-                            </span>
-                        <p class="history-card-description">
-                            "Excellent work, very fast and accurate.  Will definitely hire again."
-                        </p>
-                    </div>
-                    <div class="history-card">
-                        <p class="history-card-date">Date Reviewed: 2023-12-01</p>
-                        <p class="history-card-fixed-price">Fixed Price: $100</p>
-                        <h3 class="history-card-title">Feedback for Virtual Assistant</h3>
-                        <span class="text-warning">
-                                <label for="star5">★★★★☆</label><span> 4.0</span>
-                            </span>
-                        <p class="history-card-description">
-                            "Great communication and delivered on time.  Thank you!"
-                        </p>
-                    </div>
-                    <div class="history-card">
-                        <p class="history-card-date">Date Reviewed: 2023-11-01</p>
-                        <p class="history-card-fixed-price">Fixed Price: $75</p>
-                        <h3 class="history-card-title">Feedback for Data Cleaning</h3>
-                        <span class="text-warning">
-                                <label for="star5">★★★☆☆</label><span> 3.0</span>
-                            </span>
-                        <p class="history-card-description">
-                            "Good attention to detail. Provided a very clean dataset."
-                        </p>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </div>
+                <div class="input-section">
+                    <h2 class="input-section-title">Application Details</h2>
+                    <form action="{{ route('submit_proposal') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="job_id" value="{{ $job->id }}">
+                        <input type="hidden" name="duration_id" value="{{ $duration_id ?? '' }}">
 
-    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reviewModalLabel">Add a Review</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="reviewForm">
+                        <!-- Bid Amount -->
                         <div class="form-group">
-                            <label for="rating">Rating:</label>
-                            <div class="star-rating">
-                                <input type="radio" id="star5" name="rating" value="5" required/>
-                                <label for="star5">★</label>
-                                <input type="radio" id="star4" name="rating" value="4" />
-                                <label for="star4">★</label>
-                                <input type="radio" id="star3" name="rating" value="3" />
-                                <label for="star3">★</label>
-                                <input type="radio" id="star2" name="rating" value="2" />
-                                <label for="star2">★</label>
-                                <input type="radio" id="star1" name="rating" value="1" />
-                                <label for="star1">★</label>
+                            <label for="bid">What is the full amount you'll like to bid for the job?</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="number" step="0.01" class="form-control" id="bid" name="bid_amount" placeholder="Enter your bid" required>
                             </div>
                         </div>
+
+                        <!-- Cover Letter -->
                         <div class="form-group">
-                            <label for="reviewDescription">Description:</label>
-                            <textarea class="form-control" id="reviewDescription" rows="3" required></textarea>
+                            <label for="coverLetter">Cover Letter</label>
+                            <textarea class="form-control" id="coverLetter" name="letter" rows="5" placeholder="Write your cover letter here..." required></textarea>
                         </div>
+                        <br>
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary">Submit Proposal</button>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary review-submit-button" id="submitReview">Submit Review</button>
                 </div>
             </div>
         </div>
     </div>
 </main>
-
-<footer class="bg-light py-3 border-top">
-    <div class="container text-center">
-        <p>&copy; 2025 INHIRE. All rights reserved.</p>
-    </div>
-</footer>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 <script>
@@ -482,30 +413,6 @@
             return `Just now`;
         }
     });
-
-    // jQuery for review submission
-    $(document).ready(function () {
-        $('#submitReview').click(function () {
-            const rating = $('input[name="rating"]:checked').val();
-            const reviewText = $('#reviewDescription').val();
-
-            if (rating && reviewText) {
-                console.log("Rating:", rating);
-                console.log("Review Text:", reviewText);
-                $('#reviewModal').modal('hide');
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                alert("Thank you for your review! (This is a mock action)");
-
-                // Reset the form
-                $('input[name="rating"]').prop('checked', false);
-                $('#reviewDescription').val('');
-            } else {
-                alert("Please select a rating and provide a review.");
-            }
-        });
-    });
 </script>
-
 </body>
 </html>

@@ -56,6 +56,12 @@ class User extends Model implements AuthenticatableContract
         ]));
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(Job::class, 'user_id');
+    }
+
+
     public function activeProposals()
     {
         return $this->hasMany(Proposal::class, 'user_id')->whereNotIn('status', ['accepted', 'rejected']);

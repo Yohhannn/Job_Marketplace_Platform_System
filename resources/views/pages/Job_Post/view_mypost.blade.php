@@ -1,3 +1,8 @@
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,15 +129,70 @@
     </style>
 </head>
 <body>
-
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href={{ route('home') }}>INHIRE</a>
+            <a class="navbar-brand" href="#">INHIRE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Find Work
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
+                            <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
+                            <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
+                            <li></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="findWorkDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Deliver Work
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="deliverWorkDropdown">
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
+                            <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle"href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search for jobs" aria-label="Search">
+                            <a href="/Views/Search/searched_result.html"><button class="btn btn-primary" type="button" id="button-addon2">Search</button></a>
+                        </form>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                           id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-info">
+                                <img src="{{ asset('icons/icon_profile.png') }}" alt="User Avatar" class="avatar">
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="{{ route('myProfile') }}">My Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ route('myProfileSettings') }}">Profile Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ route('myProfileContact') }}">Contact Info</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </div>
 </header>
-
 <main class="container py-4">
     <section class="mb-4">
         <h2 class="section-title">Viewing My Job Post</h2>
@@ -148,58 +208,147 @@
 
         <div class="tab-content">
             <div class="tab-pane fade show active" id="view-job-post">
-                <div class="job-details-section">
-                    <h3 class="job-details-title">Job Posting Details</h3>
-                    <div class="job-details-info">
-                        @php $job = $job_post @endphp
-                        <p><strong>Title:</strong>{{ $job->title }}</p>
-                        <p><strong>Description:</strong> {{ $job->description }}</p>
-                        <p><strong>By:</strong> {{ $job->user->first_name }} {{ $job->user->middle_name ? $job->user->middle_name . ' ' : '' }}{{ $job->user->last_name }} (You)</p>
-                        <p><strong>Job Type:</strong> {{$job->type}}</p>
-                        <p><strong>Job Role:</strong> {{$job->role->role_category->name}}</p>
-                        <p><strong>Experience Level:</strong> {{$job->exp->name}}</p>
-                        <p><strong>English Level:</strong> {{$job->eng->name}}</p>
-                        <p><strong>Job Scope:</strong> {{$job->scope}}</p>
-                        <p><strong>Number of Hires:</strong> {{ $job->number_of_hires }}</p>
-                        <p><strong>Date Posted:</strong> {{$job->created_at->format('Y-m-d')}}</p>
+                <div class="tab-pane fade show active" id="view-job-post">
+                    <div class="job-details-section">
+                        <h3 class="job-details-title">Job Posting Details</h3>
+                        <div class="job-details-info">
+                            @php $job = $job_post @endphp
+
+                            <p><strong>Title:</strong> {{ $job->title }}</p>
+                            <p><strong>Description:</strong> {{ $job->description }}</p>
+
+                            <p><strong>By:</strong>
+                                {{ optional($job->user)->first_name }}
+                                {{ optional(optional($job->user)->middle_name) ? optional($job->user)->middle_name . ' ' : '' }}
+                                {{ optional($job->user)->last_name }} (You)
+                            </p>
+
+                            <p><strong>Job Type:</strong> {{ $job->type ?? 'N/A' }}</p>
+                            <p><strong>Job Role:</strong> {{ optional(optional($job->role)->role_category)->name ?? 'N/A' }}</p>
+                            <p><strong>Experience Level:</strong> {{ optional($job->exp)->name ?? 'N/A' }}</p>
+                            <p><strong>English Level:</strong> {{ optional($job->eng)->name ?? 'N/A' }}</p>
+                            <p><strong>Job Scope:</strong> {{ $job->scope ?? 'N/A' }}</p>
+                            <p><strong>Number of Hires:</strong> {{ $job->number_of_hires ?? 0 }}</p>
+                            <p><strong>Date Posted:</strong> {{ $job->created_at?->format('Y-m-d') ?? 'N/A' }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="review-proposals">
                 <div class="proposal-section">
                     <h3 class="proposal-title">Proposals to Review</h3>
-                    <p class="proposal-count">Title: "Software Engineer"</p>
-                    <p class="proposal-count">Number of proposals: 2</p>
+                    <p class="proposal-count"><strong>Title:</strong> "{{ $job_post->title }}"</p>
+                    <p class="proposal-count">Number of proposals: {{ $job_post->proposals->whereIn('status', ['pending', 'interviewed'])->count() }}</p>
+
                     <div id="review-proposals-list">
-                        <div class="proposal-card" data-title="Proposal from John Doe" data-description="Hello! I'm John, I have 5 years of experience in web development.  I am proficient in React, Angular, and Node.js.  I am available for an interview next week." data-proposed-date="2025-02-01" data-name="John Doe">
-                            <p><b>Proposal from John Doe</b></p>
-                            <p>Proposed Date: 2025-02-01</p>
-                            <button class="btn btn-primary me-2 set-interview-btn">Set Interview</button>
-                            <button class="btn btn-success me-2 hire-btn">Hire</button>
-                            <button class="btn btn-secondary view-details-btn">View</button>
-                        </div>
-                        <div class="proposal-card" data-title="Proposal from Jane Smith" data-description="I'm Jane, a full-stack developer with 3 years of experience.  I specialize in e-commerce websites and have a strong portfolio.  I am flexible with my schedule." data-proposed-date="2025-02-03" data-name="Jane Smith">
-                            <p><b>Proposal from Jane Smith</b></p>
-                            <p>Proposed Date: 2025-02-03</p>
-                            <button class="btn btn-primary me-2 set-interview-btn">Set Interview</button>
-                            <button class="btn btn-success me-2 hire-btn">Hire</button>
-                            <button class="btn btn-secondary view-details-btn">View</button>
-                        </div>
+                        @forelse($job_post->proposals->whereIn('status', ['pending', 'interviewed']) as $proposal)
+                            <a style="color: black" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}" class="text-decoration-none">
+                                    <div class="proposal-card mb-3 border p-3 rounded">
+                                    <p><b>Proposal From {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
+                                    <p>Status:
+                                        <span class="badge bg-{{ $proposal->status === 'pending' ? 'warning text-dark' : ($proposal->status === 'accepted' ? 'success' : 'secondary') }}">
+                                {{ ucfirst($proposal->status) }}
+                            </span>
+                                    </p>
+                                    <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ route('proposaldetails', [
+                                    'job_id' => $proposal->job_id,
+                                    'user_id' => $proposal->user_id,
+                                    'duration_id' => optional($proposal->duration)->id
+                                ]) }}" class="btn btn-primary btn-sm view-details-btn">
+                                            View Details
+                                        </a>
+
+                                        @if(in_array($proposal->status, ['pending', 'interviewed']))
+                                            <button
+                                                class="btn btn-info btn-sm interview-btn"
+                                                data-proposal-id="{{ $proposal->id }}"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#interviewModal"
+                                            >
+                                                Interview
+                                            </button>
+                                        @endif
+
+                                        @if($proposal->status === 'interviewed')
+                                            <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
+                                            <p>Interview Time: {{ $proposal->interview_time }}</p>
+                                        @endif
+
+                                        @if($proposal->status === 'pending')
+                                            <form action="{{ route('proposal.reject', ['proposal' => $proposal->id]) }}" method="POST" class="reject-form">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-danger btn-sm reject-btn">Reject</button>
+                                            </form>
+
+                                            <!-- Hire Form -->
+                                            <form action="{{ route('proposal.hire', ['proposal' => $proposal->id]) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-success btn-sm hire-btn">Hire</button>
+                                            </form>
+                                        @endif
+                            </a>
+                                </div>
+                            </div>
+                        @empty
+                            <p>No proposals yet.</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+            <!-- Interview Modal -->
+            <div class="modal fade" id="interviewModal" tabindex="-1" aria-labelledby="interviewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="interviewForm" method="POST" action="">
+                            @csrf
+                            @method('PATCH')
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="interviewModalLabel">Set Interview Date & Time</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="interview_date" class="form-label">Interview Date</label>
+                                    <input type="date" name="interview_date" id="interview_date" class="form-control" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="interview_time" class="form-label">Interview Time</label>
+                                    <input type="time" name="interview_time" id="interview_time" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="hired">
                 <div class="proposal-section">
                     <h3 class="proposal-title">Hired Candidates</h3>
-                    <p class="proposal-count">Number of hired candidates: 1</p>
+                    <p class="proposal-count">Number of hired candidates: {{ $job_post->proposals->where('status', 'accepted')->count() }}</p>
                     <div id="hired-list">
-                        <div class="proposal-card" data-title="Hired: Joehanes Lauglaug" data-description="Hello! I am Joehanes a highly skilled sigma developer." data-proposed-date="2025-02-01" data-contract-date="2025-02-07" data-name="Joehanes Lauglaug">
-                            <p><b>Hired: Joehanes Lauglaug</b></p>
-                            <p>Proposed Date: 2025-02-01</p>
-                            <p>Contract Start Date: 2025-02-07</p>
-                            <button class="btn btn-danger me-2 end-contract-btn">End Contract</button>
-                            <button class="btn btn-secondary view-details-btn">View</button>
-                        </div>
+                        @forelse($job_post->proposals->where('status', 'accepted') as $proposal)
+                            <div class="proposal-card mb-3 border p-3 rounded">
+                                <p><b>Hired: {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
+                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                                <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
+                                <button class="btn btn-danger me-2 end-contract-btn">End Contract</button>
+                                <button class="btn btn-secondary view-details-btn">View</button>
+                            </div>
+                        @empty
+                            <p>No hired candidates yet.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -287,33 +436,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 <script>
+    console.log("Script loaded!");
     document.addEventListener('DOMContentLoaded', () => {
         const findWorkDropdown = document.getElementById('findWorkDropdown');
         const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
         const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
-        const viewDetailsModal = document.getElementById('viewDetailsModal');
-        const modalTitle = viewDetailsModal.querySelector('.modal-title');
-        const modalDescription = viewDetailsModal.querySelector('#modal-description');
-        const modalProposedDate = viewDetailsModal.querySelector('#modal-proposed-date');
-        const modalContractDate = viewDetailsModal.querySelector('#modal-contract-date');
-        const viewButtons = document.querySelectorAll('.view-details-btn');
-        const hireButtons = document.querySelectorAll('.hire-btn');
-        const setInterviewButtons = document.querySelectorAll('.set-interview-btn');
-        const endContractButtons = document.querySelectorAll('.end-contract-btn');
 
-        const confirmationModal = document.getElementById('confirmationModal');
-        const confirmationText = document.getElementById('confirmation-text');
-        const confirmHireButton = document.getElementById('confirm-hire');
-        let personNameToHire = "";
-
-        const interviewModal = document.getElementById('interviewModal');
-        const interviewText = document.getElementById('interview-text');
-        const setInterviewDateButton = document.getElementById('set-interview-date');
-        let personNameToInterview = "";
-
-        const endContractConfirmationModal = document.getElementById('endContractConfirmationModal');
-        const endContractConfirmationText = document.getElementById('end-contract-confirmation-text');
-        let personNameToEndContract = "";
 
         if (findWorkDropdown && deliverWorkDropdown) {
             // Remove the original event listeners for "Find Work" and "Deliver Work"
@@ -326,74 +454,34 @@
         if (findWorkNavItem) {
             findWorkNavItem.classList.add('active');
         }
-
-        viewButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const card = event.target.closest('.proposal-card');
-                if (card) {
-                    const title = card.dataset.title;
-                    const description = card.dataset.description;
-                    const proposedDate = card.dataset.proposedDate;
-                    const contractDate = card.dataset.contractDate;
-
-                    modalTitle.textContent = title;
-                    modalDescription.textContent = description;
-                    modalProposedDate.textContent = "Proposed Date: " + proposedDate;
-                    modalContractDate.textContent = contractDate ? "Contract Start Date: " + contractDate : ""; //check if contractDate exists before adding it.
-
-                    new bootstrap.Modal(viewDetailsModal).show();
-                }
-            });
-        });
-
-        hireButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const card = event.target.closest('.proposal-card');
-                if (card) {
-                    personNameToHire = card.dataset.name;
-                    confirmationText.textContent = `Are you sure you want to hire ${personNameToHire}?`;
-                    new bootstrap.Modal(confirmationModal).show();
-                }
-            });
-        });
-
-        confirmHireButton.addEventListener('click', () => {
-            // In a real application, you would send a request to your server here.
-            console.log(`Hiring ${personNameToHire}`);
-            new bootstrap.Modal(confirmationModal).hide();
-            alert(`You have hired ${personNameToHire}! (This is a mock action)`); // Replace with a proper message to user
-        });
-
-        setInterviewButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const card = event.target.closest('.proposal-card');
-                if (card) {
-                    personNameToInterview = card.dataset.name;
-                    interviewText.textContent = `Pick a Date to interview ${personNameToInterview}`;
-                    new bootstrap.Modal(interviewModal).show();
-                }
-            });
-        });
-
-        setInterviewDateButton.addEventListener('click', () => {
-            new bootstrap.Modal(interviewModal).hide();
-        });
-
-        endContractButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const card = event.target.closest('.proposal-card');
-                if (card) {
-                    personNameToEndContract = card.dataset.name;
-                    endContractConfirmationText.textContent = `Are you sure you want to end the contract with ${personNameToEndContract}?`;
-                    new bootstrap.Modal(endContractConfirmationModal).show();
-                }
-            });
-        });
-
         document.getElementById('confirm-end-contract').addEventListener('click', () => {
             console.log(`Ending contract with ${personNameToEndContract}`);
             new bootstrap.Modal(endContractConfirmationModal).hide();
-            alert(`You have ended the contract with ${personNameToEndContract}!`); // Replace with actual logic
+            alert(`You have ended the contract with ${personNameToEndContract}!`);
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const interviewModal = document.getElementById('interviewModal');
+        const interviewForm = document.getElementById('interviewForm');
+
+        if (!interviewModal || !interviewForm) {
+            console.warn("Modal or form element not found");
+            return;
+        }
+
+        interviewModal.addEventListener('show.bs.modal', function (event) {
+            console.log("Modal opened"); // Showed up?
+            const button = event.relatedTarget;
+            const proposalId = button?.getAttribute('data-proposal-id');
+
+            console.log("Button:", button);
+            console.log("Proposal ID:", proposalId);
+
+            const url = "{{ route('proposal.interview', ['proposal' => ':id']) }}".replace(':id', proposalId);
+
+            console.log("Setting form action to:", url);
+
+            interviewForm.setAttribute('action', url);
         });
     });
 </script>

@@ -38,8 +38,30 @@ Route::middleware('auth')->group(function () {
         ->name('findwork.myjobposts');
     Route::get('/find-work/my-job-posts/create-job-post', [JobPostController::class, 'createJobPost'])
         ->name('createjobpost.createjobpost');
+    Route::get('/my-post-details', [JobPostController::class, 'myPostDetails'])
+        ->name('my-post-details');
+    Route::get('/find-work/other-job-posts', [JobPostController::class, 'otherPostDetails'])
+        ->name('other-post-details');
     Route::get('/find-work/my-proposals', [ProposalController::class, 'myProposals'])
         ->name('findwork.myproposals');
+    Route::get('/find-work/make-proposal',[ProposalController::class, 'makeProposal'])
+        ->name('makeproposal');
+    Route::post('/find-work/submit-proposal', [ProposalController::class, 'submitProposal'])
+        ->name('submit_proposal');
+    Route::get('/find-work/proposal-details',[ProposalController::class, 'proposalDetails'])
+        ->name('proposaldetails');
+    Route::patch('/proposal/interview/{proposal}', [ProposalController::class, 'scheduleInterview'])
+        ->name('proposal.interview');
+
+    // Show proposer's full info
+    Route::get('/user/proposer/{user_id}/job/{job_id}', [JobPostController::class, 'showProposerInfo'])
+        ->name('user.proposer-info');
+
+    // Reject a proposal
+    Route::patch('/proposal/{proposal}/reject', [ProposalController::class, 'reject'])
+        ->name('proposal.reject');
+    Route::patch('/proposal/{proposal}/hire', [ProposalController::class, 'hire'])
+        ->name('proposal.hire');
 
     //Deliver Work
     Route::get('/deliver-work/active-contracts', [DeliverWorkController::class, 'activeContracts'])

@@ -7,24 +7,29 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Proposal extends Model
 {
+    public $timestamps = false;
+
     protected $table = 'proposals';
 
     protected $fillable = [
         'job_id',
-        'talent_id',
+        'user_id',
         'bid_amount',
         'duration_id',
         'letter',
         'status',
+        'interview_date',
+        'interview_time',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function job(): BelongsTo
     {
         return $this->belongsTo(Job::class);

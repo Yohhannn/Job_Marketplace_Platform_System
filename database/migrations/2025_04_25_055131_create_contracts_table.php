@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->decimal('pay_amount');
             $table->timestamp('created_at')->useCurrent();
-            $table->integer('hours_taken');
             $table->boolean('is_completed');
             $table->unsignedTinyInteger('client_rating')->nullable();
             $table->string('client_feedback')->nullable();

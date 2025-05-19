@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Proposals - INHIRE</title>
+    <title>INHIRE: Your Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,6 +46,64 @@
             border-color: #007bff;
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
         }
+        .profile-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        .profile-header {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative; /* Added for absolute positioning of the button */
+        }
+        .profile-info-section {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        .info-item {
+            margin-bottom: 0.75rem;
+            color: #555;
+        }
+        .info-label {
+            font-weight: bold;
+            margin-right: 0.5rem;
+            color: #34495e;
+        }
+        .skill-tag {
+            background-color: #ebebeb;
+            color: #333;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        .profile-actions {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .profile-actions .btn {
+            margin: 0 0.5rem;
+        }
+        .about-me-text {
+            line-height: 1.6;
+        }
         .avatar {
             width: 40px;
             height: 40px;
@@ -53,76 +111,52 @@
             margin-right: 1rem;
             object-fit: cover;
         }
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-        }
-        .proposal-section {
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        .proposal-title {
-            font-size: 1.1rem;
-            color: #34495e;
-            margin-bottom: 0.5rem;
-        }
-        .proposal-count {
-            font-size: 0.9rem;
+        .small-description {
+            font-size: 0.8rem;
             color: #666;
-            margin-bottom: 1rem;
+            margin-bottom: none;
+            line-height: 1.2;
         }
-        .nav-tabs .nav-link {
+        .text-charge{
+            color:#0056b3;
+            font-size: 1.2rem;
+        }
+
+        /* Styles for the settings button  */
+        .profile-settings-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #007bff; /* Blue background */
             border: none;
-            border-bottom: 2px solid transparent;
-            color: #555;
-            margin-right: 1rem;
+            font-size: 0.9rem;
+            color: #fff; /* White text */
             cursor: pointer;
-            transition: color 0.3s ease, border-bottom-color 0.3s ease;
-        }
-
-        .nav-tabs .nav-link:hover {
-            color: #007bff;
-            border-bottom-color: #007bff;
-        }
-
-        .nav-tabs .nav-link.active {
-            color: #007bff;
-            font-weight: bold;
-            border-bottom-color: #007bff;
-        }
-
-        .tab-content {
-            margin-top: 1.5rem;
-        }
-
-        .proposal-card {
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
+            padding: 0.5rem 1rem;
             border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            transition: background-color 0.3s ease;
         }
 
-        .proposal-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        .profile-settings-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
         }
 
-        .proposal-section p{
-            margin-bottom: 0;
+        .radio-option {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
+        .option-label {
+            font-weight: 500;
+        }
+        .option-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
@@ -190,85 +224,55 @@
         </nav>
     </div>
 </header>
-
 <main class="container py-4">
-    <section class="mb-4">
-        <h2 class="section-title">My Proposals</h2>
-        <p class="lead">Manage your proposals and track their status.</p>
-    </section>
+    <div class="profile-header">
+        <img src="/icons/icon_profile.png" alt="Profile Icon" class="profile-large">
+        <h2>{{ $user->name }}</h2>
+    </div>
 
-    <section class="mb-4">
-        <nav class="nav nav-tabs">
-            <a class="nav-link active" href="#active-proposals" data-bs-toggle="tab">Active</a>
-            <a class="nav-link" href="#archived-proposals" data-bs-toggle="tab">Archived</a>
-        </nav>
-
-        <div class="tab-content">
-            <!-- Active Proposals -->
-            <div class="tab-pane fade show active" id="active-proposals">
-                <div class="proposal-section">
-                    <h3 class="proposal-title">Active Proposals</h3>
-                    <p class="proposal-count">
-                        Number of active proposals: {{ $activeProposals->count() }}
-                    </p>
-
-                    <div id="active-proposals-list">
-                        @forelse($activeProposals as $proposal)
-                            <div class="proposal-card"
-                                 data-title="Proposal from {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}"
-                                 data-description="{{ Str::limit($proposal->letter, 100) }}"
-                                 data-proposed-date="{{ $proposal->created_at->format('M d, Y') }}"
-                                 data-name="{{ optional($proposal->job->user)->first_name ?? 'Unknown' }}">
-
-                                <p><b>Proposal To {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}</b></p>
-                                <p>Status: <span class="badge bg-warning text-dark">{{ ucfirst($proposal->status) }}</span></p>
-                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
-
-                                <div class="d-flex justify-content-between">
-                                <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
-                                   class="btn btn-primary view-details-btn">
-                                    View Details
-                                </a>
-                                @if($proposal->status === 'interviewed')
-                                    <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
-                                    <p>Interview Time: {{ $proposal->interview_time }}</p>
-                                @endif
-                                </div>
-                            </div>
-                        @empty
-                            <p>No active proposals yet.</p>
-                        @endforelse
-                    </div>
-                </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="profile-info-section">
+                @if($user->desc_title)
+                    <h3 class="section-title">Title: {{ $user->desc_title }}</h3>
+                @endif
+                <h3 class="text-charge">Rate: {{ $user->hourly_rate ? '$'.$user->hourly_rate.'/hr' : 'Hourly rate not set' }}</h3>
+                <p class="about-me-text">About Self: {{ $user->desc_text ?? 'No profile description. Go to profile settings to add.' }}</p>
             </div>
 
-            <!-- Archived Proposals -->
-            <div class="tab-pane fade" id="archived-proposals">
-                <div class="proposal-section">
-                    <h3 class="proposal-title">Archived Proposals</h3>
-                    <p class="proposal-count">
-                        Number of archived proposals: {{ $archivedProposals->count() }}
-                    </p>
-                    <div id="archived-proposals-list">
-                        @forelse($archivedProposals as $proposal)
-                            <div class="proposal-card">
-                                <p><b>Proposal To {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}</b></p>
-                                <p>Status: <span class="badge bg-secondary">{{ ucfirst($proposal->status) }}</span></p>
-                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
-                                <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
-                                   class="btn btn-primary view-details-btn">
-                                    View Details
-                                </a>
-                            </div>
-                        @empty
-                            <p>No archived proposals yet.</p>
-                        @endforelse
-                    </div>
+            <div class="profile-info-section">
+                <h3 class="section-title">Skills</h3>
+                <div>
+                    @if($user->skills->isEmpty())
+                        <p class="small-description">No skills added yet.</p>
+                    @else
+                        @foreach($user->skills as $skill)
+                            <span class="skill-tag">{{ $skill->name }}</span>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
-    </section>
+        <div class="col-md-4">
+            <div class="profile-info-section">
+                <h3 class="section-title">Experience Level</h3>
+                <div class="radio-option">
+                    <label class="option-label">{{ $user->experienceLevel->name }}</label>
+                    <div class="option-description">{{ $user->experienceLevel->description }}</div>
+                </div>
+            </div>
+            <div class="profile-info-section">
+                <h3 class="section-title">English Level</h3>
+                <div class="radio-option">
+                    <label class="option-label">{{ $user->englishLevel->name }}</label>
+                    <div class="option-description">{{ $user->englishLevel->description }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{{ route('my-post-details') }}?id={{ $job->id }}" class="btn btn-primary mt-3">Return to My Job Posts</a>
 </main>
+
 <footer class="bg-light py-3 border-top">
     <div class="container text-center">
         <p>&copy; 2025 INHIRE. All rights reserved.</p>
@@ -279,21 +283,15 @@
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const findWorkDropdown = document.getElementById('findWorkDropdown');
-        const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
-        const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
+        // Set "Profile" as active in the navigation
+        const navItems = document.querySelectorAll('.navbar-nav .nav-item');
+        navItems.forEach(navItem => navItem.classList.remove('active'));
+        const profileNavItem = Array.from(navItems).find(navItem => navItem.querySelector('a[href="./profile.html"]'));
+        if (profileNavItem) {
+            profileNavItem.classList.add('active');
+        }
 
-        if (findWorkDropdown && deliverWorkDropdown) {
-            // Remove the original event listeners for "Find Work" and "Deliver Work"
-            findWorkDropdown.removeAttribute('href');
-            deliverWorkDropdown.removeAttribute('href');
-        }
-        // Set "Find Work" as active by default
-        navbarNavItems.forEach(navItem => navItem.classList.remove('active'));
-        const findWorkNavItem = Array.from(navbarNavItems).find(navItem => navItem.querySelector('#findWorkDropdown'));
-        if (findWorkNavItem) {
-            findWorkNavItem.classList.add('active');
-        }
+
     });
 </script>
 </body>

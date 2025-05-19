@@ -106,10 +106,6 @@
             border-bottom-color: #007bff;
         }
 
-        .tab-content {
-            margin-top: 1.5rem;
-        }
-
         .job-post-card {
             background-color: #fff;
             border: 1px solid #e0e0e0;
@@ -126,35 +122,6 @@
 
         .job-post-section p{
             margin-bottom: 0;
-        }
-        .btn-outline-primary {
-            color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .job-tag {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.5rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #fff;
-            background-color: #547aaa;
-            color: #d6d9dc;
-            margin-bottom: 0.5rem;
-        }
-        .job-details-label {
-            font-weight: normal;
-            color: #868686;
-            margin-right: 0.25rem;
-        }
-        .pt{
-            margin-top: 2rem;
         }
         .job-title {
             font-size: 1.1rem;
@@ -184,16 +151,6 @@
             gap: 0.5rem;
         }
 
-        .verified-icon {
-            /* Style for a verified icon, you can use a library like Font Awesome */
-            color: green; /* Example: green checkmark */
-        }
-
-        .star-icon {
-            /* Style for a star icon */
-            color: #f9a825;   /* Example: a shade of yellow */
-        }
-
         .tag {
             background-color: #e0e0e0;
             color: #333;
@@ -202,19 +159,15 @@
             margin-right: 0.5rem;
             font-size: 0.75rem;
         }
-        .view-more-button {
-            margin-top: 1rem;
-        }
 
     </style>
 </head>
 <body>
-
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href={{ route('home') }}>INHIRE</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#">INHIRE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -226,7 +179,7 @@
                         <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
                             <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
                             <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
-                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
+                            <li></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown active">
@@ -237,6 +190,9 @@
                             <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
                             <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle"href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
                     </li>
                     <li class="nav-item">
                         <form class="d-flex">
@@ -299,11 +255,8 @@
                 <div class="job-details">
                     Posted {{ $job->created_at->diffForHumans() }}
                 </div>
-                <form method="POST" action={{route('my-post-details')}}>
-                @csrf
-                <input type="hidden" name="id" value="{{ $job->id }}">
-                <button type="submit" class="btn btn-primary view-more-button">See Job Post</button>
-                </form>
+                <a href={{route('my-post-details')}}?id={{ $job->id }} class="btn btn-primary mt-3">See Job Post</a>
+
             </div>
             @endforeach
         </div>

@@ -160,12 +160,11 @@
     </style>
 </head>
 <body>
-
 <header class="bg-white py-3 border-bottom">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href={{ route('home') }}>INHIRE</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#">INHIRE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -177,7 +176,7 @@
                         <ul class="dropdown-menu" aria-labelledby="findWorkDropdown">
                             <li><a class="dropdown-item" href="{{ route('home') }}">Find Work</a></li>
                             <li><a class="dropdown-item" href="{{ route('findwork.myproposals') }}">My Proposals</a></li>
-                            <li><a class="dropdown-item" href="{{ route('findwork.myjobposts') }}">My Job Posts</a></li>
+                            <li></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown active">
@@ -188,6 +187,9 @@
                             <li><a class="dropdown-item" href="{{ route('deliverwork.activecontracts') }}">Your Active Contracts</a></li>
                             <li><a class="dropdown-item" href="{{ route('deliverwork.historycontracts') }}">Contract History</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle"href="{{ route('findwork.myjobposts') }}">My Job Posts</a>
                     </li>
                     <li class="nav-item">
                         <form class="d-flex">
@@ -222,7 +224,6 @@
         </nav>
     </div>
 </header>
-
 <main class="container py-4">
     <div class="profile-header">
         <img src="/icons/icon_profile.png" alt="Profile Icon" class="profile-large">
@@ -236,10 +237,10 @@
         <div class="col-md-8">
             <div class="profile-info-section">
                 @if($user->desc_title)
-                    <h3 class="section-title">{{ $user->desc_title }}</h3>
+                    <h3 class="section-title">Title: {{ $user->desc_title }}</h3>
                 @endif
-                <h3 class="text-charge">{{ $user->hourly_rate ? '$'.$user->hourly_rate.'/hr' : 'Hourly rate not set' }}</h3>
-                <p class="about-me-text">{{ $user->desc_text ?? 'No profile description. Go to profile settings to add.' }}</p>
+                <h3 class="text-charge">Rate: {{ $user->hourly_rate ? '$'.$user->hourly_rate.'/hr' : 'Hourly rate not set' }}</h3>
+                <p class="about-me-text">About Self: {{ $user->desc_text ?? 'No profile description. Go to profile settings to add.' }}</p>
             </div>
 
             <div class="profile-info-section">
