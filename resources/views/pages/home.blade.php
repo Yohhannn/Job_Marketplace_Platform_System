@@ -247,7 +247,7 @@
         <div class="job-post-card">
         <h3 class="job-title">{{ $best->title }}</h3>
             <div class="job-summary">
-                Posted By: {{ $best->user->first_name}}{{$best->user->middle_name ? ' '.$best->user->middle_name : ''}}{{ $best->user->last_name }}
+                Posted By: {{ $best->user->first_name}}{{$best->user->middle_name ? ' '.$best->user->middle_name : ''}}{{ ' '.$best->user->last_name }}
             </div>
             <div class="job-summary">
                     Tags: <span class="tag">{{ $best->type }}</span> <span class="tag">{{$best->role->role_category->name}}</span>
@@ -258,6 +258,7 @@
             </div>
             <a class="btn btn-primary view-more-button" href="{{ route('other-post-details', ['id' => $best->id]) }}">View More</a>
         </div>
+
         @endforeach
         </div>
         <div id="most-recent" class="job-listings" style="display: none;">
@@ -265,7 +266,7 @@
         <div class="job-post-card">
         <h3 class="job-title">{{ $recent->title }}</h3>
         <div class="job-summary">
-                Posted By: {{ $recent->user->first_name}}{{$recent->user->middle_name ? ' '.$recent->user->middle_name : ''}}{{ $recent->user->last_name }}
+                Posted By: {{ $recent->user->first_name}}{{$recent->user->middle_name ? ' '.$recent->user->middle_name : ''}}{{ ' '.$recent->user->last_name }}
             </div>
             <div class="job-summary">
                 Tags: <span class="tag">{{ $recent->type }}</span> <span class="tag">{{$recent->role->role_category->name}}</span>
@@ -275,6 +276,7 @@
                 Posted: {{ $recent->created_at->diffForHumans() }}
             </div>
             <a class="btn btn-primary view-more-button" href="{{ route('other-post-details', ['id' => $recent->id]) }}">View More</a>
+
         </div>
             @endforeach
         </div>

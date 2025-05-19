@@ -23,7 +23,7 @@ class JobPostController
         return view('pages.Find_Work.my_job_posts',compact('job_posts'));
     }
     public function myPostDetails(Request $request){
-        $id = $request->query('id');
+        $id = $request->input('id');
         $job_post = Job::with('user', 'role','exp','eng', 'role.role_category')->findOrFail($id);
         return view('pages.Job_Post.view_mypost', compact('job_post'));
     }
