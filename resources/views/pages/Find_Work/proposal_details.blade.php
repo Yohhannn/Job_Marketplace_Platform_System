@@ -310,7 +310,15 @@
             <div class="col-lg-4">
                 <div class="left-section">
                     <h2 class="left-section-title">Job Details</h2>
-                    <p>Duration: {{ optional($job->hourly->duration)->name ?? 'Not specified' }}</p>
+
+                    @if ($job->job_type === 'hourly')
+                        <p>Duration: {{ optional($job->hourly->duration)->name ?? 'Not specified' }}</p>
+                    @elseif ($job->job_type === 'fixed')
+                        <p>Project Length: {{ optional($job->fixed->duration)->name ?? 'Not specified' }}</p>
+                    @else
+                        <p>Duration: Not specified</p>
+                    @endif
+
                     <p class="posted-by">
                         Posted By:
                         {{ $job->user?->first_name . ' ' . ($job->user?->middle_name ? $job->user->middle_name . ' ' : '') . $job->user?->last_name ?? 'Unknown' }}

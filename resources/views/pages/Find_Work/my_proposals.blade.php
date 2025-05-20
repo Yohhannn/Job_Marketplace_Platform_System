@@ -225,10 +225,9 @@
                                 <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
 
                                 <div class="d-flex justify-content-between">
-                                <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
-                                   class="btn btn-primary view-details-btn">
-                                    View Details
-                                </a>
+                                    <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id]) }}" class="btn btn-primary view-details-btn">
+                                        View Details
+                                    </a>
                                 @if($proposal->status === 'interviewed')
                                     <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
                                     <p>Interview Time: {{ $proposal->interview_time }}</p>
