@@ -13,6 +13,10 @@ class Contract extends Model
         'user_id',
         'pay_amount',
         'is_completed',
+        'client_rating',
+        'client_feedback',
+        'talent_rating',
+        'talent_feedback',
     ];
 
     protected $casts = [
@@ -32,4 +36,5 @@ class Contract extends Model
     {
         return $this->belongsTo(Job::class);
     }
+
 }

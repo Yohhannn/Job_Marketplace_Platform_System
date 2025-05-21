@@ -212,24 +212,22 @@
                     <div class="job-details-section">
                         <h3 class="job-details-title">Job Posting Details</h3>
                         <div class="job-details-info">
-                            @php $job = $job_post @endphp
-
-                            <p><strong>Title:</strong> {{ $job->title }}</p>
-                            <p><strong>Description:</strong> {{ $job->description }}</p>
+                            <p><strong>Title:</strong> {{ $job_post->title }}</p>
+                            <p><strong>Description:</strong> {{ $job_post->description }}</p>
 
                             <p><strong>By:</strong>
-                                {{ optional($job->user)->first_name }}
-                                {{ optional(optional($job->user)->middle_name) ? optional($job->user)->middle_name . ' ' : '' }}
-                                {{ optional($job->user)->last_name }} (You)
+                                {{ optional($job_post->user)->first_name }}
+                                {{ optional(optional($job_post->user)->middle_name) ? optional($job_post->user)->middle_name . ' ' : '' }}
+                                {{ optional($job_post->user)->last_name }} (You)
                             </p>
 
-                            <p><strong>Job Type:</strong> {{ $job->type ?? 'N/A' }}</p>
-                            <p><strong>Job Role:</strong> {{ optional(optional($job->role)->role_category)->name ?? 'N/A' }}</p>
-                            <p><strong>Experience Level:</strong> {{ optional($job->exp)->name ?? 'N/A' }}</p>
-                            <p><strong>English Level:</strong> {{ optional($job->eng)->name ?? 'N/A' }}</p>
-                            <p><strong>Job Scope:</strong> {{ $job->scope ?? 'N/A' }}</p>
-                            <p><strong>Number of Hires:</strong> {{ $job->number_of_hires ?? 0 }}</p>
-                            <p><strong>Date Posted:</strong> {{ $job->created_at?->format('Y-m-d') ?? 'N/A' }}</p>
+                            <p><strong>Job Type:</strong> {{ $job_post->type ?? 'N/A' }}</p>
+                            <p><strong>Job Role:</strong> {{ optional(optional($job_post->role)->role_category)->name ?? 'N/A' }}</p>
+                            <p><strong>Experience Level:</strong> {{ optional($job_post->exp)->name ?? 'N/A' }}</p>
+                            <p><strong>English Level:</strong> {{ optional($job_post->eng)->name ?? 'N/A' }}</p>
+                            <p><strong>Job Scope:</strong> {{ $job_post->scope ?? 'N/A' }}</p>
+                            <p><strong>Number of Hires:</strong> {{ $job_post->number_of_hires ?? 0 }}</p>
+                            <p><strong>Date Posted:</strong> {{ $job_post->created_at?->format('Y-m-d') ?? 'N/A' }}</p>
                         </div>
                     </div>
                 </div>
@@ -253,11 +251,11 @@
                                     <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
 
                                     <div class="d-flex justify-content-between">
-                                            <a href="{{ route('proposaldetails', [
-                                        'job_id' => $proposal->job_id,
-                                        'user_id' => $proposal->user_id,
-                                        'duration_id' => optional($proposal->duration)->id
-                                    ]) }}" class="btn btn-primary btn-sm view-details-btn">
+                                        <a href="{{ route('proposaldetails', [
+                                    'job_id' => $proposal->job_id,
+                                    'user_id' => $proposal->user_id,
+                                    'duration_id' => optional($proposal->duration)->id
+                                ]) }}" class="btn btn-primary btn-sm view-details-btn">
                                             View Details
                                         </a>
 
@@ -273,11 +271,11 @@
                                         @endif
 
                                         @if($proposal->status === 'interviewed')
-                                            <p>Interview Date: {{ Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
+                                            <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
                                             <p>Interview Time: {{ $proposal->interview_time }}</p>
                                         @endif
 
-                                        @if($proposal->status === 'pending')
+                                        @if(in_array($proposal->status, ['pending', 'interviewed']))
                                             <form action="{{ route('proposal.reject', ['proposal' => $proposal->id]) }}" method="POST" class="reject-form">
                                                 @csrf
                                                 @method('PATCH')
@@ -333,29 +331,43 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="hired">
-                <div class="proposal-section">
-                    <h3 class="proposal-title">Hired Candidates</h3>
-                    <p class="proposal-count">Number of hired candidates: {{ $job_post->proposals->where('status', 'accepted')->count() }}</p>
-                    <div id="hired-list">
-                        @forelse($job_post->proposals->where('status', 'accepted') as $proposal)
-                            <a style="color: black" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}" class="text-decoration-none">
-                                    <div class="proposal-card mb-3 border p-3 rounded">
-                                        <p><b>Hired: {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
-                                        <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
-                                        <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
-                                        <button class="btn btn-danger me-2 end-contract-btn">End Contract</button>
-                                        <button href="{{ route('proposaldetails', [
-                                            'job_id' => $proposal->job_id,
-                                            'user_id' => $proposal->user_id,
-                                            'duration_id' => optional($proposal->duration)->id
-                                        ]) }}" class="btn btn-secondary view-details-btn">
-                                                View Details</button>
-                                @empty
-                                    <p>No hired candidates yet.</p>
-                                @endforelse
+        <div class="tab-pane fade" id="hired">
+            <div class="proposal-section">
+                <h3 class="proposal-title">Hired Candidates</h3>
+                <p class="proposal-count">Number of hired candidates: {{ $job_post->proposals->where('status', 'accepted')->count() }}</p>
+                <div id="hired-list">
+                    @forelse($job_post->proposals->where('status', 'accepted') as $proposal)
+                        <div class="proposal-card mb-3 border p-3 rounded">
+                            <!-- Link only around the text -->
+                            <a style="color: black; text-decoration: none;" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}">
+                                <p><b>Hired: {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
+                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                                <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
                             </a>
-                    </div>
+
+                            <!-- Buttons outside the <a> tag -->
+                            <div class="d-flex">
+                                @php
+                                    $contract = $job_post->contracts->where('user_id', $proposal->user_id)->first();
+                                @endphp
+                                @if($contract)
+                                    <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" class="btn btn-danger me-2">End Contract</a>
+                                @else
+                                    <button class="btn btn-danger me-2" disabled>End Contract</button>
+                                @endif
+
+                                <a href="{{ route('proposaldetails', [
+                            'job_id' => $proposal->job_id,
+                            'user_id' => $proposal->user_id,
+                            'duration_id' => optional($proposal->duration)->id
+                        ]) }}" class="btn btn-secondary view-details-btn">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <p>No hired candidates yet.</p>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -421,23 +433,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="endContractConfirmationModal" tabindex="-1" aria-labelledby="endContractConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="endContractConfirmationModalLabel">Confirmation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p id="end-contract-confirmation-text"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirm-end-contract">Yes</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
@@ -460,11 +455,6 @@
         if (findWorkNavItem) {
             findWorkNavItem.classList.add('active');
         }
-        document.getElementById('confirm-end-contract').addEventListener('click', () => {
-            console.log(`Ending contract with ${personNameToEndContract}`);
-            new bootstrap.Modal(endContractConfirmationModal).hide();
-            alert(`You have ended the contract with ${personNameToEndContract}!`);
-        });
     });
     document.addEventListener('DOMContentLoaded', function () {
         const interviewModal = document.getElementById('interviewModal');

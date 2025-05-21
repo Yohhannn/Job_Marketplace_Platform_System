@@ -68,6 +68,8 @@ Route::middleware('auth')->group(function () {
         ->name('deliverwork.activecontracts');
     Route::get('/deliver-work/contact-history', [DeliverWorkController::class, 'historyContracts'])
         ->name('deliverwork.historycontracts');
+    Route::get('/deliver-work/active-contracts/contract-info/review', [DeliverWorkController::class, 'viewContractReview'])
+        ->name('deliverwork.viewcontractreview');
 
     //Profile
     Route::get('/profile', [ProfileController::class, 'myProfile'])
@@ -84,5 +86,10 @@ Route::middleware('auth')->group(function () {
         ->name('updateProfileContact');
     Route::put('/profile/profile-contact/change-password', [ProfileController::class, 'changePassword'])
         ->name('changePassword');
-});
 
+    // Contracts
+    Route::get('/contract/{contract_id}/review', [DeliverWorkController::class, 'showReviewForm'])
+        ->name('contract.review');
+    Route::patch('/contract/{contract_id}/end', [DeliverWorkController::class, 'endContract'])
+        ->name('contract.end');
+});
