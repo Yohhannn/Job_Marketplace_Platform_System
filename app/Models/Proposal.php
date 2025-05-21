@@ -15,7 +15,7 @@ class Proposal extends Model
         'job_id',
         'user_id',
         'bid_amount',
-        'duration_id',
+        'duration_id', // Make sure this field exists in DB
         'letter',
         'status',
         'interview_date',
@@ -30,8 +30,14 @@ class Proposal extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function job(): BelongsTo
     {
         return $this->belongsTo(Job::class);
+    }
+
+    public function duration(): BelongsTo
+    {
+        return $this->belongsTo(Duration::class, 'duration_id');
     }
 }
