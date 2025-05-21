@@ -60,6 +60,7 @@ class ProposalController
             'user',
             'role.role_category',
             'hourly.duration',
+            'fixedPrice.duration',
             'fixedPrice'
         ])->findOrFail($job_id);
 
