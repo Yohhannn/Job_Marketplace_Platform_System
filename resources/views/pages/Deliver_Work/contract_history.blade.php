@@ -316,6 +316,18 @@
         </div>
         <button class="close-button" onclick="hidePopup()">Close</button>
     </div>
+    @foreach ( $contracts as $cont)
+    <div class="proposal-card mb-3 border p-3 rounded bg-white shadow-sm">
+                        <p><b>Proposal To: {{ optional($cont->user)->first_name ?? 'Unknown' }}</b></p>
+                        <p>Status: <span class="badge bg-success">{{ ucfirst($cont->is_completed) }}</span></p>
+                        <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                        <a href="{{ route('deliverwork.viewcontractreview', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
+                           class="btn btn-primary view-details-btn">
+                            View Details
+                        </a>
+    </div>
+    @endforeach
+    
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

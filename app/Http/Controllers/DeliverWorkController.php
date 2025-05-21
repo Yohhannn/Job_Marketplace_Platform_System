@@ -59,7 +59,9 @@ class DeliverWorkController
         return view('pages.Deliver_Work.view_contract', compact('job', 'proposal', 'duration_id', 'isJobPoster'));
     }
     public function historyContracts(){
-        return view('pages.Deliver_Work.contract_history');
+        $user_id = Auth::user()->id;
+        $contracts = Contract::where('is_completed', true)->where('user_id', $user_id);
+        return view('pages.Deliver_Work.contract_history',compact('contracts'));
     }
 
     public function showReviewForm($contract_id)
@@ -77,7 +79,7 @@ class DeliverWorkController
         $contract->client_rating = $request->rating;
         $contract->client_feedback = $request->review_text;
         $contract->save();
-
+        $is_complete = Contract::where('is_completed',true)->where('id', $contract_id)->first();
         return redirect()->route('my-post-details', ['id' => $contract->job_id])
             ->with('success', 'Contract ended successfully and review submitted.');
     }

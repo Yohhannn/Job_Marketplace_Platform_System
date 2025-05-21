@@ -70,6 +70,13 @@
             flex-direction: row-reverse;
             justify-content: flex-end;
         }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
         .star-rating input {
             display: none;
         }

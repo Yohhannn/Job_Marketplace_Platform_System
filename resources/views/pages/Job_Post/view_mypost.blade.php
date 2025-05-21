@@ -131,6 +131,7 @@
 <body>
 <header class="bg-white py-3 border-bottom">
     <div class="container">
+
         <nav class="navbar navbar-expand-lg navbar-light">
             <a class="navbar-brand" href="#">INHIRE</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -241,7 +242,10 @@
                     <div id="review-proposals-list">
                         @forelse($job_post->proposals->whereIn('status', ['pending', 'interviewed']) as $proposal)
                             <a style="color: black" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}" class="text-decoration-none">
-                                    <div class="proposal-card mb-3 border p-3 rounded">
+                            @php
+                                $contract = $job_post->contracts->where('user_id', $proposal->user_id)->first();
+                            @endphp        
+                            <div class="proposal-card mb-3 border p-3 rounded">
                                     <p><b>Proposal From {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
                                     <p>Status:
                                         <span class="badge bg-{{ $proposal->status === 'pending' ? 'warning text-dark' : ($proposal->status === 'accepted' ? 'success' : 'secondary') }}">
@@ -258,7 +262,7 @@
                                 ]) }}" class="btn btn-primary btn-sm view-details-btn">
                                             View Details
                                         </a>
-
+                                        @if (!$proposal->status === 'accepted')
                                         @if(in_array($proposal->status, ['pending', 'interviewed']))
                                             <button
                                                 class="btn btn-info btn-sm interview-btn"
@@ -288,6 +292,7 @@
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-success btn-sm hire-btn">Hire</button>
                                             </form>
+                                        @endif                                                                               
                                         @endif
                             </a>
                                 </div>
@@ -347,13 +352,8 @@
 
                             <!-- Buttons outside the <a> tag -->
                             <div class="d-flex">
-                                @php
-                                    $contract = $job_post->contracts->where('user_id', $proposal->user_id)->first();
-                                @endphp
-                                @if($contract)
-                                    <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" class="btn btn-danger me-2">End Contract</a>
-                                @else
-                                    <button class="btn btn-danger me-2" disabled>End Contract</button>
+                                @if(!$contract->is_completed)
+                                    <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" class="btn btn-danger me-2">End Contract</a>                  
                                 @endif
 
                                 <a href="{{ route('proposaldetails', [
