@@ -274,7 +274,7 @@
                             </a>
                         @else
                             <!-- User is a proposer -->
-                            <a href="{{ route('findwork.myproposals') }}" class="btn btn-primary mt-3">
+                            <a href="{{ route('deliverwork.activecontracts') }}" class="btn btn-primary mt-3">
                                 ← Back
                             </a>
                         @endif
@@ -283,6 +283,39 @@
             </div>
         </div>
     </div>
+    <section class="mb-4">
+        <h2 class="section-title">Submit Review</h2>
+        <p class="lead">Please provide a review for the freelancer based on your experience working together.</p>
+    </section>
+    <section class="review-section">
+{{--        <form action="{{ route('contract.review.submit', ['contract_id' => $contract->id]) }}" method="POST">--}}
+{{--            @csrf--}}
+{{--            @method('PATCH')--}}
+
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" required />
+                    <label for="star5" title="5 stars"></label>
+                    <input type="radio" id="star4" name="rating" value="4" />
+                    <label for="star4" title="4 stars"></label>
+                    <input type="radio" id="star3" name="rating" value="3" />
+                    <label for="star3" title="3 stars"></label>
+                    <input type="radio" id="star2" name="rating" value="2" />
+                    <label for="star2" title="2 stars"></label>
+                    <input type="radio" id="star1" name="rating" value="1" />
+                    <label for="star1" title="1 star"></label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="review_text" class="form-label">Review</label>
+                <textarea class="form-control" id="review_text" name="review_text" rows="5" required placeholder="Please provide your feedback about working with this freelancer..."></textarea>
+            </div>
+
+{{--            <button type="submit" class="btn btn-primary mt-3">Submit Review</button>--}}
+{{--        </form>--}}
+    </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>

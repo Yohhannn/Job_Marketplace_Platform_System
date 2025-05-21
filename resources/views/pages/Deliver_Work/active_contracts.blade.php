@@ -190,12 +190,29 @@
     </section>
 
     <section id="contracts-list">
-        <div class="no-contracts-message">
-            You don't have any active contracts yet.
-            <br>
-            <a href="{{ route('home') }}" class="btn btn-primary mt-2">Search for new projects</a>
-        </div>
+        @if ($proposals && $proposals->count() > 0)
+            @foreach ($proposals as $proposal)
+                @if ($proposal->status === 'accepted')
+                    <div class="proposal-card mb-3 border p-3 rounded bg-white shadow-sm">
+                        <p><b>Proposal To: {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}</b></p>
+                        <p>Status: <span class="badge bg-success">{{ ucfirst($proposal->status) }}</span></p>
+                        <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                        <a href="{{ route('deliverwork.viewcontractreview', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
+                           class="btn btn-primary view-details-btn">
+                            View Details
+                        </a>
+                    </div>
+                @endif
+            @endforeach
+        @else
+            <div class="no-contracts-message text-center text-muted">
+                You don't have any active contracts yet.
+                <br>
+                <a href="{{ route('home') }}" class="btn btn-primary mt-2">Search for new projects</a>
+            </div>
+        @endif
     </section>
+
 </main>
 
 <footer class="bg-light py-3 border-top">
