@@ -7,6 +7,7 @@ use App\Models\Job;
 use Illuminate\Http\Request;
 use App\Models\Contract;
 use Illuminate\Support\Facades\Auth;
+
 class DeliverWorkController
 {
     //
@@ -81,4 +82,5 @@ class DeliverWorkController
         return redirect()->route('my-post-details', ['id' => $contract->job_id])
             ->with('success', 'Contract ended successfully and review submitted.');
     }
+
 }

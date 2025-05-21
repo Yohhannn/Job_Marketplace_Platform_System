@@ -251,11 +251,11 @@
                                     <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
 
                                     <div class="d-flex justify-content-between">
-                                        <a href="{{ route('proposaldetails', [
-                                    'job_id' => $proposal->job_id,
-                                    'user_id' => $proposal->user_id,
-                                    'duration_id' => optional($proposal->duration)->id
-                                ]) }}" class="btn btn-primary btn-sm view-details-btn">
+                                            <a href="{{ route('proposaldetails', [
+                                        'job_id' => $proposal->job_id,
+                                        'user_id' => $proposal->user_id,
+                                        'duration_id' => optional($proposal->duration)->id
+                                    ]) }}" class="btn btn-primary btn-sm view-details-btn">
                                             View Details
                                         </a>
 
@@ -271,7 +271,7 @@
                                         @endif
 
                                         @if($proposal->status === 'interviewed')
-                                            <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
+                                            <p>Interview Date: {{ Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
                                             <p>Interview Time: {{ $proposal->interview_time }}</p>
                                         @endif
 
