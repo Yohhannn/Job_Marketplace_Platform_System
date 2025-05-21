@@ -100,86 +100,6 @@
             line-height: 1.7;
             margin-bottom: 30px;
         }
-        .client-info {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-        .client-info-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-        .client-name {
-            font-size: 18px;
-            color: #34495e;
-            margin-bottom: 10px;
-        }
-        .ratings {
-            font-size: 14px;
-            color: #f39c12;
-            margin-bottom: 10px;
-        }
-        .reviews-count {
-            font-size: 14px;
-            color: #7f8c8d;
-            margin-bottom: 10px;
-        }
-        .posts-count, .hires-count {
-            font-size: 14px;
-            color: #7f8c8d;
-            margin-bottom: 10px;
-        }
-        .history-section {
-            margin-bottom: 30px;
-        }
-        .history-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-        .history-card {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        .history-card-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #34495e;
-            margin-bottom: 10px;
-        }
-        .history-card-date {
-            font-size: 12px;
-            color: #95a5a6;
-            margin-bottom: 10px;
-            align-self: flex-start;
-        }
-        .history-card-description {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.7;
-        }
-        .history-card-fixed-price{
-            font-size: 12px;
-            color: #95a5a6;
-            margin-bottom: 10px;
-            align-self: flex-start;
-        }
-
-        .star-rating {
-            display: inline-flex;
-            flex-direction: row-reverse;
-            gap: 0.5rem;
-        }
 
         .star-rating input {
             display: none;
@@ -195,14 +115,6 @@
         .star-rating label:hover ~ label,
         .star-rating input:checked ~ label {
             color: #ffd700;
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .review-submit-button {
-            margin-top: 1rem;
         }
 
         .avatar {

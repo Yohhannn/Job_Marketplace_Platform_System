@@ -253,11 +253,11 @@
                                     <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
 
                                     <div class="d-flex justify-content-between">
-                                        <a href="{{ route('proposaldetails', [
-                                    'job_id' => $proposal->job_id,
-                                    'user_id' => $proposal->user_id,
-                                    'duration_id' => optional($proposal->duration)->id
-                                ]) }}" class="btn btn-primary btn-sm view-details-btn">
+                                            <a href="{{ route('proposaldetails', [
+                                        'job_id' => $proposal->job_id,
+                                        'user_id' => $proposal->user_id,
+                                        'duration_id' => optional($proposal->duration)->id
+                                    ]) }}" class="btn btn-primary btn-sm view-details-btn">
                                             View Details
                                         </a>
 
@@ -273,7 +273,7 @@
                                         @endif
 
                                         @if($proposal->status === 'interviewed')
-                                            <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
+                                            <p>Interview Date: {{ Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
                                             <p>Interview Time: {{ $proposal->interview_time }}</p>
                                         @endif
 
@@ -339,16 +339,22 @@
                     <p class="proposal-count">Number of hired candidates: {{ $job_post->proposals->where('status', 'accepted')->count() }}</p>
                     <div id="hired-list">
                         @forelse($job_post->proposals->where('status', 'accepted') as $proposal)
-                            <div class="proposal-card mb-3 border p-3 rounded">
-                                <p><b>Hired: {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
-                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
-                                <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
-                                <button class="btn btn-danger me-2 end-contract-btn">End Contract</button>
-                                <button class="btn btn-secondary view-details-btn">View</button>
-                            </div>
-                        @empty
-                            <p>No hired candidates yet.</p>
-                        @endforelse
+                            <a style="color: black" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}" class="text-decoration-none">
+                                    <div class="proposal-card mb-3 border p-3 rounded">
+                                        <p><b>Hired: {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
+                                        <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                                        <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
+                                        <button class="btn btn-danger me-2 end-contract-btn">End Contract</button>
+                                        <button href="{{ route('proposaldetails', [
+                                            'job_id' => $proposal->job_id,
+                                            'user_id' => $proposal->user_id,
+                                            'duration_id' => optional($proposal->duration)->id
+                                        ]) }}" class="btn btn-secondary view-details-btn">
+                                                View Details</button>
+                                @empty
+                                    <p>No hired candidates yet.</p>
+                                @endforelse
+                            </a>
                     </div>
                 </div>
             </div>
