@@ -265,8 +265,7 @@
         <div class="job-post-card">
         <h3 class="job-title">{{ $recent->title }}</h3>
         <div class="job-summary">
-                Posted By: {{ $recent->user->first_name}}{{$recent->user->middle_name ? ' '.$recent->user->middle_name : ''}}{{ $recent->user->last_name }}
-            </div>
+            Posted By: {{ $recent->user->first_name }}{{ $recent->user->middle_name ? ' '.$recent->user->middle_name : '' }} {{ $recent->user->last_name }}            </div>
             <div class="job-summary">
                 Tags: <span class="tag">{{ $recent->type }}</span> <span class="tag">{{$recent->role->role_category->name}}</span>
             </div>

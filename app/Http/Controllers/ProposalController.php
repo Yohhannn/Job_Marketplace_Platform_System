@@ -174,4 +174,17 @@ class ProposalController
 
         return redirect()->back()->with('success', 'Candidate hired successfully.');
     }
+
+    public function submitReview(Request $request, $contract_id)
+    {
+        $contract = Contract::findOrFail($contract_id);
+
+        // Update contract with review data
+        $contract->is_completed = true;
+        $contract->talent_rating = $request->rating;
+        $contract->talent_feedback = $request->review_text;
+        $contract->save();
+        return redirect()->route('deliverwork.activecontracts')
+            ->with('success', 'Review submitted.');
+    }
 }

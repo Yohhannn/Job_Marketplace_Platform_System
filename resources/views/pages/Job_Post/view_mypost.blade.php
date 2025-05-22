@@ -333,29 +333,40 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="hired">
-                <div class="proposal-section">
-                    <h3 class="proposal-title">Hired Candidates</h3>
-                    <p class="proposal-count">Number of hired candidates: {{ $job_post->proposals->where('status', 'accepted')->count() }}</p>
-                    <div id="hired-list">
-                        @forelse($job_post->proposals->where('status', 'accepted') as $proposal)
-                            <a style="color: black" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}" class="text-decoration-none">
-                                    <div class="proposal-card mb-3 border p-3 rounded">
-                                        <p><b>Hired: {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
-                                        <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
-                                        <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
-                                        <button class="btn btn-danger me-2 end-contract-btn">End Contract</button>
-                                        <button href="{{ route('proposaldetails', [
-                                            'job_id' => $proposal->job_id,
-                                            'user_id' => $proposal->user_id,
-                                            'duration_id' => optional($proposal->duration)->id
-                                        ]) }}" class="btn btn-secondary view-details-btn">
-                                                View Details</button>
-                                @empty
-                                    <p>No hired candidates yet.</p>
-                                @endforelse
+        <div class="tab-pane fade" id="hired">
+            <div class="proposal-section">
+                <h3 class="proposal-title">Hired Candidates</h3>
+                <p class="proposal-count">Number of hired candidates: {{ $job_post->proposals->where('status', 'accepted')->count() }}</p>
+                <div id="hired-list">
+                    @forelse($job_post->proposals->where('status', 'accepted') as $proposal)
+                        <div class="proposal-card mb-3 border p-3 rounded">
+                            <!-- Link only around the text -->
+                            <a style="color: black; text-decoration: none;" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}">
+                                <p><b>Hired: {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
+                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
+                                <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
                             </a>
-                    </div>
+                            @php
+                                $contract = $job_post->contracts->where('user_id', $proposal->user_id)->first();
+                            @endphp
+                                <!-- Buttons outside the <a> tag -->
+                            <div class="d-flex">
+                                @if(!$contract->is_completed)
+                                    <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" class="btn btn-danger me-2">End Contract</a>
+                                @endif
+
+                                <a href="{{ route('proposaldetails', [
+                            'job_id' => $proposal->job_id,
+                            'user_id' => $proposal->user_id,
+                            'duration_id' => optional($proposal->duration)->id
+                        ]) }}" class="btn btn-secondary view-details-btn">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                        <p>No hired candidates yet.</p>
+                    @endforelse
                 </div>
             </div>
         </div>

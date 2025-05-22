@@ -326,10 +326,19 @@
                         Client Name:
                         {{ $job_post->user?->first_name . ' ' . ($job_post->user?->middle_name ? $job_post->user->middle_name . ' ' : '') . $job_post->user?->last_name ?? 'Unknown' }}
                     </p>
-                    <p class="ratings">Ratings: <span class="text-warning">★★★★☆</span> (4.5)</p>
-                    <p class="reviews-count">Number of Reviews: 25</p>
-                    <p class="posts-count">Number of Posts: {{ optional($job_post->user)->jobs->count() ?? 0 }}</p>
-                    <p class="hires-count">Number of Hires: 5</p>
+                    <p class="ratings">Ratings: <span class="text-warning">
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= $clientStats['averageRating'])
+                                ★
+                            @else
+                                ☆
+                            @endif
+                        @endfor
+                        </span> ({{ $clientStats['averageRating'] }})
+                    </p>
+                    <p class="reviews-count">Number of Reviews: {{ $clientStats['reviewCount'] }}</p>
+                    <p class="posts-count">Number of Posts: {{ $clientStats['postCount'] }}</p>
+                    <p class="hires-count">Number of Hires: {{ $clientStats['hireCount'] }}</p>
                 </div>
             </div>
         </div>
@@ -337,40 +346,39 @@
         <div class="row">
             <div class="col-lg-12">
                 <section class="history-section">
-                    <h2 class="history-title">Client's Recent History (25 Reviews)</h2>
-                    <div class="history-card">
-                        <p class="history-card-date">Date Reviewed: 2024-01-15</p>
-                        <p class="history-card-fixed-price">Fixed Price: $50</p>
-                        <h3 class="history-card-title">Feedback for Data Entry Project</h3>
-                        <span class="text-warning">
-                                <label for="star5">★★★★★</label><span> 5.0</span>
-                            </span>
-                        <p class="history-card-description">
-                            "Excellent work, very fast and accurate.  Will definitely hire again."
-                        </p>
-                    </div>
-                    <div class="history-card">
-                        <p class="history-card-date">Date Reviewed: 2023-12-01</p>
-                        <p class="history-card-fixed-price">Fixed Price: $100</p>
-                        <h3 class="history-card-title">Feedback for Virtual Assistant</h3>
-                        <span class="text-warning">
-                                <label for="star5">★★★★☆</label><span> 4.0</span>
-                            </span>
-                        <p class="history-card-description">
-                            "Great communication and delivered on time.  Thank you!"
-                        </p>
-                    </div>
-                    <div class="history-card">
-                        <p class="history-card-date">Date Reviewed: 2023-11-01</p>
-                        <p class="history-card-fixed-price">Fixed Price: $75</p>
-                        <h3 class="history-card-title">Feedback for Data Cleaning</h3>
-                        <span class="text-warning">
-                                <label for="star5">★★★☆☆</label><span> 3.0</span>
-                            </span>
-                        <p class="history-card-description">
-                            "Good attention to detail. Provided a very clean dataset."
-                        </p>
-                    </div>
+                    <h2 class="history-title">Client's Recent History ({{ $clientStats['reviewCount'] }} Reviews)</h2>
+
+                    @if(count($clientReviews) > 0)
+                        @foreach($clientReviews as $review)
+                            <div class="history-card">
+                                <p class="history-card-fixed-price">
+                                    @if($review->job->type === 'fixed-price')
+                                        Fixed Price: ${{ number_format($review->pay_amount, 2) }}
+                                    @else
+                                        Hourly Rate: ${{ number_format($review->pay_amount, 2) }}/hr
+                                    @endif
+                                </p>
+                                <h3 class="history-card-title">Feedback for {{ $review->job->title }}</h3>
+                                <span class="text-warning">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $review->client_rating)
+                                            ★
+                                        @else
+                                            ☆
+                                        @endif
+                                    @endfor
+                                    <span> {{ $review->client_rating }}.0</span>
+                                </span>
+                                <p class="history-card-description">
+                                    "{{ $review->client_feedback }}"
+                                </p>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="alert alert-info">
+                            This client has no reviews yet.
+                        </div>
+                    @endif
                 </section>
             </div>
         </div>
