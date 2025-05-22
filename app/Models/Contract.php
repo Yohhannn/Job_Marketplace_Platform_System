@@ -17,6 +17,7 @@ class Contract extends Model
         'talent_feedback',
         'client_rating',
         'client_feedback',
+
     ];
 
     protected $casts = [
@@ -88,4 +89,5 @@ class Contract extends Model
 
         return $avg ? round($avg, 1) : 0;
     }
+
 }
