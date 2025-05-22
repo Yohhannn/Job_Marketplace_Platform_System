@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Proposal;
 use App\Models\Job;
+use App\Models\Contract;
 use Illuminate\Http\Request;
 use App\Models\Contract;
 use Illuminate\Support\Facades\Auth;
@@ -57,7 +58,12 @@ class DeliverWorkController
                 ->firstOrFail();
         }
 
-        return view('pages.Deliver_Work.view_contract', compact('job', 'proposal', 'duration_id', 'isJobPoster'));
+        // Fetch the contract associated with this job and user
+        $contract = Contract::where('job_id', $job_id)
+            ->where('user_id', $proposal->user_id)
+            ->first();
+
+        return view('pages.Deliver_Work.view_contract', compact('job', 'proposal', 'duration_id', 'isJobPoster', 'contract'));
     }
     public function historyContracts(){
         return view('pages.Deliver_Work.contract_history');

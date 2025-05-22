@@ -101,28 +101,39 @@
             margin-bottom: 30px;
         }
 
-        .star-rating input {
-            display: none;
-        }
-
-        .star-rating label {
-            cursor: pointer;
-            font-size: 2rem;
-            color: #ddd;
-        }
-
-        .star-rating label:hover,
-        .star-rating label:hover ~ label,
-        .star-rating input:checked ~ label {
-            color: #ffd700;
-        }
-
         .avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             margin-right: 1rem;
             object-fit: cover;
+        }
+
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            margin-right: 5px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="%23d4d4d4"/></svg>');
+        }
+        .star-rating input:checked ~ label {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="%23ffc107"/></svg>');
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="%23ffc107"/></svg>');
         }
     </style>
 </head>
@@ -223,9 +234,9 @@
                 <div class="left-section">
                     <h2 class="left-section-title">Job Details</h2>
 
-                    @if ($job->job_type === 'hourly')
+                    @if ($job->type === 'hourly')
                         <p>Duration: {{ optional(optional($job->hourly)->duration)->name ?? 'Not specified' }}</p>
-                    @elseif ($job->job_type === 'fixed')
+                    @elseif ($job->type === 'fixed-price')
                         @php
                             $duration = optional($job->fixedPrice)->duration;
                             $durationName = optional($duration)->name;
@@ -267,17 +278,6 @@
                             <label for="coverLetter">Cover Letter</label>
                             <textarea class="form-control" id="coverLetter" rows="5" readonly>{{ $proposal->letter ?? old('letter') }}</textarea>
                         </div>
-                        @if(Auth::check() && $job->user_id === Auth::id())
-                            <!-- User is the job creator -->
-                            <a href="{{ route('my-post-details') }}?id={{ $job->id }}" class="btn btn-primary mt-3">
-                                ← Back
-                            </a>
-                        @else
-                            <!-- User is a proposer -->
-                            <a href="{{ route('deliverwork.activecontracts') }}" class="btn btn-primary mt-3">
-                                ← Back
-                            </a>
-                        @endif
                     </form>
                 </div>
             </div>
@@ -288,33 +288,49 @@
         <p class="lead">Please provide a review for the freelancer based on your experience working together.</p>
     </section>
     <section class="review-section">
-{{--        <form action="{{ route('contract.review.submit', ['contract_id' => $contract->id]) }}" method="POST">--}}
-{{--            @csrf--}}
-{{--            @method('PATCH')--}}
-
+        @if(isset($contract))
+        <form action="{{ route('contract.review.submit', ['contract_id' => $contract->id]) }}" method="POST">
+            @csrf
+            @method('PATCH')
+        @else
+        <div class="alert alert-warning">
+            No contract found for this job. Please contact support if you believe this is an error.
+        </div>
+        <form action="#" method="POST" class="d-none">
+            @csrf
+            @method('PATCH')
+        @endif
             <div class="mb-3">
                 <label for="rating" class="form-label">Rating</label>
                 <div class="star-rating">
-                    <input type="radio" id="star5" name="rating" value="5" required />
+                    <input type="radio" id="star5" name="rating" value="5" required {{ !isset($contract) ? 'disabled' : '' }} />
                     <label for="star5" title="5 stars"></label>
-                    <input type="radio" id="star4" name="rating" value="4" />
+                    <input type="radio" id="star4" name="rating" value="4" {{ !isset($contract) ? 'disabled' : '' }} />
                     <label for="star4" title="4 stars"></label>
-                    <input type="radio" id="star3" name="rating" value="3" />
+                    <input type="radio" id="star3" name="rating" value="3" {{ !isset($contract) ? 'disabled' : '' }} />
                     <label for="star3" title="3 stars"></label>
-                    <input type="radio" id="star2" name="rating" value="2" />
+                    <input type="radio" id="star2" name="rating" value="2" {{ !isset($contract) ? 'disabled' : '' }} />
                     <label for="star2" title="2 stars"></label>
-                    <input type="radio" id="star1" name="rating" value="1" />
+                    <input type="radio" id="star1" name="rating" value="1" {{ !isset($contract) ? 'disabled' : '' }} />
                     <label for="star1" title="1 star"></label>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="review_text" class="form-label">Review</label>
-                <textarea class="form-control" id="review_text" name="review_text" rows="5" required placeholder="Please provide your feedback about working with this freelancer..."></textarea>
+                <textarea class="form-control" id="review_text" name="review_text" rows="5" required placeholder="Please provide your feedback about working with this freelancer..." {{ !isset($contract) ? 'disabled' : '' }}></textarea>
             </div>
 
-{{--            <button type="submit" class="btn btn-primary mt-3">Submit Review</button>--}}
-{{--        </form>--}}
+                <!-- User is a proposer -->
+                <a href="{{ route('deliverwork.activecontracts') }}" class="btn btn-primary mt-3">
+                    ← Back
+                </a>
+            <button type="submit" class="btn btn-primary mt-3" {{ !isset($contract) ? 'disabled' : '' }}>Submit Review</button>
+        @if(isset($contract))
+        </form>
+        @else
+        </form>
+        @endif
     </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

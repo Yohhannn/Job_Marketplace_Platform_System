@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/proposal/interview/{proposal}', [ProposalController::class, 'scheduleInterview'])
         ->name('proposal.interview');
 
+
     // Show proposer's full info
     Route::get('/user/proposer/{user_id}/job/{job_id}', [JobPostController::class, 'showProposerInfo'])
         ->name('user.proposer-info');
@@ -70,6 +71,8 @@ Route::middleware('auth')->group(function () {
         ->name('deliverwork.historycontracts');
     Route::get('/deliver-work/active-contracts/contract-info/review', [DeliverWorkController::class, 'viewContractReview'])
         ->name('deliverwork.viewcontractreview');
+    Route::patch('/contract/{contract_id}/review', [ProposalController::class, 'submitReview'])
+        ->name('contract.review.submit');
 
     //Profile
     Route::get('/profile', [ProfileController::class, 'myProfile'])

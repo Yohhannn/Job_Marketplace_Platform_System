@@ -250,21 +250,21 @@
         </div>
 
         <div id="most-recent" class="job-listings" style="display: none;">
-            @forelse ($recent_post as $recent)
-                <div class="job-post-card">
-                    <h3 class="job-title">{{ $recent->title }}</h3>
-                    <div class="job-summary">Posted By: {{ $recent->user->first_name }}{{ $recent->user->middle_name ? ' '.$recent->user->middle_name : '' }} {{ $recent->user->last_name }}</div>
-                    <div class="job-summary">Tags:
-                        <span class="tag">{{ $recent->type }}</span>
-                        <span class="tag">{{ $recent->role->role_category->name }}</span>
-                    </div>
-                    <p class="job-description">{{ $recent->description }}</p>
-                    <div class="job-details">Posted: {{ $recent->created_at->diffForHumans() }}</div>
-                    <a class="btn btn-primary view-more-button" href="{{ route('other-post-details', ['id' => $recent->id]) }}">View More</a>
-                </div>
-            @empty
-                <p>No recent jobs found.</p>
-            @endforelse
+        @foreach ($recent_post as $recent)
+        <div class="job-post-card">
+        <h3 class="job-title">{{ $recent->title }}</h3>
+        <div class="job-summary">
+            Posted By: {{ $recent->user->first_name }}{{ $recent->user->middle_name ? ' '.$recent->user->middle_name : '' }} {{ $recent->user->last_name }}            </div>
+            <div class="job-summary">
+                Tags: <span class="tag">{{ $recent->type }}</span> <span class="tag">{{$recent->role->role_category->name}}</span>
+            </div>
+            <p class="job-description">{{ $recent->description }}</p>
+            <div class="job-details">
+                Posted: {{ $recent->created_at->diffForHumans() }}
+            </div>
+            <a class="btn btn-primary view-more-button" href="{{ route('other-post-details', ['id' => $recent->id]) }}">View More</a>
+        </div>
+            @endforeach
         </div>
     </section>
 </main>

@@ -223,9 +223,9 @@
                 <div class="left-section">
                     <h2 class="left-section-title">Job Details</h2>
 
-                    @if ($job->job_type === 'hourly')
+                    @if ($job->type === 'hourly')
                         <p>Duration: {{ optional(optional($job->hourly)->duration)->name ?? 'Not specified' }}</p>
-                    @elseif ($job->job_type === 'fixed')
+                    @elseif ($job->type === 'fixed-price')
                         @php
                             $duration = optional($job->fixedPrice)->duration;
                             $durationName = optional($duration)->name;

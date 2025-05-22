@@ -344,16 +344,13 @@
                                 <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
                                 <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
                             </a>
-
-                            <!-- Buttons outside the <a> tag -->
+                            @php
+                                $contract = $job_post->contracts->where('user_id', $proposal->user_id)->first();
+                            @endphp
+                                <!-- Buttons outside the <a> tag -->
                             <div class="d-flex">
-                                @php
-                                    $contract = $job_post->contracts->where('user_id', $proposal->user_id)->first();
-                                @endphp
-                                @if($contract)
+                                @if(!$contract->is_completed)
                                     <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" class="btn btn-danger me-2">End Contract</a>
-                                @else
-                                    <button class="btn btn-danger me-2" disabled>End Contract</button>
                                 @endif
 
                                 <a href="{{ route('proposaldetails', [

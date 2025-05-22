@@ -41,7 +41,17 @@ class JobPostController
             'fixedPrice'
         ])->findOrFail($id);
 
-        return view('pages.Job_Post.view_otherpost', compact('job_post'));
+        // Get client statistics
+        $client_id = $job_post->user_id;
+        $clientReviews = \App\Models\Contract::getClientReviews($client_id);
+        $clientStats = [
+            'reviewCount' => \App\Models\Contract::countClientReviews($client_id),
+            'postCount' => \App\Models\Contract::countClientPosts($client_id),
+            'hireCount' => \App\Models\Contract::countClientHires($client_id),
+            'averageRating' => \App\Models\Contract::getClientAverageRating($client_id)
+        ];
+
+        return view('pages.Job_Post.view_otherpost', compact('job_post', 'clientReviews', 'clientStats'));
     }
 
     public function createJobPost()
