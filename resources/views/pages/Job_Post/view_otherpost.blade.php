@@ -160,12 +160,7 @@
             color: #34495e;
             margin-bottom: 10px;
         }
-        .history-card-date {
-            font-size: 12px;
-            color: #95a5a6;
-            margin-bottom: 10px;
-            align-self: flex-start;
-        }
+
         .history-card-description {
             font-size: 14px;
             color: #666;
@@ -346,10 +341,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <section class="history-section">
-                    <h2 class="history-title">Client's Recent History ({{ $clientStats['reviewCount'] }} Reviews)</h2>
-
-                    @if(count($clientReviews) > 0)
-                        @foreach($clientReviews as $review)
+                    <h2 class="history-title">Reviews About This Client ({{ $clientStats['reviewCount'] }} Reviews)</h2>
+                    @if(count($talentReviews) > 0)
+                        @foreach($talentReviews as $review)
                             <div class="history-card">
                                 <p class="history-card-fixed-price">
                                     @if($review->job->type === 'fixed-price')
@@ -360,23 +354,23 @@
                                 </p>
                                 <h3 class="history-card-title">Feedback for {{ $review->job->title }}</h3>
                                 <span class="text-warning">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= $review->client_rating)
+                @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $review->talent_rating)
                                             ★
                                         @else
                                             ☆
                                         @endif
                                     @endfor
-                                    <span> {{ $review->client_rating }}.0</span>
-                                </span>
+                <span> {{ $review->talent_rating }}.0</span>
+            </span>
                                 <p class="history-card-description">
-                                    "{{ $review->client_feedback }}"
+                                    "{{ $review->talent_feedback }}"
                                 </p>
                             </div>
                         @endforeach
                     @else
                         <div class="alert alert-info">
-                            This client has no reviews yet.
+                            This client has not received any feedback yet.
                         </div>
                     @endif
                 </section>

@@ -336,37 +336,40 @@
         <div class="tab-pane fade" id="hired">
             <div class="proposal-section">
                 <h3 class="proposal-title">Hired Candidates</h3>
-                <p class="proposal-count">Number of hired candidates: {{ $job_post->proposals->where('status', 'accepted')->count() }}</p>
+
+                {{-- Show total number of contracts instead of proposals --}}
+                <p class="proposal-count">
+                    Number of hired candidates: {{ $job_post->contracts->count() }}
+                </p>
+
                 <div id="hired-list">
-                    @forelse($job_post->proposals->where('status', 'accepted') as $proposal)
-                        <div class="proposal-card mb-3 border p-3 rounded">
-                            <!-- Link only around the text -->
-                            <a style="color: black; text-decoration: none;" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}">
-                                <p><b>Hired: {{ optional($proposal->user)->first_name ?? 'Unknown' }}</b></p>
-                                <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
-                                <p>Contract Start Date: {{ now()->format('M d, Y') }}</p>
-                            </a>
-                            @php
-                                $contract = $job_post->contracts->where('user_id', $proposal->user_id)->first();
-                            @endphp
-                                <!-- Buttons outside the <a> tag -->
-                            <div class="d-flex">
-                                @if(!$contract->is_completed)
-                                    <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" class="btn btn-danger me-2">End Contract</a>
-                                @endif
+                    {{-- Loop through contracts directly --}}
+                    @if($job_post->contracts->isNotEmpty())
+                        @foreach($job_post->contracts as $contract)
+                            <div class="proposal-card mb-3 border p-3 rounded">
+                                <a style="color: black; text-decoration: none;" href="{{ route('user.proposer-info', ['user_id' => $contract->user_id, 'job_id' => $contract->job_id]) }}">
+                                    <p><b>Hired: {{ optional($contract->user)->first_name ?? 'Unknown' }}</b></p>
+                                    <p>Contract Date: {{ $contract->created_at->format('M d, Y') }}</p>
+                                </a>
+
+
+                                    @if(!$contract->is_completed)
+                                        <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" class="btn btn-danger me-2">End Contract</a>
+                                    @endif
+
 
                                 <a href="{{ route('proposaldetails', [
-                            'job_id' => $proposal->job_id,
-                            'user_id' => $proposal->user_id,
-                            'duration_id' => optional($proposal->duration)->id
+                            'job_id' => $contract->job_id,
+                            'user_id' => $contract->user_id,
+                            'duration_id' => optional($contract->duration)->id
                         ]) }}" class="btn btn-secondary view-details-btn">
                                     View Details
                                 </a>
                             </div>
-                        </div>
-                    @empty
-                        <p>No hired candidates yet.</p>
-                    @endforelse
+                        @endforeach
+                    @else
+                        <p>No contracts found.</p>
+                    @endif
                 </div>
             </div>
         </div>

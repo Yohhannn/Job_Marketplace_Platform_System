@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\EnglishLevel;
 use App\Models\ExperienceLevel;
-use App\Models\Skill;
 use Illuminate\Http\Request;
+use App\Models\Skill;
+use App\Models\Contract;
 use Illuminate\Support\Str;
 
 class ProfileController
 {
-    public function myProfile(){
+    public function myProfile(Request $request){
         $user = auth()->user();
-        return view('pages.Profile.profile', compact('user'));
+        $id = $request->query('id') ?? $user->id;
+
+        // Get all contracts where the user is the talent (user_id is the talent)
+        // and the client (job->user_id) gave a review
+        $contracts = Contract::where('user_id', $id)
+            ->whereNotNull('client_rating')
+            ->whereNotNull('client_feedback')
+            ->with(['job']) // Load job relationship to access job title
+            ->get();
+
+        return view('pages.Profile.profile', compact('user','contracts'));
     }
 
     public function myProfileSettings(){
@@ -81,4 +92,6 @@ class ProfileController
         ]);
         return redirect()->back()->with('success', 'Password changed successfully.');
     }
+
+
 }

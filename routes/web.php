@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         ->name('proposal.interview');
 
 
+
     // Show proposer's full info
     Route::get('/user/proposer/{user_id}/job/{job_id}', [JobPostController::class, 'showProposerInfo'])
         ->name('user.proposer-info');

@@ -16,11 +16,20 @@ class HomeController
         }
 
         $user = Auth::user();
-        $job = Job::with('user','role','role.role_category')->get();
-        $best_match = $job->filter(function ($job) use ($user) {
-            return ($job->english_level_id === $user->english_level_id && $job->english_level_id === $user->english_level_id);
+
+        // Fetch all jobs where user_id is NOT the current user's ID
+        $jobs = Job::where('user_id', '!=', $user->id)
+            ->with('user', 'role.role_category')
+            ->get();
+
+        // Filter best match jobs based on English level
+        $best_match = $jobs->filter(function ($job) use ($user) {
+            return $job->english_level_id === $user->english_level_id;
         });
-        $recent_post = $job->sortByDesc('created_at');
-        return view('pages.home', compact('user','best_match','recent_post'));
+
+        // Sort jobs by most recent
+        $recent_post = $jobs->sortByDesc('created_at');
+
+        return view('pages.home', compact('user', 'best_match', 'recent_post'));
     }
 }

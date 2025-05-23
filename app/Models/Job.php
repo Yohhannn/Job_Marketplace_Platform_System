@@ -35,6 +35,7 @@ class Job extends Model
             'last_viewed_at' => 'datetime',
         ];
     }
+
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -52,35 +53,10 @@ class Job extends Model
         return $this->hasMany(Proposal::class, 'job_id');
     }
 
-    public function applicants()
+    public function contracts(): HasMany
     {
-        return $this->hasManyThrough(
-            User::class,
-            Proposal::class,
-            'job_id',
-            'id',
-            'id',
-            'talent_id'
-        );
+        return $this->hasMany(\App\Models\Contract::class, 'job_id');
     }
-
-    public function contracts()
-    {
-        return $this->hasMany(Contract::class, 'job_id');
-    }
-
-    public function hires()
-    {
-        return $this->hasManyThrough(
-            User::class,
-            Contract::class,
-            'job_id',
-            'id',
-            'id',
-            'talent_id'
-        );
-    }
-
     public function skills(): BelongsToMany
     {
         return $this->belongsToMany(

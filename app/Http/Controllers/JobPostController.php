@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
 use App\Models\Duration;
 use App\Models\FixedPriceJob;
 use App\Models\HourlyJob;
@@ -16,15 +17,47 @@ use App\Models\RoleCategory;
 
 class JobPostController
 {
+    public function showProposerInfo($user_id, $job_id)
+    {
+        // Get the user (the proposer)
+        $user = User::with(['skills', 'experienceLevel', 'englishLevel'])->findOrFail($user_id);
+
+        // Get the job post (for return link or context)
+        $job = Job::with('user')->findOrFail($job_id);
+
+        // Get contracts where this user is the talent and client left feedback
+        $contracts = Contract::where('user_id', $user->id)
+            ->whereNotNull('client_rating')
+            ->whereNotNull('client_feedback')
+            ->with(['job'])
+            ->get();
+
+        // Return the user info view with all variables
+        return view('pages.Profile.users_info', compact('user', 'job', 'contracts'));
+    }
     public function myJobPosts()
     {
         $user = Auth::user();
         $job_posts = Job::where('user_id', $user->id)->with('user','role','role.role_category')->get();
         return view('pages.Find_Work.my_job_posts',compact('job_posts'));
     }
-    public function myPostDetails(Request $request){
+    public function myPostDetails(Request $request)
+    {
         $id = $request->query('id');
-        $job_post = Job::with('user', 'role','exp','eng', 'role.role_category')->findOrFail($id);
+
+        // Eager-load contracts and other required relationships
+        $job_post = Job::with([
+            'user',
+            'role',
+            'exp',
+            'eng',
+            'role.role_category',
+            'proposals' => function ($query) {
+                $query->where('status', 'accepted')->with(['user']);
+            },
+            'contracts'
+        ])->findOrFail($id);
+        // Debug proposals
         return view('pages.Job_Post.view_mypost', compact('job_post'));
     }
     public function otherPostDetails(Request $request)
@@ -41,17 +74,26 @@ class JobPostController
             'fixedPrice'
         ])->findOrFail($id);
 
-        // Get client statistics
+        // Get client ID from job poster
         $client_id = $job_post->user_id;
-        $clientReviews = \App\Models\Contract::getClientReviews($client_id);
+
+        // Fetch reviews written by talents about this client
+        $talentReviews = Contract::with('job')
+            ->whereHas('job', function ($query) use ($client_id) {
+                $query->where('user_id', $client_id); // Contracts for jobs posted by this client
+            })
+            ->whereNotNull('talent_feedback') // Only include contracts where talent gave feedback
+            ->get();
+
+        // Get client statistics
         $clientStats = [
-            'reviewCount' => \App\Models\Contract::countClientReviews($client_id),
-            'postCount' => \App\Models\Contract::countClientPosts($client_id),
-            'hireCount' => \App\Models\Contract::countClientHires($client_id),
-            'averageRating' => \App\Models\Contract::getClientAverageRating($client_id)
+            'reviewCount' => Contract::countClientReviews($client_id),
+            'postCount' => Job::where('user_id', $client_id)->count(),
+            'hireCount' => Contract::countClientHires($client_id),
+            'averageRating' => Contract::getTatlentAverageRating($client_id)
         ];
 
-        return view('pages.Job_Post.view_otherpost', compact('job_post', 'clientReviews', 'clientStats'));
+        return view('pages.Job_Post.view_otherpost', compact('job_post', 'talentReviews', 'clientStats'));
     }
 
     public function createJobPost()
@@ -125,15 +167,5 @@ class JobPostController
         }
     }
 
-    public function showProposerInfo($user_id, $job_id)
-    {
-        // Get the user (the proposer)
-        $user = User::with(['skills', 'experienceLevel', 'englishLevel'])->findOrFail($user_id);
 
-        // Get the job post (for return link or context)
-        $job = Job::with('user')->findOrFail($job_id);
-
-        // Return the user info view
-        return view('pages.Profile.users_info', compact('user', 'job'));
-    }
 }

@@ -114,7 +114,7 @@
         .small-description {
             font-size: 0.8rem;
             color: #666;
-            margin-bottom: none;
+            margin-bottom: 0;
             line-height: 1.2;
         }
         .text-charge{
@@ -228,6 +228,9 @@
     <div class="profile-header">
         <img src="/icons/icon_profile.png" alt="Profile Icon" class="profile-large">
         <h2>{{ $user->name }}</h2>
+        <a href="{{ route('myProfileSettings') }}" class="profile-settings-btn">
+            Profile Settings
+        </a>
     </div>
 
     <div class="row">
@@ -252,6 +255,42 @@
                     @endif
                 </div>
             </div>
+
+            <!-- Only show reviews section if $contracts is available -->
+            @if(isset($contracts))
+                <div class="row">
+                    <div class="col-lg-12">
+                        <section class="history-section">
+                            <h2 class="history-title">Client Reviews ({{ count($contracts) }} Reviews)</h2>
+                            @if(count($contracts) > 0)
+                                @foreach($contracts as $contract)
+                                    <div class="history-card">
+                                        <h3 class="history-card-title">Job Title: {{ $contract->job->title }}</h3>
+                                        <span class="text-warning">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $contract->client_rating)
+                                                    ★
+                                                @else
+                                                    ☆
+                                                @endif
+                                            @endfor
+                                            <span> {{ $contract->client_rating }}.0</span>
+                                        </span>
+                                        <p class="history-card-description">
+                                            "{{ $contract->client_feedback }}"
+                                        </p>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="alert alert-info">
+                                    This user has no client reviews yet.
+                                </div>
+                            @endif
+                        </section>
+                    </div>
+                </div>
+            @endif
+
         </div>
         <div class="col-md-4">
             <div class="profile-info-section">
@@ -271,8 +310,8 @@
         </div>
     </div>
     <a href="{{ route('my-post-details') }}?id={{ $job->id }}" class="btn btn-primary mt-3">Return to My Job Posts</a>
-</main>
 
+</main>
 <footer class="bg-light py-3 border-top">
     <div class="container text-center">
         <p>&copy; 2025 INHIRE. All rights reserved.</p>
