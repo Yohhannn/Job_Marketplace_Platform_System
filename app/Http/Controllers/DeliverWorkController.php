@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proposal;
 use App\Models\Job;
 use App\Models\Contract;
 use Illuminate\Http\Request;
-use App\Models\Proposal;
 use Illuminate\Support\Facades\Auth;
 
 class DeliverWorkController
@@ -64,7 +64,6 @@ class DeliverWorkController
 
         return view('pages.Deliver_Work.view_contract', compact('job', 'proposal', 'duration_id', 'isJobPoster', 'contract'));
     }
-
     public function historyContracts(){
         return view('pages.Deliver_Work.contract_history');
     }
@@ -84,6 +83,7 @@ class DeliverWorkController
         $contract->client_rating = $request->rating;
         $contract->client_feedback = $request->review_text;
         $contract->save();
+
         return redirect()->route('my-post-details', ['id' => $contract->job_id])
             ->with('success', 'Contract ended successfully and review submitted.');
     }

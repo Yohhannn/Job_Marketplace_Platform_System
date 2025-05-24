@@ -188,7 +188,13 @@
             font-size: 2rem;
             color: #ddd;
         }
-
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
         .star-rating label:hover,
         .star-rating label:hover ~ label,
         .star-rating input:checked ~ label {
@@ -277,6 +283,7 @@
         </nav>
     </div>
 </header>
+
 
 <main class="container py-4">
     <div class="container py-5">

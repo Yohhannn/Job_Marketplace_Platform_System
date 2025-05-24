@@ -256,6 +256,7 @@
                     Posted {{ $job->created_at->diffForHumans() }}
                 </div>
                 <a href={{route('my-post-details')}}?id={{ $job->id }} class="btn btn-primary mt-3">See Job Post</a>
+
             </div>
             @endforeach
         </div>

@@ -17,6 +17,7 @@ class Contract extends Model
         'talent_feedback',
         'client_rating',
         'client_feedback',
+
     ];
 
     protected $casts = [
