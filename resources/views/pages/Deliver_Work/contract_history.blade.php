@@ -115,66 +115,6 @@
             font-size: 0.9rem;
             color: #555;
         }
-        /* Popup Styles */
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .popup-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 0.5rem;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            text-align: left; /* Align text to the left in the popup */
-            width: 400px; /* Increased width of the popup */
-        }
-        .close-button {
-            margin-top: 20px; /* Increased margin */
-            padding: 8px 15px;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 0.3rem;
-            cursor: pointer;
-            display: block; /* Make it a block element */
-            margin-left: auto; /* Push it to the right */
-        }
-        .close-button:hover {
-            background-color: #0056b3;
-        }
-        .filter-group {
-            margin-bottom: 20px; /* Increased margin between filter groups */
-        }
-        .filter-group-title {
-            font-size: 1rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .filter-options {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .filter-option {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .apply-clear-buttons {
-            display: flex;
-            justify-content: flex-end; /* Push buttons to the right */
-            gap: 10px; /* Space between buttons */
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
@@ -246,31 +186,76 @@
 <main class="container py-4">
     <section class="mb-4">
         <h2 class="section-title">Contract History</h2>
+        
+        <!-- Total Earnings Summary -->
+        @php
+            $totalEarnings = $contracts->sum('pay_amount');
+            $completedCount = $contracts->count();
+        @endphp
+        <div class="alert alert-info">
+            <strong>Summary:</strong> 
+            {{ $completedCount }} completed contracts | 
+            Total Earnings: ${{ number_format($totalEarnings, 2) }}
+        </div>
     </section>
 
     <section class="mb-4">
-        <div class="filter-section">
-            <input type="text" class="form-control" placeholder="Search contracts...">
-            <button class="btn btn-primary" onclick="showPopup()">Filter</button>
-        </div>
-        <div class="sort-control">
-            <span>Sort By:</span>
-            <select class="form-select" style="width: auto;">
-                <option>Start Date</option>
-                <option>End Date</option>
-            </select>
-            <select class="form-select" style="width: auto;">
-                <option>Descending</option>
-                <option>Ascending</option>
-            </select>
-            <span>0 Total</span>
-        </div>
-    </section>
+    <div class="filter-section">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search contracts..." 
+               value="{{ request('search') }}" onkeyup="filterContracts()">
+        <button class="btn btn-primary" onclick="showPopup()">Filter</button>
+    </div>
+    <div class="sort-control">
+        <span>Sort By:</span>
+        <select class="form-select" style="width: auto;" onchange="sortContracts()" id="sortField">
+            <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Start Date</option>
+            <option value="completed_at" {{ request('sort') == 'completed_at' ? 'selected' : '' }}>End Date</option>
+            <option value="pay_amount" {{ request('sort') == 'pay_amount' ? 'selected' : '' }}>Payment Amount</option>
+            <option value="job_title" {{ request('sort') == 'job_title' ? 'selected' : '' }}>Job Title</option>
+            <option value="client_name" {{ request('sort') == 'client_name' ? 'selected' : '' }}>Client Name</option>
+        </select>
+        <select class="form-select" style="width: auto;" onchange="sortContracts()" id="sortDirection">
+            <option value="desc" {{ request('direction') == 'desc' ? 'selected' : '' }}>Descending</option>
+            <option value="asc" {{ request('direction') == 'asc' ? 'selected' : '' }}>Ascending</option>
+        </select>
+        <span>{{ $contracts->count() }} Total</span>
+    </div>
+</section>
 
     <section id="contracts-list">
-        <div class="no-contracts-message">
-            You don't have any past contracts yet.
-        </div>
+        @if($contracts->count() > 0)
+            @foreach($contracts as $contract)
+                <div class="contract-card" data-type="{{ $contract->job->type }}" data-status="completed">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4 class="contract-title">
+                                {{ $contract->job->title }}
+                                <span class="badge bg-secondary ms-2">
+                                    {{ ucfirst($contract->job->type) }}
+                                </span>
+                            </h4>
+                            <p class="contract-details">
+                                <strong>Client:</strong> {{ $contract->job->user->first_name }} {{ $contract->job->user->last_name }}<br>
+                                <strong>Amount:</strong> ${{ number_format($contract->pay_amount, 2) }}<br>
+                                <strong>Completed:</strong> {{ $contract->created_at->format('M d, Y') }}<br>
+                            </p>
+                        </div>
+                        <div>
+                            <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" 
+                               class="btn btn-primary">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @else
+            <div class="no-contracts-message text-center text-muted">
+                You don't have any completed contracts yet.
+                <br>
+                <a href="{{ route('home') }}" class="btn btn-primary mt-2">Search for new projects</a>
+            </div>
+        @endif
     </section>
 </main>
 
@@ -280,63 +265,22 @@
     </div>
 </footer>
 
-<div id="popupOverlay" class="popup-overlay">
-    <div class="popup-content">
-        <div class="filter-group">
-            <h3 class="filter-group-title">Contract Type</h3>
-            <div class="filter-options">
-                <label class="filter-option">
-                    <input type="radio" name="contractType" value="all" checked> All
-                </label>
-                <label class="filter-option">
-                    <input type="radio" name="contractType" value="hourly"> Hourly
-                </label>
-                <label class="filter-option">
-                    <input type="radio" name="contractType" value="fixedPrice"> Fixed-Price
-                </label>
-            </div>
-        </div>
-        <div class="filter-group">
-            <h3 class="filter-group-title">Contract Status</h3>
-            <div class="filter-options">
-                <label class="filter-option">
-                    <input type="checkbox" name="contractStatus" value="all"> All
-                </label>
-                <label class="filter-option">
-                    <input type="checkbox" name="contractStatus" value="active"> Active
-                </label>
-                <label class="filter-option">
-                    <input type="checkbox" name="contractStatus" value="ended"> Ended
-                </label>
-            </div>
-        </div>
-        <div class="apply-clear-buttons">
-            <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
-            <button class="btn btn-secondary" onclick="clearFilters()">Clear All Filters</button>
-        </div>
-        <button class="close-button" onclick="hidePopup()">Close</button>
-    </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const findWorkDropdown = document.getElementById('findWorkDropdown');
-        const deliverWorkDropdown = document.getElementById('deliverWorkDropdown');
-        const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
-
-        if (findWorkDropdown && deliverWorkDropdown) {
-            // Remove the original event listeners for "Find Work" and "Deliver Work"
-            findWorkDropdown.removeAttribute('href');
-            deliverWorkDropdown.removeAttribute('href');
-        }
         // Set "Deliver Work" as active
+        const navbarNavItems = document.querySelectorAll('.navbar-nav .nav-item');
         navbarNavItems.forEach(navItem => navItem.classList.remove('active'));
-        const deliverWorkNavItem = Array.from(navbarNavItems).find(navItem => navItem.querySelector('#deliverWorkDropdown'));
+        const deliverWorkNavItem = Array.from(navbarNavItems).find(navItem => 
+            navItem.querySelector('a[href*="deliverwork"]'));
         if (deliverWorkNavItem) {
             deliverWorkNavItem.classList.add('active');
         }
+
+        // Attach sort event listeners
+        document.getElementById('sortField').addEventListener('change', sortAndFilterContracts);
+        document.getElementById('sortDirection').addEventListener('change', sortAndFilterContracts);
+        document.getElementById('searchInput').addEventListener('input', sortAndFilterContracts);
     });
 
     function showPopup() {
@@ -349,25 +293,93 @@
 
     function applyFilters() {
         const contractType = document.querySelector('input[name="contractType"]:checked').value;
-        const contractStatus = Array.from(document.querySelectorAll('input[name="contractStatus"]:checked')).map(cb => cb.value);
-
-        console.log('Contract Type:', contractType);
-        console.log('Contract Statuses:', contractStatus);
-
+        const ratings = Array.from(document.querySelectorAll('input[name="ratingFilter"]:checked')).map(cb => cb.value);
+        // Filter logic would go here (could be AJAX or client-side filtering)
+        console.log('Filters applied:', { contractType, ratings });
         hidePopup();
-        alert('Filters applied! (See console for values)');
     }
 
     function clearFilters() {
-        const typeRadios = document.querySelectorAll('input[name="contractType"]');
-        typeRadios.forEach(radio => {
-            radio.checked = radio.value === 'all';
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+            if (input.name === 'contractType' && input.value === 'all') {
+                input.checked = true;
+            } else if (input.type === 'checkbox') {
+                input.checked = false;
+            }
+        });
+    }
+
+    // Collect all contract cards into an array for sorting/filtering
+    function getContractDataFromDOM() {
+        const cards = Array.from(document.querySelectorAll('.contract-card'));
+        return cards.map(card => {
+            const title = card.querySelector('.contract-title')?.childNodes[0]?.textContent.trim() || '';
+            const type = card.getAttribute('data-type') || '';
+            const client = card.querySelector('.contract-details')?.innerHTML.match(/Client:<\/strong>\s*([^<]*)<br>/i)?.[1]?.trim() || '';
+            const amount = parseFloat(card.querySelector('.contract-details')?.innerHTML.match(/Amount:<\/strong>\s*\$([0-9.,]+)/i)?.[1]?.replace(/,/g, '') || 0);
+            const completed = card.querySelector('.contract-details')?.innerHTML.match(/Completed:<\/strong>\s*([^<]*)<br>/i)?.[1]?.trim() || '';
+            return { card, title, type, client, amount, completed };
+        });
+    }
+
+    function sortAndFilterContracts() {
+        const sortField = document.getElementById('sortField').value;
+        const sortDirection = document.getElementById('sortDirection').value;
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+        let contracts = getContractDataFromDOM();
+
+        // Filter by search
+        contracts = contracts.filter(c =>
+            c.title.toLowerCase().includes(searchTerm) ||
+            c.client.toLowerCase().includes(searchTerm) ||
+            c.amount.toString().includes(searchTerm) ||
+            c.type.toLowerCase().includes(searchTerm)
+        );
+
+        // Sort
+        contracts.sort((a, b) => {
+            let valA, valB;
+            switch (sortField) {
+                case 'job_title':
+                    valA = a.title.toLowerCase();
+                    valB = b.title.toLowerCase();
+                    break;
+                case 'client_name':
+                    valA = a.client.toLowerCase();
+                    valB = b.client.toLowerCase();
+                    break;
+                case 'pay_amount':
+                    valA = a.amount;
+                    valB = b.amount;
+                    break;
+                case 'created_at':
+                    valA = Date.parse(a.completed) || 0;
+                    valB = Date.parse(b.completed) || 0;
+                    break;
+                case 'completed_at':
+                    valA = Date.parse(a.completed) || 0;
+                    valB = Date.parse(b.completed) || 0;
+                    break;
+                default:
+                    valA = a.title.toLowerCase();
+                    valB = b.title.toLowerCase();
+            }
+            if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+            if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+            return 0;
         });
 
-        const statusCheckboxes = document.querySelectorAll('input[name="contractStatus"]');
-        statusCheckboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
+        // Reorder DOM elements based on sorted contracts
+        const list = document.getElementById('contracts-list');
+        contracts.forEach(c => list.appendChild(c.card));
+
+        // Hide all cards, then show only filtered/sorted
+        document.querySelectorAll('.contract-card').forEach(card => card.style.display = 'none');
+        contracts.forEach(c => c.card.style.display = '');
+
+        // Update count
+        document.querySelector('.sort-control span:last-child').textContent = `${contracts.length} Total`;
     }
 </script>
 </body>

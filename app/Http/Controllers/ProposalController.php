@@ -36,64 +36,89 @@ class ProposalController
 
     public function makeProposal(Request $request)
     {
-        $job_id = $request->query('job_id');
-        $duration_id = $request->query('duration_id');
-
+        // Validate required parameters
+        $validated = $request->validate([
+            'job_id' => 'required|integer|exists:jobs,id'
+        ]);
+    
         $job = Job::with([
             'user',
             'role.role_category',
-            'hourly.duration',
+            'hourly.duration',  // Eager load the hourly relationship with duration
             'fixedPrice'
-        ])->findOrFail($job_id);
-
-        return view('pages.Find_Work.make_proposal', compact('job', 'duration_id'));
+        ])->findOrFail($validated['job_id']);
+    
+        // Get duration_id from the job's hourly relationship if it exists
+        $duration_id = optional($job->hourly)->duration_id;
+    
+        // Check if user is trying to apply to their own job
+        if ($job->user_id === Auth::id()) {
+            return redirect()->back()
+                ->with('error', 'You cannot apply to your own job post');
+        }
+    
+        // Check for existing proposal
+        if (Proposal::where('job_id', $job->id)
+                   ->where('user_id', Auth::id())
+                   ->exists()) {
+            return redirect()->route('proposal-details', ['job_id' => $job->id])
+                ->with('info', 'You have already applied to this job');
+        }
+    
+        return view('pages.Find_Work.make_proposal', [
+            'job' => $job,
+            'duration_id' => $duration_id  // Pass the duration_id from the job
+        ]);
     }
 
     public function proposalDetails(Request $request)
-    {
-        // Get query parameters
-        $job_id = $request->query('job_id');
-        $duration_id = $request->query('duration_id');
+{
+    // Validate request parameters
+    $validatedData = $request->validate([
+        'job_id' => 'required|integer|exists:jobs,id',
+        'user_id' => 'nullable|integer|exists:users,id'
+    ]);
+    $route = $request->query('route', ''); // Get the route parameter if exists
+    $job_id = $validatedData['job_id'];
+    $authUser = Auth::user();
 
-        // Fetch job with relationships
-        $job = Job::with([
-            'user',
-            'role.role_category',
-            'hourly.duration',
-            'fixedPrice.duration',
-            'fixedPrice'
-        ])->findOrFail($job_id);
+    // Fetch job with relationships or fail
+    $job = Job::with([
+        'user',
+        'role.role_category',
+        'hourly.duration',
+        'fixedPrice.duration',
+        'fixedPrice'
+    ])->findOrFail($job_id);
 
-        // Determine if the current user is the job poster
-        $isJobPoster = $job->user_id === Auth::id();
+    // Determine if current user is the job poster
+    $isJobPoster = $job->user_id === $authUser->id;
 
-        // Fetch the correct proposal
-        if ($isJobPoster) {
-            // If user is job poster, get the proposal by job_id + proposer's user_id from URL
-            $proposer_id = $request->query('user_id');
+    // Fetch the correct proposal
+    $proposalQuery = Proposal::where('job_id', $job_id);
 
-            if (!$proposer_id) {
-                abort(404, 'Proposer not specified.');
-            }
-
-            $proposal = Proposal::where('job_id', $job_id)
-                ->where('user_id', $proposer_id)
-                ->firstOrFail();
-        } else {
-            // If user is a proposer, get their own proposal
-            $proposal = Proposal::where('job_id', $job_id)
-                ->where('user_id', Auth::id())
-                ->firstOrFail();
+    if ($isJobPoster) {
+        // Job poster must specify which proposal to view
+        if (empty($validatedData['user_id'])) {
+            return redirect()->back()
+                ->with('error', 'Please specify a freelancer to view their proposal');
         }
-
-        return view('pages.Find_Work.proposal_details', compact('job', 'proposal', 'duration_id', 'isJobPoster'));
+        
+        $proposalQuery->where('user_id', $validatedData['user_id']);
+    } else {
+        // Freelancer can only view their own proposal
+        $proposalQuery->where('user_id', $authUser->id);
     }
+
+    $proposal = $proposalQuery->firstOrFail();
+
+    return view('pages.Find_Work.proposal_details', compact('job', 'proposal', 'isJobPoster','route'));
+}
 
     public function submitProposal(Request $request)
     {
         // Fetch the job so we can validate based on its type
         $job = Job::findOrFail($request->input('job_id'));
-
         // Define validation rules dynamically based on job type
         $rules = [
             'job_id' => 'required|exists:jobs,id',

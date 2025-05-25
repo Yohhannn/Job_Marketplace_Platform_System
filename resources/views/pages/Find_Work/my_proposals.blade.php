@@ -225,7 +225,7 @@
                                 <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
 
                                 <div class="d-flex justify-content-between">
-                                    <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id]) }}" class="btn btn-primary view-details-btn">
+                                    <a href="{{ route('proposaldetails', ['job_id' => $proposal->job_id,'user_id' => $proposal->user_id]) }}" class="btn btn-primary view-details-btn">
                                         View Details
                                     </a>
                                 @if($proposal->status === 'interviewed')

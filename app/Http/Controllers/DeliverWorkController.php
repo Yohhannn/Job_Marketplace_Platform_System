@@ -6,20 +6,14 @@ use App\Models\Proposal;
 use App\Models\Job;
 use App\Models\Contract;
 use Illuminate\Http\Request;
-use App\Models\Contract;
 use Illuminate\Support\Facades\Auth;
 
 class DeliverWorkController
 {
     //
     public function activeContracts(){
-        // Fetch all accepted proposals for the logged-in user
-        $proposals = Proposal::where('user_id', auth()->id())
-            ->where('status', 'accepted')
-            ->with(['job.user', 'duration'])
-            ->get();
-
-        return view('pages.Deliver_Work.active_contracts', compact('proposals'));
+        $contracts = Contract::where('is_completed', false)->where("user_id",Auth::user()->id)->get();
+        return view('pages.Deliver_Work.active_contracts', compact('contracts'));
     }
 
     public function viewContractReview(Request $request){
@@ -66,7 +60,9 @@ class DeliverWorkController
         return view('pages.Deliver_Work.view_contract', compact('job', 'proposal', 'duration_id', 'isJobPoster', 'contract'));
     }
     public function historyContracts(){
-        return view('pages.Deliver_Work.contract_history');
+
+        $contracts = Contract::where('is_completed', true)->where("user_id",Auth::user()->id)->get();
+        return view('pages.Deliver_Work.contract_history',compact('contracts'));
     }
 
     public function showReviewForm($contract_id)

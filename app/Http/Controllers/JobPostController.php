@@ -93,8 +93,12 @@ class JobPostController
             'hireCount' => Contract::countClientHires($client_id),
             'averageRating' => Contract::getTatlentAverageRating($client_id)
         ];
+        $user = Auth::user()->id;
+        $active_contract = Contract::where('user_id', $user)->where("is_completed", false)->get();
+        $hiredProposalsCount = $job_post->proposals->where('status', 'accepted')->count();
+        $is_limit = $job_post->number_of_hires <= $hiredProposalsCount;
+        return view('pages.Job_Post.view_otherpost', compact('job_post', 'talentReviews', 'clientStats','active_contract', 'is_limit'));
 
-        return view('pages.Job_Post.view_otherpost', compact('job_post', 'talentReviews', 'clientStats'));
     }
 
     public function createJobPost()
