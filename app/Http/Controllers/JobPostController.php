@@ -58,6 +58,7 @@ class JobPostController
             'contracts'
         ])->findOrFail($id);
         // Debug proposals
+
         return view('pages.Job_Post.view_mypost', compact('job_post'));
     }
     public function otherPostDetails(Request $request)
@@ -97,6 +98,7 @@ class JobPostController
         $hiredProposalsCount = $job_post->proposals->where('status', 'accepted')->count();
         $is_limit = $job_post->number_of_hires <= $hiredProposalsCount;
         return view('pages.Job_Post.view_otherpost', compact('job_post', 'talentReviews', 'clientStats','active_contract', 'is_limit'));
+
     }
 
     public function createJobPost()

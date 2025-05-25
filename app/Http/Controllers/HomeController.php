@@ -82,10 +82,13 @@ class HomeController
             }
             
             return $matchesEnglishLevel;
+
         });
 
+        // Sort jobs by most recent
         $recent_post = $jobs->sortByDesc('created_at');
 
-        return view('pages.home', compact('user', 'best_match', 'recent_post', 'search'));
+        return view('pages.home', compact('user', 'best_match', 'recent_post'));
+
     }
 }
