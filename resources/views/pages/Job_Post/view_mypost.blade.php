@@ -238,7 +238,7 @@
                     <p class="proposal-count"><strong>Title:</strong> "{{ $job_post->title }}"</p>
                     <p class="proposal-count">Number of proposals: {{ $job_post->proposals->whereIn('status', ['pending', 'interviewed'])->count() }}</p>
                     @php
-                    echo json_encode($job_post);
+                        json_encode($job_post);
                     @endphp
                     <div id="review-proposals-list">
                         @forelse($job_post->proposals->whereIn('status', ['pending', 'interviewed']) as $proposal)

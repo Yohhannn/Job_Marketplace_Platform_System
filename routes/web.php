@@ -24,7 +24,7 @@ Route::get('/signup', [SignUpController::class, 'show'])->name('signup');
 
 // User Registration Routes
 Route::controller(SignUp_UserController::class)->group(function () {
-    Route::get('/registertration', [SignUp_UserController::class, 'show'])->name('user.register.show');
+    Route::get('/registration', [SignUp_UserController::class, 'show'])->name('user.register.show');
     Route::post('/register/user', [SignUp_UserController::class, 'store'])->name('user.register');
 });
 
