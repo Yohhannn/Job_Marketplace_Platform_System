@@ -65,10 +65,11 @@ class DeliverWorkController
         return view('pages.Deliver_Work.contract_history',compact('contracts'));
     }
 
-    public function showReviewForm($contract_id)
+    public function showReviewForm($contract_id,Request $request)
     {
+        $route = $request->query('route'); 
         $contract = Contract::findOrFail($contract_id);
-        return view('pages.Job_Post.end_contract_review', compact('contract'));
+        return view('pages.Job_Post.end_contract_review', compact('contract', 'route'));
     }
 
     public function endContract(Request $request, $contract_id)

@@ -241,9 +241,9 @@
                             </p>
                         </div>
                         <div>
-                            <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" 
+                            <a href="{{ route('contract.review', ['contract_id' => $contract->id,'route' => 'review']) }}" 
                                class="btn btn-primary">
-                                View Details
+                                Submit Review
                             </a>
                         </div>
                     </div>

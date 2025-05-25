@@ -52,9 +52,7 @@ class JobPostController
             'exp',
             'eng',
             'role.role_category',
-            'proposals' => function ($query) {
-                $query->where('status', 'accepted')->with(['user']);
-            },
+            'proposals',
             'contracts'
         ])->findOrFail($id);
         // Debug proposals

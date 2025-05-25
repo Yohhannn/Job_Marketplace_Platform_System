@@ -237,7 +237,9 @@
                     <h3 class="proposal-title">Proposals to Review</h3>
                     <p class="proposal-count"><strong>Title:</strong> "{{ $job_post->title }}"</p>
                     <p class="proposal-count">Number of proposals: {{ $job_post->proposals->whereIn('status', ['pending', 'interviewed'])->count() }}</p>
-
+                    @php
+                    echo json_encode($job_post);
+                    @endphp
                     <div id="review-proposals-list">
                         @forelse($job_post->proposals->whereIn('status', ['pending', 'interviewed']) as $proposal)
                             <a style="color: black" href="{{ route('user.proposer-info', ['user_id' => $proposal->user_id, 'job_id' => $proposal->job_id]) }}" class="text-decoration-none">
@@ -352,7 +354,7 @@
 
 
                                     @if(!$contract->is_completed)
-                                        <a href="{{ route('contract.review', ['contract_id' => $contract->id]) }}" class="btn btn-danger me-2">End Contract</a>
+                                        <a href="{{ route('contract.review', ['contract_id' => $contract->id,"route" => 'end_contract']) }}" class="btn btn-danger me-2">End Contract</a>
                                     @endif
 
 
