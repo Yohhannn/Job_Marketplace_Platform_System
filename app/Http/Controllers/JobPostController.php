@@ -52,7 +52,7 @@ class JobPostController
             'exp',
             'eng',
             'role.role_category',
-            'proposals',
+            'proposals.user',
             'contracts'
         ])->findOrFail($id);
         // Debug proposals
