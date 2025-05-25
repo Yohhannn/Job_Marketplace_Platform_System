@@ -274,7 +274,7 @@
                             </a>
                         @else
                             <!-- User is a proposer -->
-                            <a href="{{ route('findwork.myproposals') }}" class="btn btn-primary mt-3">
+                            <a href="{{ route(!empty($route) ? $route : 'findwork.myproposals') }}" class="btn btn-primary mt-3">
                                 ← Back
                             </a>
                         @endif

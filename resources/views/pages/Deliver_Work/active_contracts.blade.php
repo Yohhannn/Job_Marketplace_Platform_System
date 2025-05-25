@@ -190,23 +190,34 @@
     </section>
 
     <section id="contracts-list">
-        @if ($proposals && $proposals->count() > 0)
-            @foreach ($proposals as $proposal)
-                @if ($proposal->status === 'accepted')
-                    <div class="proposal-card mb-3 border p-3 rounded bg-white shadow-sm">
-                        <p><b>Proposal To: {{ optional($proposal->job->user)->first_name ?? 'Unknown' }}</b></p>
-                        <p>Status: <span class="badge bg-success">{{ ucfirst($proposal->status) }}</span></p>
-                        <p>Proposed Date: {{ $proposal->created_at->format('M d, Y') }}</p>
-                        <a href="{{ route('deliverwork.viewcontractreview', ['job_id' => $proposal->job_id, 'duration_id' => optional($proposal->duration)->id]) }}"
-                           class="btn btn-primary view-details-btn">
-                            View Details
-                        </a>
+    @if($contracts->count() > 0)
+            @foreach($contracts as $contract)
+                <div class="contract-card" data-type="{{ $contract->job->type }}" data-status="completed">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4 class="contract-title">
+                                {{ $contract->job->title }}
+                                <span class="badge bg-secondary ms-2">
+                                    {{ ucfirst($contract->job->type) }}
+                                </span>
+                            </h4>
+                            <p class="contract-details">
+                                <strong>Client:</strong> {{ $contract->job->user->first_name }} {{ $contract->job->user->last_name }}<br>
+                                <strong>Amount:</strong> ${{ number_format($contract->pay_amount, 2) }}<br>
+                                <strong>Completed:</strong> {{ $contract->created_at->format('M d, Y') }}<br>
+                            </p>
+                        </div>
+                        <div>
+                            <a href="{{ route('proposaldetails', ['job_id' => $contract->job_id,'user_id' => $contract->user_id,'route' => 'deliverwork.activecontracts']) }}" class="btn btn-primary view-details-btn">
+                                        View Details
+                            </a>
+                        </div>
                     </div>
-                @endif
+                </div>
             @endforeach
         @else
             <div class="no-contracts-message text-center text-muted">
-                You don't have any active contracts yet.
+                You don't have any completed contracts yet.
                 <br>
                 <a href="{{ route('home') }}" class="btn btn-primary mt-2">Search for new projects</a>
             </div>

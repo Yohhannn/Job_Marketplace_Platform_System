@@ -313,9 +313,9 @@
 
                     {{-- Show Duration based on job type --}}
                     @if($job->type === 'hourly')
-                        <p>Duration: {{ optional($job->hourly->duration)->name ?? 'Not specified' }}</p>
+                        <p>Duration: {{ optional(optional($job->hourly)->duration)->name ?? 'Not specified' }}</p>
                     @elseif($job->type === 'fixed-price')
-                        <p>Project Length: {{ optional($job->fixedPrice->duration)->name ?? 'Not specified' }}</p>
+                        <p>Project Length: {{ $job->fixedPrice->duration->name ?? 'Not specified' }}</p>
                     @else
                         <p>Duration: Not specified</p>
                     @endif
@@ -343,8 +343,10 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <input type="number" step="0.01" class="form-control" id="bid" name="bid_amount" placeholder="Enter your bid" required>
-                            </div>
+                                <input type="number" step="0.01" class="form-control"
+                                value="{{ $job->type === 'hourly' ? number_format($job->hourly->rate_max ?? 0, 2) : number_format($job->fixedPrice->price ?? 0, 2) }}"
+                                id="bid" name="bid_amount" placeholder="Enter your bid">                            
+                        </div>
                         </div>
 
                         <!-- Cover Letter -->

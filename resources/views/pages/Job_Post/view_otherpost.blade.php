@@ -313,14 +313,30 @@
                     Job Description: {{ $job_post->description }}
                 </p>
             </div>
+            @php
+                $contract_exist = (isset($active_contract) && count($active_contract) > 0) ? true : false;
+
+            @endphp
             <div class="col-lg-4">
                 <div class="d-flex flex-column">
-                    <a href="{{ route('makeproposal', [
-                            'job_id' => $job_post->id,
-                            'duration_id' => optional($job_post->hourly)->duration_id
-                        ]) }}" class="btn btn-success mb-2">Apply Now
-                    </a>
-                    <br>
+                @if($contract_exist && !$is_limit)
+            <button class="btn btn-secondary mb-2" disabled>Cannot Apply</button>
+            <div class="alert alert-warning mt-2" style="border-radius: 8px; background-color: #fff3cd; border-color: #ffeeba; color: #856404;">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                @if ($is_limit)
+                You can't apply because the job reach its hired limit.
+                @endif
+                You can't apply because you already have an active contract for this job.
+            </div>
+            @else
+                <a href="{{ route('makeproposal', [
+                        'job_id' => $job_post->id,
+                    ]) }}" 
+                    class="btn btn-success mb-2">
+                    Apply Now
+                </a>
+            @endif
+        <br>
                 </div>
                 <div class="client-info">
                     <h2 class="client-info-title">About the client</h2>
