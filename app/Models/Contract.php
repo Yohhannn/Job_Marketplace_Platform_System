@@ -22,15 +22,12 @@ class Contract extends Model
 
     protected $casts = [
         'created_at' => 'datetime',
+        'is_completed' => 'boolean',
     ];
 
-    protected $appends = [
-        'user_id',
-    ];
-
-    public function getClientIdAttribute(): int
+    public function getIsCompletedAttribute($value)
     {
-        return $this->job->user_id;
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 
     public function job(): BelongsTo
@@ -60,8 +57,8 @@ class Contract extends Model
         return self::whereHas('job', function($query) use ($client_id) {
             $query->where('user_id', $client_id);
         })
-        ->whereNotNull('client_rating')
-        ->count();
+            ->whereNotNull('talent_feedback')
+            ->count();
     }
 
     // Count the number of job posts for a client
@@ -78,14 +75,13 @@ class Contract extends Model
         })->count();
     }
 
-    // Get average rating for a client
-    public static function getClientAverageRating($client_id)
+    public static function getTatlentAverageRating($talent_id)
     {
-        $avg = self::whereHas('job', function($query) use ($client_id) {
-            $query->where('user_id', $client_id);
+        $avg = self::whereHas('job', function($query) use ($talent_id) {
+            $query->where('user_id', $talent_id);
         })
-        ->whereNotNull('client_rating')
-        ->avg('client_rating');
+            ->whereNotNull('talent_rating')
+            ->avg('talent_rating');
 
         return $avg ? round($avg, 1) : 0;
     }

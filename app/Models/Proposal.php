@@ -40,4 +40,10 @@ class Proposal extends Model
     {
         return $this->belongsTo(Duration::class, 'duration_id');
     }
+
+    public function contract()
+    {
+        return $this->hasOne(Contract::class, 'job_id', 'job_id')
+            ->where('user_id', $this->user_id);
+    }
 }
