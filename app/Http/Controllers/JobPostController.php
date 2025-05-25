@@ -58,6 +58,7 @@ class JobPostController
             'contracts'
         ])->findOrFail($id);
         // Debug proposals
+
         return view('pages.Job_Post.view_mypost', compact('job_post'));
     }
     public function otherPostDetails(Request $request)

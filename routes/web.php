@@ -84,6 +84,8 @@ Route::middleware('auth')->group(function () {
         ->name('updateProfileSettings');
     Route::get('/profile/profile-contact', [ProfileController::class, 'myProfileContact'])
         ->name('myProfileContact');
+
+    //Jobs
     Route::put('/profile/profile-contact', [ProfileController::class, 'updateProfileContact'])
         ->name('updateProfileContact');
     Route::put('/profile/profile-contact/change-password', [ProfileController::class, 'changePassword'])

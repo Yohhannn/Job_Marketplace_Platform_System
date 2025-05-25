@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class HomeController
 {
-    public function show()
+    public function show(Request $request)
     {
-        // Ensure the user is authenticated before accessing user data
         if (!Auth::check()) {
             return redirect()->route('login');
         }
@@ -31,5 +31,6 @@ class HomeController
         $recent_post = $jobs->sortByDesc('created_at');
 
         return view('pages.home', compact('user', 'best_match', 'recent_post'));
+
     }
 }
