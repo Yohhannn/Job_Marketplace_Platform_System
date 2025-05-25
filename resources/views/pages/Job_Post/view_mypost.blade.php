@@ -273,7 +273,7 @@
                                         @endif
 
                                         @if($proposal->status === 'interviewed')
-                                            <p>Interview Date: {{ Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
+                                            <p>Interview Date: {{ \Carbon\Carbon::parse($proposal->interview_date)->format('M d, Y') }}</p>
                                             <p>Interview Time: {{ $proposal->interview_time }}</p>
                                         @endif
 

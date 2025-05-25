@@ -217,7 +217,7 @@
             @endforeach
         @else
             <div class="no-contracts-message text-center text-muted">
-                You don't have any completed contracts yet.
+                You don't have any active contracts right now.
                 <br>
                 <a href="{{ route('home') }}" class="btn btn-primary mt-2">Search for new projects</a>
             </div>
