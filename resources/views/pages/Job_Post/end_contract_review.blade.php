@@ -162,8 +162,10 @@
             <p><strong>Freelancer:</strong> {{ optional($contract->job->proposals->where('user_id', $contract->user_id)->first()->user)->first_name ?? 'Unknown' }}</p>
             <p><strong>Contract Start Date:</strong> {{ $contract->created_at->format('M d, Y') }}</p>
         </div>
-
-        <form action="{{ route('contract.end', ['contract_id' => $contract->id]) }}" method="POST">
+        @php
+            $routeName = $route === 'review' ? 'contract.review.submit' : 'contract.end';
+        @endphp
+        <form action="{{ route($routeName, ['contract_id' => $contract->id]) }}" method="POST">
             @csrf
             @method('PATCH')
 
@@ -190,7 +192,7 @@
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('my-post-details', ['id' => $contract->job_id]) }}" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-danger">End Contract</button>
+                <button type="submit" class="btn btn-danger">{{$route === "review" ? "Submit Review" :"End Contract"}}</button>
             </div>
         </form>
     </section>
